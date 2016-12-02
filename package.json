@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raintank/kentik-app-poc.git"
+    "url": "git+https://github.com/sni/grafana-pnp-datasource.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Sven Nierlein",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/raintank/kentik-app-poc/issues"
+    "url": "https://github.com/sni/grafana-pnp-datasource/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -40,5 +40,5 @@
     "lodash": "~4.0.0",
     "mocha": "^2.4.5"
   },
-  "homepage": "https://github.com/raintank/kentik-app-poc#readme"
+  "homepage": "https://github.com/sni/grafana-pnp-datasource#readme"
 }

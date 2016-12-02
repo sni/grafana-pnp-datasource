@@ -29,6 +29,43 @@ module.exports = function(grunt) {
       }
     },
 
+    babel: {
+      options: {
+        sourceMap: true,
+        presets:  ['es2015']
+      },
+      dist: {
+        options: {
+          plugins: ['transform-es2015-modules-systemjs', 'transform-es2015-for-of']
+        },
+        files: [{
+          cwd: 'src',
+          expand: true,
+          src: ['**/*.js'],
+          dest: 'dist',
+          ext:'.js'
+        }]
+      },
+      distTestNoSystemJs: {
+        files: [{
+          cwd: 'src',
+          expand: true,
+          src: ['**/*.js'],
+          dest: 'dist/test',
+          ext:'.js'
+        }]
+      },
+      distTestsSpecsNoSystemJs: {
+        files: [{
+          expand: true,
+          cwd: 'spec',
+          src: ['**/*.js'],
+          dest: 'dist/test/spec',
+          ext:'.js'
+        }]
+      }
+    },
+
     watch: {
       rebuild_all: {
         files: ['src/**/*', 'plugin.json'],
@@ -38,5 +75,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['clean', 'copy:src_to_dist','copy:img_to_dist', 'copy:pluginDef']);
+  grunt.registerTask('default', ['clean', 'copy:src_to_dist','copy:img_to_dist', 'copy:pluginDef', 'babel']);
 };

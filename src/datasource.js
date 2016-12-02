@@ -12,6 +12,8 @@ export class GenericDatasource {
   }
 
   query(options) {
+console.log("query");
+console.log(options);
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
 
@@ -20,7 +22,7 @@ export class GenericDatasource {
     }
 
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/query',
+      url: this.url + '/index.php/json',
       data: query,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
@@ -29,7 +31,7 @@ export class GenericDatasource {
 
   testDatasource() {
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/',
+      url: this.url + '/index.php/json',
       method: 'GET'
     }).then(response => {
       if (response.status === 200) {
@@ -38,60 +40,67 @@ export class GenericDatasource {
     });
   }
 
-  annotationQuery(options) {
-    var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
-    var annotationQuery = {
-      range: options.range,
-      annotation: {
-        name: options.annotation.name,
-        datasource: options.annotation.datasource,
-        enable: options.annotation.enable,
-        iconColor: options.annotation.iconColor,
-        query: query
-      },
-      rangeRaw: options.rangeRaw
-    };
-
-    return this.backendSrv.datasourceRequest({
-      url: this.url + '/annotations',
-      method: 'POST',
-      data: annotationQuery
-    }).then(result => {
-      return result.data;
-    });
-  }
-
-  metricFindQuery(options) {
+  metricFindQuery(options, type) {
     var interpolated = {
-      target: this.templateSrv.replace(options.target, null, 'regex')
+      host: this.templateSrv.replace(options.host, null, 'regex')
     };
 
+    var search = "";
+    var mapper = this.mapToTextValueHost;
+    if(type == "service") {
+      search = '?host='+options.host;
+      mapper = this.mapToTextValueService;
+    }
+    if(type == "perflabel") {
+      search = '?host='+options.host;
+      mapper = this.mapToTextValuePerflabel;
+    }
+
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/search',
+      url: this.url + '/index.php/json'+search,
       data: interpolated,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-    }).then(this.mapToTextValue);
+    }).then(mapper);
   }
 
-  mapToTextValue(result) {
+  mapToTextValueHost(result) {
     return _.map(result.data, (d, i) => {
-      return { text: d, value: i};
+      return { text: d.hostname, value: d.hostname};
+    });
+  }
+
+  mapToTextValueService(result) {
+    return _.map(result.data, (d, i) => {
+      return { text: d.servicedesc, value: d.servicedesc};
+    });
+  }
+
+  mapToTextValuePerflabel(result) {
+    return _.map(result.data, (d, i) => {
+      return { text: d.ds_name, value: d.ds_name};
     });
   }
 
   buildQueryParameters(options) {
     //remove placeholder targets
     options.targets = _.filter(options.targets, target => {
-      return target.target !== 'select metric';
+      return target.host !== 'select host';
+    });
+    options.targets = _.filter(options.targets, target => {
+      return target.service !== 'select service';
+    });
+    options.targets = _.filter(options.targets, target => {
+      return target.perflabel !== 'select performance label';
     });
 
     var targets = _.map(options.targets, target => {
       return {
-        target: this.templateSrv.replace(target.target),
+        host: this.templateSrv.replace(target.host),
+        service: this.templateSrv.replace(target.service),
+        perflabel: this.templateSrv.replace(target.perflabel),
         refId: target.refId,
-        hide: target.hide,
-        type: target.type || 'timeserie'
+        hide: target.hide
       };
     });
 

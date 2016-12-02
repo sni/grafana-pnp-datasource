@@ -8,14 +8,24 @@ export class GenericDatasourceQueryCtrl extends QueryCtrl {
 
     this.scope = $scope;
     this.uiSegmentSrv = uiSegmentSrv;
-    this.target.target = this.target.target || 'select metric';
-    this.target.type = this.target.type || 'timeserie';
+    this.target.host = this.target.host || 'select host';
+    this.target.service = this.target.service || 'select service';
+    this.target.perflabel = this.target.perflabel || 'select performance label';
   }
 
-  getOptions() {
-    return this.datasource.metricFindQuery(this.target)
+  getHost() {
+    return this.datasource.metricFindQuery(this.target, "host")
       .then(this.uiSegmentSrv.transformToSegments(false));
-      // Options have to be transformed by uiSegmentSrv to be usable by metric-segment-model directive
+  }
+
+  getService() {
+    return this.datasource.metricFindQuery(this.target, "service")
+      .then(this.uiSegmentSrv.transformToSegments(false));
+  }
+
+  getPerflabel() {
+    return this.datasource.metricFindQuery(this.target, "perflabel")
+      .then(this.uiSegmentSrv.transformToSegments(false));
   }
 
   toggleEditorMode() {
@@ -28,4 +38,3 @@ export class GenericDatasourceQueryCtrl extends QueryCtrl {
 }
 
 GenericDatasourceQueryCtrl.templateUrl = 'partials/query.editor.html';
-
