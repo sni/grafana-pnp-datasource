@@ -71,6 +71,7 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
           _this.target.host = _this.target.host || 'select host';
           _this.target.service = _this.target.service || 'select service';
           _this.target.perflabel = _this.target.perflabel || 'select performance label';
+          _this.target.type = _this.target.type || 'AVERAGE';
           return _this;
         }
 
@@ -88,11 +89,6 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
           key: 'getPerflabel',
           value: function getPerflabel() {
             return this.datasource.metricFindQuery(this.target, "perflabel").then(this.uiSegmentSrv.transformToSegments(false));
-          }
-        }, {
-          key: 'toggleEditorMode',
-          value: function toggleEditorMode() {
-            this.target.rawQuery = !this.target.rawQuery;
           }
         }, {
           key: 'onChangeInternal',

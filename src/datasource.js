@@ -12,8 +12,8 @@ export class GenericDatasource {
   }
 
   query(options) {
-console.log("query");
-console.log(options);
+//console.log("query");
+//console.log(options);
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
 
@@ -21,12 +21,37 @@ console.log(options);
       return this.q.when({data: []});
     }
 
+    var me = this;
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/index.php/json',
-      data: query,
+      url: this.url + '/index.php/xport/json?host='+options.targets[0].host
+                                            +'&srv='+options.targets[0].service
+                                            +'&start='+Number(options.range.from.toDate().getTime()/1000).toFixed()
+                                            +'&end='+Number(options.range.to.toDate().getTime()/1000).toFixed(),
+      //data: query,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-    });
+    }).then(function(result) { return(me.dataQueryMapper(result, options)) });
+  }
+
+  dataQueryMapper(result, options) {
+console.log("dataQueryMapper");
+console.log(options);
+console.log(result);
+    var index      = 0;
+    var datapoints = [];
+    var timestamp  = Number(result.data.meta.start);
+    var step       = Number(result.data.meta.step);
+    for(var x=0; x < result.data.data.row.length; x++) {
+      datapoints.push([Number(result.data.data.row[x].v[index]),timestamp*1000]);
+      timestamp += step;
+    }
+
+    var data = {data:[{
+      "target": options.targets[0].host+';'+options.targets[0].service,
+      "datapoints": datapoints
+    }]};
+console.log(data);
+    return(data);
   }
 
   testDatasource() {
@@ -100,7 +125,8 @@ console.log(options);
         service: this.templateSrv.replace(target.service),
         perflabel: this.templateSrv.replace(target.perflabel),
         refId: target.refId,
-        hide: target.hide
+        hide: target.hide,
+        target: target.host+';'+target.service
       };
     });
 

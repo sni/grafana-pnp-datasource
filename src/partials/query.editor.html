@@ -12,5 +12,8 @@
       <metric-segment-model property="ctrl.target.perflabel" get-options="ctrl.getPerflabel()" on-change="ctrl.onChangeInternal()"
         css-class="tight-form-item-xxlarge"></metric-segment-model>
     </div>
+    <div class="gf-form">
+      <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['AVERAGE', 'MIN', 'MAX']"></select>
+    </div>
   </div>
 </query-editor-row>

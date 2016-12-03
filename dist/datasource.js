@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-System.register(["lodash"], function (_export, _context) {
+System.register(['lodash'], function (_export, _context) {
   "use strict";
 
   var _, _createClass, GenericDatasource;
@@ -34,7 +34,7 @@ System.register(["lodash"], function (_export, _context) {
         };
       }();
 
-      _export("GenericDatasource", GenericDatasource = function () {
+      _export('GenericDatasource', GenericDatasource = function () {
         function GenericDatasource(instanceSettings, $q, backendSrv, templateSrv) {
           _classCallCheck(this, GenericDatasource);
 
@@ -47,10 +47,10 @@ System.register(["lodash"], function (_export, _context) {
         }
 
         _createClass(GenericDatasource, [{
-          key: "query",
+          key: 'query',
           value: function query(options) {
-            console.log("query");
-            console.log(options);
+            //console.log("query");
+            //console.log(options);
             var query = this.buildQueryParameters(options);
             query.targets = query.targets.filter(function (t) {
               return !t.hide;
@@ -60,15 +60,40 @@ System.register(["lodash"], function (_export, _context) {
               return this.q.when({ data: [] });
             }
 
+            var me = this;
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/json',
-              data: query,
+              url: this.url + '/index.php/xport/json?host=' + options.targets[0].host + '&srv=' + options.targets[0].service + '&start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed(),
+              //data: query,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
+            }).then(function (result) {
+              return me.dataQueryMapper(result, options);
             });
           }
         }, {
-          key: "testDatasource",
+          key: 'dataQueryMapper',
+          value: function dataQueryMapper(result, options) {
+            console.log("dataQueryMapper");
+            console.log(options);
+            console.log(result);
+            var index = 0;
+            var datapoints = [];
+            var timestamp = Number(result.data.meta.start);
+            var step = Number(result.data.meta.step);
+            for (var x = 0; x < result.data.data.row.length; x++) {
+              datapoints.push([Number(result.data.data.row[x].v[index]), timestamp * 1000]);
+              timestamp += step;
+            }
+
+            var data = { data: [{
+                "target": options.targets[0].host + ';' + options.targets[0].service,
+                "datapoints": datapoints
+              }] };
+            console.log(data);
+            return data;
+          }
+        }, {
+          key: 'testDatasource',
           value: function testDatasource() {
             return this.backendSrv.datasourceRequest({
               url: this.url + '/index.php/json',
@@ -80,7 +105,7 @@ System.register(["lodash"], function (_export, _context) {
             });
           }
         }, {
-          key: "metricFindQuery",
+          key: 'metricFindQuery',
           value: function metricFindQuery(options, type) {
             var interpolated = {
               host: this.templateSrv.replace(options.host, null, 'regex')
@@ -105,28 +130,28 @@ System.register(["lodash"], function (_export, _context) {
             }).then(mapper);
           }
         }, {
-          key: "mapToTextValueHost",
+          key: 'mapToTextValueHost',
           value: function mapToTextValueHost(result) {
             return _.map(result.data, function (d, i) {
               return { text: d.hostname, value: d.hostname };
             });
           }
         }, {
-          key: "mapToTextValueService",
+          key: 'mapToTextValueService',
           value: function mapToTextValueService(result) {
             return _.map(result.data, function (d, i) {
               return { text: d.servicedesc, value: d.servicedesc };
             });
           }
         }, {
-          key: "mapToTextValuePerflabel",
+          key: 'mapToTextValuePerflabel',
           value: function mapToTextValuePerflabel(result) {
             return _.map(result.data, function (d, i) {
               return { text: d.ds_name, value: d.ds_name };
             });
           }
         }, {
-          key: "buildQueryParameters",
+          key: 'buildQueryParameters',
           value: function buildQueryParameters(options) {
             var _this = this;
 
@@ -147,7 +172,8 @@ System.register(["lodash"], function (_export, _context) {
                 service: _this.templateSrv.replace(target.service),
                 perflabel: _this.templateSrv.replace(target.perflabel),
                 refId: target.refId,
-                hide: target.hide
+                hide: target.hide,
+                target: target.host + ';' + target.service
               };
             });
 
@@ -160,7 +186,7 @@ System.register(["lodash"], function (_export, _context) {
         return GenericDatasource;
       }());
 
-      _export("GenericDatasource", GenericDatasource);
+      _export('GenericDatasource', GenericDatasource);
     }
   };
 });
