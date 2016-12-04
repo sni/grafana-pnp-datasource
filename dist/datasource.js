@@ -62,7 +62,7 @@ System.register(['lodash'], function (_export, _context) {
 
             var me = this;
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/xport/json?host=' + options.targets[0].host + '&srv=' + options.targets[0].service + '&start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed(),
+              url: this.url + '/index.php/api/metrics/' + options.targets[0].host + '/' + options.targets[0].service + '/' + options.targets[0].perflabel + '?start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed(),
               //data: query,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
@@ -76,18 +76,11 @@ System.register(['lodash'], function (_export, _context) {
             console.log("dataQueryMapper");
             console.log(options);
             console.log(result);
-            var index = 0;
-            var datapoints = [];
-            var timestamp = Number(result.data.meta.start);
-            var step = Number(result.data.meta.step);
-            for (var x = 0; x < result.data.data.row.length; x++) {
-              datapoints.push([Number(result.data.data.row[x].v[index]), timestamp * 1000]);
-              timestamp += step;
-            }
 
             var data = { data: [{
-                "target": options.targets[0].host + ';' + options.targets[0].service,
-                "datapoints": datapoints
+                "target": options.targets[0].perflabel,
+                //"target": options.targets[0].host+';'+options.targets[0].service,
+                "datapoints": result.data[0].datapoints
               }] };
             console.log(data);
             return data;
@@ -96,7 +89,7 @@ System.register(['lodash'], function (_export, _context) {
           key: 'testDatasource',
           value: function testDatasource() {
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/json',
+              url: this.url + '/index.php/api',
               method: 'GET'
             }).then(function (response) {
               if (response.status === 200) {
@@ -111,19 +104,17 @@ System.register(['lodash'], function (_export, _context) {
               host: this.templateSrv.replace(options.host, null, 'regex')
             };
 
-            var search = "";
             var mapper = this.mapToTextValueHost;
+            var url = this.url + '/index.php/api/hosts';
             if (type == "service") {
-              search = '?host=' + options.host;
-              mapper = this.mapToTextValueService;
+              url = this.url + '/index.php/api/services/' + options.host, mapper = this.mapToTextValueService;
             }
             if (type == "perflabel") {
-              search = '?host=' + options.host;
-              mapper = this.mapToTextValuePerflabel;
+              url = this.url + '/index.php/api/labels/' + options.host + '/' + options.service, mapper = this.mapToTextValuePerflabel;
             }
 
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/json' + search,
+              url: url,
               data: interpolated,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
@@ -132,22 +123,22 @@ System.register(['lodash'], function (_export, _context) {
         }, {
           key: 'mapToTextValueHost',
           value: function mapToTextValueHost(result) {
-            return _.map(result.data, function (d, i) {
-              return { text: d.hostname, value: d.hostname };
+            return _.map(result.data.hosts, function (d, i) {
+              return { text: d.name, value: d.name };
             });
           }
         }, {
           key: 'mapToTextValueService',
           value: function mapToTextValueService(result) {
-            return _.map(result.data, function (d, i) {
-              return { text: d.servicedesc, value: d.servicedesc };
+            return _.map(result.data.services, function (d, i) {
+              return { text: d.name, value: d.name };
             });
           }
         }, {
           key: 'mapToTextValuePerflabel',
           value: function mapToTextValuePerflabel(result) {
-            return _.map(result.data, function (d, i) {
-              return { text: d.ds_name, value: d.ds_name };
+            return _.map(result.data.labels, function (d, i) {
+              return { text: d.name, value: d.name };
             });
           }
         }, {

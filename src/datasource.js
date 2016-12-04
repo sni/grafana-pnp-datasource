@@ -23,9 +23,8 @@ export class GenericDatasource {
 
     var me = this;
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/index.php/xport/json?host='+options.targets[0].host
-                                            +'&srv='+options.targets[0].service
-                                            +'&start='+Number(options.range.from.toDate().getTime()/1000).toFixed()
+      url: this.url + '/index.php/api/metrics/'+options.targets[0].host+'/'+options.targets[0].service+'/'+options.targets[0].perflabel
+                                            +'?start='+Number(options.range.from.toDate().getTime()/1000).toFixed()
                                             +'&end='+Number(options.range.to.toDate().getTime()/1000).toFixed(),
       //data: query,
       method: 'POST',
@@ -37,18 +36,11 @@ export class GenericDatasource {
 console.log("dataQueryMapper");
 console.log(options);
 console.log(result);
-    var index      = 0;
-    var datapoints = [];
-    var timestamp  = Number(result.data.meta.start);
-    var step       = Number(result.data.meta.step);
-    for(var x=0; x < result.data.data.row.length; x++) {
-      datapoints.push([Number(result.data.data.row[x].v[index]),timestamp*1000]);
-      timestamp += step;
-    }
 
     var data = {data:[{
-      "target": options.targets[0].host+';'+options.targets[0].service,
-      "datapoints": datapoints
+      "target": options.targets[0].perflabel,
+      //"target": options.targets[0].host+';'+options.targets[0].service,
+      "datapoints": result.data[0].datapoints
     }]};
 console.log(data);
     return(data);
@@ -56,7 +48,7 @@ console.log(data);
 
   testDatasource() {
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/index.php/json',
+      url: this.url + '/index.php/api',
       method: 'GET'
     }).then(response => {
       if (response.status === 200) {
@@ -70,40 +62,40 @@ console.log(data);
       host: this.templateSrv.replace(options.host, null, 'regex')
     };
 
-    var search = "";
     var mapper = this.mapToTextValueHost;
+    var url    = this.url + '/index.php/api/hosts';
     if(type == "service") {
-      search = '?host='+options.host;
+      url    = this.url + '/index.php/api/services/'+options.host,
       mapper = this.mapToTextValueService;
     }
     if(type == "perflabel") {
-      search = '?host='+options.host;
+      url    = this.url + '/index.php/api/labels/'+options.host+'/'+options.service,
       mapper = this.mapToTextValuePerflabel;
     }
 
     return this.backendSrv.datasourceRequest({
-      url: this.url + '/index.php/json'+search,
-      data: interpolated,
+      url:     url,
+      data:    interpolated,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     }).then(mapper);
   }
 
   mapToTextValueHost(result) {
-    return _.map(result.data, (d, i) => {
-      return { text: d.hostname, value: d.hostname};
+    return _.map(result.data.hosts, (d, i) => {
+      return { text: d.name, value: d.name };
     });
   }
 
   mapToTextValueService(result) {
-    return _.map(result.data, (d, i) => {
-      return { text: d.servicedesc, value: d.servicedesc};
+    return _.map(result.data.services, (d, i) => {
+      return { text: d.name, value: d.name };
     });
   }
 
   mapToTextValuePerflabel(result) {
-    return _.map(result.data, (d, i) => {
-      return { text: d.ds_name, value: d.ds_name};
+    return _.map(result.data.labels, (d, i) => {
+      return { text: d.name, value: d.name };
     });
   }
 
