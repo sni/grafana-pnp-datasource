@@ -12,8 +12,6 @@ export class GenericDatasource {
   }
 
   query(options) {
-//console.log("query");
-//console.log(options);
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
 
@@ -26,23 +24,17 @@ export class GenericDatasource {
       url: this.url + '/index.php/api/metrics/'+options.targets[0].host+'/'+options.targets[0].service+'/'+options.targets[0].perflabel
                                             +'?start='+Number(options.range.from.toDate().getTime()/1000).toFixed()
                                             +'&end='+Number(options.range.to.toDate().getTime()/1000).toFixed(),
-      //data: query,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     }).then(function(result) { return(me.dataQueryMapper(result, options)) });
   }
 
   dataQueryMapper(result, options) {
-console.log("dataQueryMapper");
-console.log(options);
-console.log(result);
 
     var data = {data:[{
       "target": options.targets[0].perflabel,
-      //"target": options.targets[0].host+';'+options.targets[0].service,
       "datapoints": result.data[0].datapoints
     }]};
-console.log(data);
     return(data);
   }
 
