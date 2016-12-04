@@ -23,16 +23,20 @@ export class GenericDatasource {
     return this.backendSrv.datasourceRequest({
       url: this.url + '/index.php/api/metrics/'+options.targets[0].host+'/'+options.targets[0].service+'/'+options.targets[0].perflabel
                                             +'?start='+Number(options.range.from.toDate().getTime()/1000).toFixed()
-                                            +'&end='+Number(options.range.to.toDate().getTime()/1000).toFixed(),
+                                            +'&end='+Number(options.range.to.toDate().getTime()/1000).toFixed()
+                                            +'&type='+options.targets[0].type,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     }).then(function(result) { return(me.dataQueryMapper(result, options)) });
   }
 
   dataQueryMapper(result, options) {
-
+    var alias = options.targets[0].perflabel;
+    if(options.targets[0].alias) {
+      alias = options.targets[0].alias;
+    }
     var data = {data:[{
-      "target": options.targets[0].perflabel,
+      "target": alias,
       "datapoints": result.data[0].datapoints
     }]};
     return(data);
@@ -108,9 +112,10 @@ export class GenericDatasource {
         host: this.templateSrv.replace(target.host),
         service: this.templateSrv.replace(target.service),
         perflabel: this.templateSrv.replace(target.perflabel),
+        alias: this.templateSrv.replace(target.alias),
+        type: this.templateSrv.replace(target.type),
         refId: target.refId,
-        hide: target.hide,
-        target: target.host+';'+target.service
+        hide: target.hide
       };
     });
 

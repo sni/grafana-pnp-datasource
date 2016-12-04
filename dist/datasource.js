@@ -60,7 +60,7 @@ System.register(['lodash'], function (_export, _context) {
 
             var me = this;
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/api/metrics/' + options.targets[0].host + '/' + options.targets[0].service + '/' + options.targets[0].perflabel + '?start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed(),
+              url: this.url + '/index.php/api/metrics/' + options.targets[0].host + '/' + options.targets[0].service + '/' + options.targets[0].perflabel + '?start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed() + '&type=' + options.targets[0].type,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
             }).then(function (result) {
@@ -70,9 +70,12 @@ System.register(['lodash'], function (_export, _context) {
         }, {
           key: 'dataQueryMapper',
           value: function dataQueryMapper(result, options) {
-
+            var alias = options.targets[0].perflabel;
+            if (options.targets[0].alias) {
+              alias = options.targets[0].alias;
+            }
             var data = { data: [{
-                "target": options.targets[0].perflabel,
+                "target": alias,
                 "datapoints": result.data[0].datapoints
               }] };
             return data;
@@ -154,9 +157,10 @@ System.register(['lodash'], function (_export, _context) {
                 host: _this.templateSrv.replace(target.host),
                 service: _this.templateSrv.replace(target.service),
                 perflabel: _this.templateSrv.replace(target.perflabel),
+                alias: _this.templateSrv.replace(target.alias),
+                type: _this.templateSrv.replace(target.type),
                 refId: target.refId,
-                hide: target.hide,
-                target: target.host + ';' + target.service
+                hide: target.hide
               };
             });
 

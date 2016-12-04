@@ -16,5 +16,18 @@
       <label class="gf-form-label query-keyword">Type:</label>
       <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['AVERAGE', 'MIN', 'MAX']"></select>
     </div>
+    <div class="gf-form gf-form--grow">
+      <div class="gf-form-label gf-form-label--grow"></div>
+    </div>
+  </div>
+
+  <div class="gf-form-inline">
+    <div class="gf-form max-width-30">
+      <label class="gf-form-label query-keyword">Alias</label>
+      <input type="text" class="gf-form-input" ng-model="ctrl.target.alias" spellcheck='false' placeholder="Naming pattern" ng-blur="ctrl.onChangeInternal()">
+    </div>
+    <div class="gf-form gf-form--grow">
+      <div class="gf-form-label gf-form-label--grow"></div>
+    </div>
   </div>
 </query-editor-row>
