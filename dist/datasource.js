@@ -58,26 +58,36 @@ System.register(['lodash'], function (_export, _context) {
               return this.q.when({ data: [] });
             }
 
+            var res;
+            var data = { data: [] };
+            for (var i = 0; i < options.targets.length; i++) {
+              res = this.pnpQuery(data, options, options.targets[i]);
+            }
+            return res;
+          }
+        }, {
+          key: 'pnpQuery',
+          value: function pnpQuery(data, options, target) {
             var me = this;
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/api/metrics/' + options.targets[0].host + '/' + options.targets[0].service + '/' + options.targets[0].perflabel + '?start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed() + '&type=' + options.targets[0].type,
+              url: this.url + '/index.php/api/metrics/' + target.host + '/' + target.service + '/' + target.perflabel + '?start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed() + '&type=' + target.type,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
             }).then(function (result) {
-              return me.dataQueryMapper(result, options);
+              return me.dataQueryMapper(data, result, target);
             });
           }
         }, {
           key: 'dataQueryMapper',
-          value: function dataQueryMapper(result, options) {
-            var alias = options.targets[0].perflabel;
-            if (options.targets[0].alias) {
-              alias = options.targets[0].alias;
+          value: function dataQueryMapper(data, result, target) {
+            var alias = target.perflabel;
+            if (target.alias) {
+              alias = target.alias;
             }
-            var data = { data: [{
-                "target": alias,
-                "datapoints": result.data[0].datapoints
-              }] };
+            data.data.push({
+              "target": alias,
+              "datapoints": result.data[0].datapoints
+            });
             return data;
           }
         }, {
