@@ -30,7 +30,14 @@ export class GenericDatasourceQueryCtrl extends QueryCtrl {
   }
 
   onChangeInternal() {
-    this.panelCtrl.refresh(); // Asks the panel to refresh data.
+    this.panelCtrl.refresh();
+  }
+
+  getCollapsedText() {
+    return(this.target.perflabel
+           +': '+this.target.host
+           +' - '+this.target.service
+           );
   }
 }
 

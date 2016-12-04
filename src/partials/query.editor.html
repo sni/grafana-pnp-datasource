@@ -1,18 +1,19 @@
-<query-editor-row query-ctrl="ctrl" class="generic-datasource-query-row" has-text-edit-mode="true">
+<query-editor-row query-ctrl="ctrl" can-collapse="true">
   <div class="gf-form-inline">
     <div class="gf-form">
-      <metric-segment-model property="ctrl.target.host" get-options="ctrl.getHost()" on-change="ctrl.onChangeInternal()"
-        css-class="tight-form-item-xxlarge"></metric-segment-model>
+      <label class="gf-form-label query-keyword">Host:</label>
+      <metric-segment-model property="ctrl.target.host" get-options="ctrl.getHost()" on-change="ctrl.onChangeInternal()"></metric-segment-model>
     </div>
     <div class="gf-form">
-      <metric-segment-model property="ctrl.target.service" get-options="ctrl.getService()" on-change="ctrl.onChangeInternal()"
-        css-class="tight-form-item-xxlarge"></metric-segment-model>
+      <label class="gf-form-label query-keyword">Service:</label>
+      <metric-segment-model property="ctrl.target.service" get-options="ctrl.getService()" on-change="ctrl.onChangeInternal()"></metric-segment-model>
     </div>
     <div class="gf-form">
-      <metric-segment-model property="ctrl.target.perflabel" get-options="ctrl.getPerflabel()" on-change="ctrl.onChangeInternal()"
-        css-class="tight-form-item-xxlarge"></metric-segment-model>
+      <label class="gf-form-label query-keyword">Label:</label>
+      <metric-segment-model property="ctrl.target.perflabel" get-options="ctrl.getPerflabel()" on-change="ctrl.onChangeInternal()"></metric-segment-model>
     </div>
     <div class="gf-form">
+      <label class="gf-form-label query-keyword">Type:</label>
       <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['AVERAGE', 'MIN', 'MAX']"></select>
     </div>
   </div>
