@@ -1,4 +1,4 @@
-## PNP RRD Datasource - a backend datasource using pnp to access rrd files
+## PNP Grafana Datasource - a grafana backend datasource using pnp to access rrd files
 
 ### Usage
 
@@ -6,3 +6,7 @@
     %> git clone https://github.com/sni/grafana-pnp-datasource.git
     %> restart grafana
 
+### TODO
+
+    - Templating variables support
+    - Replace variables in alias
