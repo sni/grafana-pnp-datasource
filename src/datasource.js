@@ -35,37 +35,46 @@ export class GenericDatasource {
   dataQueryMapper(result, options) {
     var data = {data:[]};
     for(var x=0; x < result.data.targets.length; x++) {
-      var target = options.targets[x];
-      var alias = target.perflabel;
-      if(target.alias) {
-        alias = target.alias;
-      }
-      var datapoints = result.data.targets[x][0].datapoints;
-      var length     = datapoints.length;
-      // remove the last few "null" values from the series because the last value is quite often null
-      // and would break current value in legend tables
-      for(var y=1; y < 5; y++) {
-        if(length > y && datapoints[length-y][0] === null) {
-          datapoints.pop();
-        } else {
-          break;
+      for(var k=0; k < result.data.targets[x].length; k++) {
+        var target = options.targets[x];
+        var alias = target.perflabel;
+        if(target.alias) {
+          alias = target.alias;
+          var scopedVars = {
+            host      : {value: target.host},
+            service   : {value: target.service},
+            perflabel : {value: target.perflabel},
+            label     : {value: target.perflabel}
+          };
+          alias = this.templateSrv.replace(alias, scopedVars);
         }
-      }
-      var length     = datapoints.length;
-      var fill       = options.targets[x].fill;
-      if(fill != "fill") {
-        if(fill == "zero") { fill = 0; }
-        if(fill == "gap")  { fill = undefined; }
-        for(var y=0; y<length; y++) {
-          if(datapoints[y][0] === null) {
-            datapoints[y][0] = fill;
+        var datapoints = result.data.targets[x][k].datapoints;
+        var length     = datapoints.length;
+        // remove the last few "null" values from the series because the last value is quite often null
+        // and would break current value in legend tables
+        for(var y=1; y < 5; y++) {
+          if(length > y && datapoints[length-y][0] === null) {
+            datapoints.pop();
+          } else {
+            break;
           }
         }
+        var length = datapoints.length;
+        var fill   = options.targets[x].fill;
+        if(fill != "fill") {
+          if(fill == "zero") { fill = 0; }
+          if(fill == "gap")  { fill = undefined; }
+          for(var y=0; y<length; y++) {
+            if(datapoints[y][0] === null) {
+              datapoints[y][0] = fill;
+            }
+          }
+        }
+        data.data.push({
+          "target": alias,
+          "datapoints": datapoints
+        });
       }
-      data.data.push({
-        "target": alias,
-        "datapoints": datapoints
-      });
     }
     return(data);
   }
