@@ -22,6 +22,11 @@ module.exports = function(grunt) {
         src: ['img/*'],
         dest: 'dist/src/'
       },
+      dashboards_to_dist: {
+        expand: true,
+        src: ['dashboards/*'],
+        dest: 'dist/'
+      },
       pluginDef: {
         expand: true,
         src: [ 'src/plugin.json', 'README.md' ],
@@ -75,5 +80,5 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['clean', 'copy:src_to_dist','copy:img_to_dist', 'copy:pluginDef', 'babel']);
+  grunt.registerTask('default', ['clean', 'copy:src_to_dist','copy:img_to_dist', 'copy:pluginDef', 'copy:dashboards_to_dist', 'babel']);
 };

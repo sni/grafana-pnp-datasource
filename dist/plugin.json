@@ -1,11 +1,15 @@
 {
   "name": "PNP",
-  "id": "grafana-pnp-datasource",
+  "id": "pnp",
   "type": "datasource",
 
   "partials": {
     "config": "public/app/plugins/datasource/pnp/partials/config.html"
   },
+
+  "includes": [
+      {"type": "dashboard", "name": "PNP Internals", "path": "dashboards/pnp_internals.json"}
+  ],
 
   "metrics": true,
   "annotations": false,
@@ -14,6 +18,7 @@
     "description": "pnp datasource",
     "author": {
       "name": "Sven Nierlein",
+      "email": "sven.nierlein@consol.de",
       "url": "http://labs.consol.de"
     },
     "logos": {
