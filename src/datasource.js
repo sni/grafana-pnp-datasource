@@ -34,7 +34,7 @@ export class GenericDatasource {
   dataQueryMapper(result, options) {
     var data = {data:[]};
     for(var x=0; x < result.data.targets.length; x++) {
-      var target = options[x].target;
+      var target = options.targets[x];
       var alias = target.perflabel;
       if(target.alias) {
         alias = target.alias;
