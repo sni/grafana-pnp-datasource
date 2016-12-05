@@ -6,6 +6,7 @@ export class GenericDatasource {
     this.type = instanceSettings.type;
     this.url = instanceSettings.url;
     this.name = instanceSettings.name;
+    this.fill = instanceSettings.fill;
     this.q = $q;
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
@@ -38,6 +39,18 @@ export class GenericDatasource {
       var alias = target.perflabel;
       if(target.alias) {
         alias = target.alias;
+      }
+      var fill = options.targets[x].fill;
+      if(fill != "fill") {
+        if(fill == "zero") { fill = 0; }
+        if(fill == "gap")  { fill = undefined; }
+        var datapoints = result.data.targets[x][0].datapoints;
+        var length     = datapoints.length;
+        for(var y=0; y<length; y++) {
+          if(datapoints[y][0] === null) {
+            datapoints[y][0] = fill;
+          }
+        }
       }
       data.data.push({
         "target": alias,
@@ -119,6 +132,7 @@ export class GenericDatasource {
         perflabel: this.templateSrv.replace(target.perflabel),
         alias: this.templateSrv.replace(target.alias),
         type: this.templateSrv.replace(target.type),
+        fill: this.templateSrv.replace(target.fill),
         refId: target.refId,
         hide: target.hide
       };

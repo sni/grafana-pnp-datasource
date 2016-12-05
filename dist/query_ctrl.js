@@ -72,6 +72,7 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
           _this.target.service = _this.target.service || 'select service';
           _this.target.perflabel = _this.target.perflabel || 'select performance label';
           _this.target.type = _this.target.type || 'AVERAGE';
+          _this.target.fill = _this.target.fill || 'fill';
           return _this;
         }
 

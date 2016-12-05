@@ -12,6 +12,7 @@ export class GenericDatasourceQueryCtrl extends QueryCtrl {
     this.target.service = this.target.service || 'select service';
     this.target.perflabel = this.target.perflabel || 'select performance label';
     this.target.type = this.target.type || 'AVERAGE';
+    this.target.fill = this.target.fill || 'fill';
   }
 
   getHost() {
