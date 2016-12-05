@@ -58,9 +58,10 @@ System.register(['lodash'], function (_export, _context) {
               return this.q.when({ data: [] });
             }
 
-            query.start = options.range.from.toDate().getTime();
-            query.end = options.range.to.toDate().getTime();
+            query.start = Number(options.range.from.toDate().getTime() / 1000).toFixed();
+            query.end = Number(options.range.to.toDate().getTime() / 1000).toFixed();
 
+            var me = this;
             return this.backendSrv.datasourceRequest({
               url: this.url + '/index.php/api/metrics',
               data: query,

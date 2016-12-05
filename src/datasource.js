@@ -22,6 +22,7 @@ export class GenericDatasource {
     query.start = Number(options.range.from.toDate().getTime() / 1000).toFixed();
     query.end   = Number(options.range.to.toDate().getTime() / 1000).toFixed();
 
+    var me = this;
     return this.backendSrv.datasourceRequest({
       url: this.url + '/index.php/api/metrics',
       data: query,
