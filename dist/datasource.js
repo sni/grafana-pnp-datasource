@@ -58,36 +58,33 @@ System.register(['lodash'], function (_export, _context) {
               return this.q.when({ data: [] });
             }
 
-            var res;
-            var data = { data: [] };
-            for (var i = 0; i < options.targets.length; i++) {
-              res = this.pnpQuery(data, options, options.targets[i]);
-            }
-            return res;
-          }
-        }, {
-          key: 'pnpQuery',
-          value: function pnpQuery(data, options, target) {
-            var me = this;
+            query.start = options.range.from.toDate().getTime();
+            query.end = options.range.to.toDate().getTime();
+
             return this.backendSrv.datasourceRequest({
-              url: this.url + '/index.php/api/metrics/' + target.host + '/' + target.service + '/' + target.perflabel + '?start=' + Number(options.range.from.toDate().getTime() / 1000).toFixed() + '&end=' + Number(options.range.to.toDate().getTime() / 1000).toFixed() + '&type=' + target.type,
+              url: this.url + '/index.php/api/metrics',
+              data: query,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
             }).then(function (result) {
-              return me.dataQueryMapper(data, result, target);
+              return me.dataQueryMapper(result, options);
             });
           }
         }, {
           key: 'dataQueryMapper',
-          value: function dataQueryMapper(data, result, target) {
-            var alias = target.perflabel;
-            if (target.alias) {
-              alias = target.alias;
+          value: function dataQueryMapper(result, options) {
+            var data = { data: [] };
+            for (var x = 0; x < result.data.targets.length; x++) {
+              var target = options[x].target;
+              var alias = target.perflabel;
+              if (target.alias) {
+                alias = target.alias;
+              }
+              data.data.push({
+                "target": alias,
+                "datapoints": result.data.targets[x][0].datapoints
+              });
             }
-            data.data.push({
-              "target": alias,
-              "datapoints": result.data[0].datapoints
-            });
             return data;
           }
         }, {
