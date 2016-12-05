@@ -82,6 +82,18 @@ System.register(['lodash'], function (_export, _context) {
               if (target.alias) {
                 alias = target.alias;
               }
+              var datapoints = result.data.targets[x][0].datapoints;
+              var length = datapoints.length;
+              // remove the last few "null" values from the series because the last value is quite often null
+              // and would break current value in legend tables
+              for (var y = 1; y < 5; y++) {
+                if (length > y && datapoints[length - y][0] === null) {
+                  datapoints.pop();
+                } else {
+                  break;
+                }
+              }
+              var length = datapoints.length;
               var fill = options.targets[x].fill;
               if (fill != "fill") {
                 if (fill == "zero") {
@@ -90,8 +102,6 @@ System.register(['lodash'], function (_export, _context) {
                 if (fill == "gap") {
                   fill = undefined;
                 }
-                var datapoints = result.data.targets[x][0].datapoints;
-                var length = datapoints.length;
                 for (var y = 0; y < length; y++) {
                   if (datapoints[y][0] === null) {
                     datapoints[y][0] = fill;
@@ -100,7 +110,7 @@ System.register(['lodash'], function (_export, _context) {
               }
               data.data.push({
                 "target": alias,
-                "datapoints": result.data.targets[x][0].datapoints
+                "datapoints": datapoints
               });
             }
             return data;
