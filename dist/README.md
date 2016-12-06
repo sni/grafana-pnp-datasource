@@ -9,3 +9,5 @@
 ### TODO
 
     - Templating variables support
+    - use relative urls in datasource
+    - support grafana proxy

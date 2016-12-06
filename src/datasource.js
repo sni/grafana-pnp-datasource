@@ -6,7 +6,6 @@ export class GenericDatasource {
     this.type = instanceSettings.type;
     this.url = instanceSettings.url;
     this.name = instanceSettings.name;
-    this.fill = instanceSettings.fill;
     this.q = $q;
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
@@ -23,13 +22,21 @@ export class GenericDatasource {
     query.start = Number(options.range.from.toDate().getTime() / 1000).toFixed();
     query.end   = Number(options.range.to.toDate().getTime() / 1000).toFixed();
 
-    var me = this;
+    /* fixup regex syntax in query targets */
+    for(var x=0; x<query.targets.length; x++) {
+      var target = query.targets[x];
+      target.host      = this._fixup_regex(target.host);
+      target.service   = this._fixup_regex(target.service);
+      target.perflabel = this._fixup_regex(target.perflabel);
+    }
+
+    var This = this;
     return this.backendSrv.datasourceRequest({
       url: this.url + '/index.php/api/metrics',
       data: query,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-    }).then(function(result) { return(me.dataQueryMapper(result, options)) });
+    }).then(function(result) { return(This.dataQueryMapper(result, options)) });
   }
 
   dataQueryMapper(result, options) {
@@ -42,10 +49,10 @@ export class GenericDatasource {
         if(target.alias) {
           alias = target.alias;
           var scopedVars = {
-            host      : {value: res.host},
-            service   : {value: res.service},
-            perflabel : {value: res.perflabel},
-            label     : {value: res.perflabel}
+            tag_host      : {value: res.host},
+            tag_service   : {value: res.service},
+            tag_perflabel : {value: res.perflabel},
+            tag_label     : {value: res.perflabel}
           };
           alias = this.templateSrv.replace(alias, scopedVars);
         }
@@ -80,6 +87,13 @@ export class GenericDatasource {
     return(data);
   }
 
+  _fixup_regex(value) {
+    var matches = value.match(/^\/\^\{(.*)\}\$\/$/);
+    if(!matches) { return(value); }
+    var values = matches[1].split(/,/);
+    return('/^('+values.join('|')+')$/');
+  }
+
   testDatasource() {
     return this.backendSrv.datasourceRequest({
       url: this.url + '/index.php/api',
@@ -92,10 +106,7 @@ export class GenericDatasource {
   }
 
   metricFindQuery(options, type) {
-    var interpolated = {
-      host: this.templateSrv.replace(options.host, null, 'regex')
-    };
-
+    var This = this;
     var mapper = this.mapToTextValueHost;
     var url    = this.url + '/index.php/api/hosts';
     if(type == "service") {
@@ -109,10 +120,17 @@ export class GenericDatasource {
 
     return this.backendSrv.datasourceRequest({
       url:     url,
-      data:    interpolated,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-    }).then(mapper);
+    }).then(mapper)
+    .then(function(data) {
+      /* prepend templating variables */
+      for(var x=0; x<This.templateSrv.variables.length; x++) {
+        data.unshift({ text:  '/^$'+This.templateSrv.variables[x].name+'$/',
+                       value: '/^$'+This.templateSrv.variables[x].name+'$/' });
+      }
+      return(data);
+    });
   }
 
   mapToTextValueHost(result) {
