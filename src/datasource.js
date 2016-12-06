@@ -11,6 +11,7 @@ export class GenericDatasource {
     this.templateSrv = templateSrv;
   }
 
+  /* fetch pnp rrd data */
   query(options) {
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
@@ -39,6 +40,7 @@ export class GenericDatasource {
     }).then(function(result) { return(This.dataQueryMapper(result, options)) });
   }
 
+  /* maps the result data from pnp into grafana data format */
   dataQueryMapper(result, options) {
     var data = {data:[]};
     for(var x=0; x < result.data.targets.length; x++) {
@@ -87,6 +89,10 @@ export class GenericDatasource {
     return(data);
   }
 
+  /* convert list selection into regular expression
+   * in:  /^{a,b,c}$/
+   * out: /^(a|b|c)$/
+   */
   _fixup_regex(value) {
     var matches = value.match(/^\/\^\{(.*)\}\$\/$/);
     if(!matches) { return(value); }
@@ -105,21 +111,27 @@ export class GenericDatasource {
     });
   }
 
+  /* used from the query editor to get lists of objects of given type */
   metricFindQuery(options, type) {
     var This = this;
     var mapper = this.mapToTextValueHost;
     var url    = this.url + '/index.php/api/hosts';
+    var data   = {};
     if(type == "service") {
-      url    = this.url + '/index.php/api/services/'+options.host,
-      mapper = this.mapToTextValueService;
+      url          = this.url + '/index.php/api/services/';
+      data.host    = this._fixup_regex(this.templateSrv.replace(options.host));
+      mapper       = this.mapToTextValueService;
     }
     if(type == "perflabel") {
-      url    = this.url + '/index.php/api/labels/'+options.host+'/'+options.service,
-      mapper = this.mapToTextValuePerflabel;
+      url          = this.url + '/index.php/api/labels/';
+      data.host    = this._fixup_regex(this.templateSrv.replace(options.host));
+      data.service = this._fixup_regex(this.templateSrv.replace(options.service));
+      mapper       = this.mapToTextValuePerflabel;
     }
 
     return this.backendSrv.datasourceRequest({
       url:     url,
+      data:    data,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     }).then(mapper)

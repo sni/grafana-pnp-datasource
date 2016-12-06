@@ -46,6 +46,9 @@ System.register(['lodash'], function (_export, _context) {
           this.templateSrv = templateSrv;
         }
 
+        /* fetch pnp rrd data */
+
+
         _createClass(GenericDatasource, [{
           key: 'query',
           value: function query(options) {
@@ -160,15 +163,22 @@ System.register(['lodash'], function (_export, _context) {
             var This = this;
             var mapper = this.mapToTextValueHost;
             var url = this.url + '/index.php/api/hosts';
+            var data = {};
             if (type == "service") {
-              url = this.url + '/index.php/api/services/' + options.host, mapper = this.mapToTextValueService;
+              url = this.url + '/index.php/api/services/';
+              data.host = this._fixup_regex(this.templateSrv.replace(options.host));
+              mapper = this.mapToTextValueService;
             }
             if (type == "perflabel") {
-              url = this.url + '/index.php/api/labels/' + options.host + '/' + options.service, mapper = this.mapToTextValuePerflabel;
+              url = this.url + '/index.php/api/labels/';
+              data.host = this._fixup_regex(this.templateSrv.replace(options.host));
+              data.service = this._fixup_regex(this.templateSrv.replace(options.service));
+              mapper = this.mapToTextValuePerflabel;
             }
 
             return this.backendSrv.datasourceRequest({
               url: url,
+              data: data,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
             }).then(mapper).then(function (data) {
