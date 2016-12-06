@@ -9,4 +9,3 @@
 ### TODO
 
     - Templating variables support
-    - Replace variables in alias

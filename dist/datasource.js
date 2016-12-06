@@ -79,18 +79,19 @@ System.register(['lodash'], function (_export, _context) {
             for (var x = 0; x < result.data.targets.length; x++) {
               for (var k = 0; k < result.data.targets[x].length; k++) {
                 var target = options.targets[x];
+                var res = result.data.targets[x][k];
                 var alias = target.perflabel;
                 if (target.alias) {
                   alias = target.alias;
                   var scopedVars = {
-                    host: { value: target.host },
-                    service: { value: target.service },
-                    perflabel: { value: target.perflabel },
-                    label: { value: target.perflabel }
+                    host: { value: res.host },
+                    service: { value: res.service },
+                    perflabel: { value: res.perflabel },
+                    label: { value: res.perflabel }
                   };
                   alias = this.templateSrv.replace(alias, scopedVars);
                 }
-                var datapoints = result.data.targets[x][k].datapoints;
+                var datapoints = res.datapoints;
                 var length = datapoints.length;
                 // remove the last few "null" values from the series because the last value is quite often null
                 // and would break current value in legend tables
