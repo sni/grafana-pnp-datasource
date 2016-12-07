@@ -16,17 +16,17 @@ export class PNPDatasourceQueryCtrl extends QueryCtrl {
   }
 
   getHost() {
-    return this.datasource.metricFindQuery(this.target, "host")
+    return this.datasource.metricFindQuery(this.target, "host", true)
       .then(this.uiSegmentSrv.transformToSegments(false));
   }
 
   getService() {
-    return this.datasource.metricFindQuery(this.target, "service")
+    return this.datasource.metricFindQuery(this.target, "service", true)
       .then(this.uiSegmentSrv.transformToSegments(false));
   }
 
   getPerflabel() {
-    return this.datasource.metricFindQuery(this.target, "perflabel")
+    return this.datasource.metricFindQuery(this.target, "perflabel", true)
       .then(this.uiSegmentSrv.transformToSegments(false));
   }
 

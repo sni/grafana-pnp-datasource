@@ -163,7 +163,7 @@ System.register(['lodash'], function (_export, _context) {
           }
         }, {
           key: 'metricFindQuery',
-          value: function metricFindQuery(options, type) {
+          value: function metricFindQuery(options, type, prependVariables) {
             var This = this;
             var mapper = this.mapToTextValueHost;
             var url = this.url + '/index.php/api/hosts';
@@ -188,9 +188,11 @@ System.register(['lodash'], function (_export, _context) {
             });
             return this.backendSrv.datasourceRequest(requestOptions).then(mapper).then(function (data) {
               /* prepend templating variables */
-              for (var x = 0; x < This.templateSrv.variables.length; x++) {
-                data.unshift({ text: '/^$' + This.templateSrv.variables[x].name + '$/',
-                  value: '/^$' + This.templateSrv.variables[x].name + '$/' });
+              if (prependVariables) {
+                for (var x = 0; x < This.templateSrv.variables.length; x++) {
+                  data.unshift({ text: '/^$' + This.templateSrv.variables[x].name + '$/',
+                    value: '/^$' + This.templateSrv.variables[x].name + '$/' });
+                }
               }
               return data;
             });

@@ -120,7 +120,7 @@ export class PNPDatasource {
   }
 
   /* used from the query editor to get lists of objects of given type */
-  metricFindQuery(options, type) {
+  metricFindQuery(options, type, prependVariables) {
     var This = this;
     var mapper = this.mapToTextValueHost;
     var url    = this.url + '/index.php/api/hosts';
@@ -147,9 +147,11 @@ export class PNPDatasource {
       .then(mapper)
       .then(function(data) {
         /* prepend templating variables */
-        for(var x=0; x<This.templateSrv.variables.length; x++) {
-          data.unshift({ text:  '/^$'+This.templateSrv.variables[x].name+'$/',
-                         value: '/^$'+This.templateSrv.variables[x].name+'$/' });
+        if(prependVariables) {
+          for(var x=0; x<This.templateSrv.variables.length; x++) {
+            data.unshift({ text:  '/^$'+This.templateSrv.variables[x].name+'$/',
+                           value: '/^$'+This.templateSrv.variables[x].name+'$/' });
+          }
         }
         return(data);
       });
