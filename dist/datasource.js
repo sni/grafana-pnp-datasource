@@ -3,7 +3,7 @@
 System.register(['lodash'], function (_export, _context) {
   "use strict";
 
-  var _, _createClass, GenericDatasource;
+  var _, _createClass, PNPDatasource;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -34,9 +34,9 @@ System.register(['lodash'], function (_export, _context) {
         };
       }();
 
-      _export('GenericDatasource', GenericDatasource = function () {
-        function GenericDatasource(instanceSettings, $q, backendSrv, templateSrv) {
-          _classCallCheck(this, GenericDatasource);
+      _export('PNPDatasource', PNPDatasource = function () {
+        function PNPDatasource(instanceSettings, $q, backendSrv, templateSrv) {
+          _classCallCheck(this, PNPDatasource);
 
           this.type = instanceSettings.type;
           this.url = instanceSettings.url;
@@ -44,12 +44,14 @@ System.register(['lodash'], function (_export, _context) {
           this.q = $q;
           this.backendSrv = backendSrv;
           this.templateSrv = templateSrv;
+          this.withCredentials = instanceSettings.withCredentials;
+          this.basicAuth = instanceSettings.basicAuth;
         }
 
         /* fetch pnp rrd data */
 
 
-        _createClass(GenericDatasource, [{
+        _createClass(PNPDatasource, [{
           key: 'query',
           value: function query(options) {
             var query = this.buildQueryParameters(options);
@@ -73,12 +75,13 @@ System.register(['lodash'], function (_export, _context) {
             }
 
             var This = this;
-            return this.backendSrv.datasourceRequest({
+            var requestOptions = this._requestOptions({
               url: this.url + '/index.php/api/metrics',
               data: query,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
-            }).then(function (result) {
+            });
+            return this.backendSrv.datasourceRequest(requestOptions).then(function (result) {
               return This.dataQueryMapper(result, options);
             });
           }
@@ -148,10 +151,11 @@ System.register(['lodash'], function (_export, _context) {
         }, {
           key: 'testDatasource',
           value: function testDatasource() {
-            return this.backendSrv.datasourceRequest({
+            var requestOptions = this._requestOptions({
               url: this.url + '/index.php/api',
               method: 'GET'
-            }).then(function (response) {
+            });
+            return this.backendSrv.datasourceRequest(requestOptions).then(function (response) {
               if (response.status === 200) {
                 return { status: "success", message: "Data source is working", title: "Success" };
               }
@@ -176,12 +180,13 @@ System.register(['lodash'], function (_export, _context) {
               mapper = this.mapToTextValuePerflabel;
             }
 
-            return this.backendSrv.datasourceRequest({
+            var requestOptions = this._requestOptions({
               url: url,
               data: data,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
-            }).then(mapper).then(function (data) {
+            });
+            return this.backendSrv.datasourceRequest(requestOptions).then(mapper).then(function (data) {
               /* prepend templating variables */
               for (var x = 0; x < This.templateSrv.variables.length; x++) {
                 data.unshift({ text: '/^$' + This.templateSrv.variables[x].name + '$/',
@@ -244,12 +249,25 @@ System.register(['lodash'], function (_export, _context) {
 
             return options;
           }
+        }, {
+          key: '_requestOptions',
+          value: function _requestOptions(options) {
+            options = options || {};
+            options.headers = options.headers || {};
+            if (this.basicAuth || this.withCredentials) {
+              options.withCredentials = true;
+            }
+            if (this.basicAuth) {
+              options.headers.Authorization = this.basicAuth;
+            }
+            return options;
+          }
         }]);
 
-        return GenericDatasource;
+        return PNPDatasource;
       }());
 
-      _export('GenericDatasource', GenericDatasource);
+      _export('PNPDatasource', PNPDatasource);
     }
   };
 });

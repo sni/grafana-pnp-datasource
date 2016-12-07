@@ -3,7 +3,7 @@
 System.register(['./datasource', './query_ctrl'], function (_export, _context) {
   "use strict";
 
-  var GenericDatasource, GenericDatasourceQueryCtrl, GenericConfigCtrl, GenericQueryOptionsCtrl, GenericAnnotationsQueryCtrl;
+  var PNPDatasource, PNPDatasourceQueryCtrl, PNPConfigCtrl, PNPQueryOptionsCtrl, PNPAnnotationsQueryCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -13,38 +13,38 @@ System.register(['./datasource', './query_ctrl'], function (_export, _context) {
 
   return {
     setters: [function (_datasource) {
-      GenericDatasource = _datasource.GenericDatasource;
+      PNPDatasource = _datasource.PNPDatasource;
     }, function (_query_ctrl) {
-      GenericDatasourceQueryCtrl = _query_ctrl.GenericDatasourceQueryCtrl;
+      PNPDatasourceQueryCtrl = _query_ctrl.PNPDatasourceQueryCtrl;
     }],
     execute: function () {
-      _export('ConfigCtrl', GenericConfigCtrl = function GenericConfigCtrl() {
-        _classCallCheck(this, GenericConfigCtrl);
+      _export('ConfigCtrl', PNPConfigCtrl = function PNPConfigCtrl() {
+        _classCallCheck(this, PNPConfigCtrl);
       });
 
-      GenericConfigCtrl.templateUrl = 'partials/config.html';
+      PNPConfigCtrl.templateUrl = 'partials/config.html';
 
-      _export('QueryOptionsCtrl', GenericQueryOptionsCtrl = function GenericQueryOptionsCtrl() {
-        _classCallCheck(this, GenericQueryOptionsCtrl);
+      _export('QueryOptionsCtrl', PNPQueryOptionsCtrl = function PNPQueryOptionsCtrl() {
+        _classCallCheck(this, PNPQueryOptionsCtrl);
       });
 
-      GenericQueryOptionsCtrl.templateUrl = 'partials/query.options.html';
+      PNPQueryOptionsCtrl.templateUrl = 'partials/query.options.html';
 
-      _export('AnnotationsQueryCtrl', GenericAnnotationsQueryCtrl = function GenericAnnotationsQueryCtrl() {
-        _classCallCheck(this, GenericAnnotationsQueryCtrl);
+      _export('AnnotationsQueryCtrl', PNPAnnotationsQueryCtrl = function PNPAnnotationsQueryCtrl() {
+        _classCallCheck(this, PNPAnnotationsQueryCtrl);
       });
 
-      GenericAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
+      PNPAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html';
 
-      _export('Datasource', GenericDatasource);
+      _export('Datasource', PNPDatasource);
 
-      _export('QueryCtrl', GenericDatasourceQueryCtrl);
+      _export('QueryCtrl', PNPDatasourceQueryCtrl);
 
-      _export('ConfigCtrl', GenericConfigCtrl);
+      _export('ConfigCtrl', PNPConfigCtrl);
 
-      _export('QueryOptionsCtrl', GenericQueryOptionsCtrl);
+      _export('QueryOptionsCtrl', PNPQueryOptionsCtrl);
 
-      _export('AnnotationsQueryCtrl', GenericAnnotationsQueryCtrl);
+      _export('AnnotationsQueryCtrl', PNPAnnotationsQueryCtrl);
     }
   };
 });

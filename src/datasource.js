@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-export class GenericDatasource {
+export class PNPDatasource {
 
   constructor(instanceSettings, $q, backendSrv, templateSrv) {
     this.type = instanceSettings.type;
@@ -9,6 +9,8 @@ export class GenericDatasource {
     this.q = $q;
     this.backendSrv = backendSrv;
     this.templateSrv = templateSrv;
+    this.withCredentials = instanceSettings.withCredentials;
+    this.basicAuth = instanceSettings.basicAuth;
   }
 
   /* fetch pnp rrd data */
@@ -32,12 +34,16 @@ export class GenericDatasource {
     }
 
     var This = this;
-    return this.backendSrv.datasourceRequest({
+    var requestOptions = this._requestOptions({
       url: this.url + '/index.php/api/metrics',
       data: query,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-    }).then(function(result) { return(This.dataQueryMapper(result, options)) });
+    });
+    return this.backendSrv.datasourceRequest(requestOptions)
+                          .then(function(result) {
+                            return(This.dataQueryMapper(result, options))
+                          });
   }
 
   /* maps the result data from pnp into grafana data format */
@@ -101,14 +107,16 @@ export class GenericDatasource {
   }
 
   testDatasource() {
-    return this.backendSrv.datasourceRequest({
+    var requestOptions = this._requestOptions({
       url: this.url + '/index.php/api',
       method: 'GET'
-    }).then(response => {
-      if (response.status === 200) {
-        return { status: "success", message: "Data source is working", title: "Success" };
-      }
     });
+    return this.backendSrv.datasourceRequest(requestOptions)
+      .then(response => {
+        if (response.status === 200) {
+          return { status: "success", message: "Data source is working", title: "Success" };
+        }
+      });
   }
 
   /* used from the query editor to get lists of objects of given type */
@@ -129,20 +137,22 @@ export class GenericDatasource {
       mapper       = this.mapToTextValuePerflabel;
     }
 
-    return this.backendSrv.datasourceRequest({
+    var requestOptions = this._requestOptions({
       url:     url,
       data:    data,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-    }).then(mapper)
-    .then(function(data) {
-      /* prepend templating variables */
-      for(var x=0; x<This.templateSrv.variables.length; x++) {
-        data.unshift({ text:  '/^$'+This.templateSrv.variables[x].name+'$/',
-                       value: '/^$'+This.templateSrv.variables[x].name+'$/' });
-      }
-      return(data);
     });
+    return this.backendSrv.datasourceRequest(requestOptions)
+      .then(mapper)
+      .then(function(data) {
+        /* prepend templating variables */
+        for(var x=0; x<This.templateSrv.variables.length; x++) {
+          data.unshift({ text:  '/^$'+This.templateSrv.variables[x].name+'$/',
+                         value: '/^$'+This.templateSrv.variables[x].name+'$/' });
+        }
+        return(data);
+      });
   }
 
   mapToTextValueHost(result) {
@@ -191,5 +201,17 @@ export class GenericDatasource {
     options.targets = targets;
 
     return options;
+  }
+
+  _requestOptions(options) {
+    options = options || {};
+    options.headers = options.headers || {};
+    if(this.basicAuth || this.withCredentials) {
+      options.withCredentials = true;
+    }
+    if(this.basicAuth) {
+      options.headers.Authorization = this.basicAuth;
+    }
+    return(options);
   }
 }

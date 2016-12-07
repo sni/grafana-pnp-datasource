@@ -1,19 +1,19 @@
-import {GenericDatasource} from './datasource';
-import {GenericDatasourceQueryCtrl} from './query_ctrl';
+import {PNPDatasource} from './datasource';
+import {PNPDatasourceQueryCtrl} from './query_ctrl';
 
-class GenericConfigCtrl {}
-GenericConfigCtrl.templateUrl = 'partials/config.html';
+class PNPConfigCtrl {}
+PNPConfigCtrl.templateUrl = 'partials/config.html';
 
-class GenericQueryOptionsCtrl {}
-GenericQueryOptionsCtrl.templateUrl = 'partials/query.options.html';
+class PNPQueryOptionsCtrl {}
+PNPQueryOptionsCtrl.templateUrl = 'partials/query.options.html';
 
-class GenericAnnotationsQueryCtrl {}
-GenericAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html'
+class PNPAnnotationsQueryCtrl {}
+PNPAnnotationsQueryCtrl.templateUrl = 'partials/annotations.editor.html'
 
 export {
-  GenericDatasource as Datasource,
-  GenericDatasourceQueryCtrl as QueryCtrl,
-  GenericConfigCtrl as ConfigCtrl,
-  GenericQueryOptionsCtrl as QueryOptionsCtrl,
-  GenericAnnotationsQueryCtrl as AnnotationsQueryCtrl
+  PNPDatasource as Datasource,
+  PNPDatasourceQueryCtrl as QueryCtrl,
+  PNPConfigCtrl as ConfigCtrl,
+  PNPQueryOptionsCtrl as QueryOptionsCtrl,
+  PNPAnnotationsQueryCtrl as AnnotationsQueryCtrl
 };
