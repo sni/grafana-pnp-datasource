@@ -100,6 +100,9 @@ export class PNPDatasource {
    * out: /^(a|b|c)$/
    */
   _fixup_regex(value) {
+    if(value == undefined || value == null) {
+      return value;
+    }
     var matches = value.match(/^\/\^\{(.*)\}\$\/$/);
     if(!matches) { return(value); }
     var values = matches[1].split(/,/);

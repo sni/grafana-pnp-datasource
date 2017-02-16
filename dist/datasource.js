@@ -141,6 +141,9 @@ System.register(['lodash'], function (_export, _context) {
         }, {
           key: '_fixup_regex',
           value: function _fixup_regex(value) {
+            if (value == undefined || value == null) {
+              return value;
+            }
             var matches = value.match(/^\/\^\{(.*)\}\$\/$/);
             if (!matches) {
               return value;
