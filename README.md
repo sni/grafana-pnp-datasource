@@ -13,10 +13,30 @@ well with Thruks cookie authentication.
 
 Add a new datasource and select:
 
+Variant A:
+
+Uses the grafana proxy. Must have a local user which is used for all queries.
+
+    - Type 'PNP'
+    - Url 'https://localhost/sitename/pnp4nagios'
+    - Access 'proxy'
+    - Basic Auth 'True'
+    - User + Password for local pnp user
+
+
+Variant B:
+
+Uses direct access. PNP must be accessible from the public.
+
     - Type 'PNP'
     - Url 'https://yourhost/sitename/pnp4nagios' (Note: this has to be the absolute url)
     - Access 'direct'
     - Http Auth 'With Credentials'
+
+### Queries
+
+Simply select host, service and label in the query editor. Regular expressions
+are supported in the host and service field by add slashes like `/.*/`.
 
 
 ### Variables
@@ -31,4 +51,4 @@ You may use the following variables in the alias field
 
     - Templating variables support
     - use relative urls in datasource
-    - support grafana proxy
+
