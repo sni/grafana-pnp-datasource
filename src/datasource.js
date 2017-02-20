@@ -11,6 +11,10 @@ export class PNPDatasource {
     this.templateSrv = templateSrv;
     this.withCredentials = instanceSettings.withCredentials;
     this.basicAuth = instanceSettings.basicAuth;
+
+    this.DEFAULT_HOST = "select host";
+    this.DEFAULT_SERVICE = "select service";
+    this.DEFAULT_PERFLABEL = "select performance label";
   }
 
   /* fetch pnp rrd data */
@@ -31,6 +35,10 @@ export class PNPDatasource {
     /* fixup regex syntax in query targets */
     for(var x=0; x<query.targets.length; x++) {
       var target = query.targets[x];
+      if(target.host      == this.DEFAULT_HOST)      { target.host      = '' }
+      if(target.service   == this.DEFAULT_SERVICE)   { target.service   = '' }
+      if(target.perflabel == this.DEFAULT_PERFLABEL) { target.perflabel = '' }
+
       target.host      = this._fixup_regex(target.host);
       target.service   = this._fixup_regex(target.service);
       target.perflabel = this._fixup_regex(target.perflabel);
@@ -184,13 +192,13 @@ export class PNPDatasource {
   buildQueryParameters(options) {
     //remove placeholder targets
     options.targets = _.filter(options.targets, target => {
-      return target.host !== 'select host';
+      return target.host !== this.DEFAULT_HOST;
     });
     options.targets = _.filter(options.targets, target => {
-      return target.service !== 'select service';
+      return target.service !== this.DEFAULT_SERVICE;
     });
     options.targets = _.filter(options.targets, target => {
-      return target.perflabel !== 'select performance label';
+      return target.perflabel !== this.DEFAULT_PERFLABEL;
     });
 
     var targets = _.map(options.targets, target => {

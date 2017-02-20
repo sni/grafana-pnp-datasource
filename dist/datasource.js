@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-System.register(['lodash'], function (_export, _context) {
+System.register(["lodash"], function (_export, _context) {
   "use strict";
 
   var _, _createClass, PNPDatasource;
@@ -34,7 +34,7 @@ System.register(['lodash'], function (_export, _context) {
         };
       }();
 
-      _export('PNPDatasource', PNPDatasource = function () {
+      _export("PNPDatasource", PNPDatasource = function () {
         function PNPDatasource(instanceSettings, $q, backendSrv, templateSrv) {
           _classCallCheck(this, PNPDatasource);
 
@@ -46,13 +46,17 @@ System.register(['lodash'], function (_export, _context) {
           this.templateSrv = templateSrv;
           this.withCredentials = instanceSettings.withCredentials;
           this.basicAuth = instanceSettings.basicAuth;
+
+          this.DEFAULT_HOST = "select host";
+          this.DEFAULT_SERVICE = "select service";
+          this.DEFAULT_PERFLABEL = "select performance label";
         }
 
         /* fetch pnp rrd data */
 
 
         _createClass(PNPDatasource, [{
-          key: 'query',
+          key: "query",
           value: function query(options) {
             var query = this.buildQueryParameters(options);
             query.targets = query.targets.filter(function (t) {
@@ -78,6 +82,16 @@ System.register(['lodash'], function (_export, _context) {
             /* fixup regex syntax in query targets */
             for (var x = 0; x < query.targets.length; x++) {
               var target = query.targets[x];
+              if (target.host == this.DEFAULT_HOST) {
+                target.host = '';
+              }
+              if (target.service == this.DEFAULT_SERVICE) {
+                target.service = '';
+              }
+              if (target.perflabel == this.DEFAULT_PERFLABEL) {
+                target.perflabel = '';
+              }
+
               target.host = this._fixup_regex(target.host);
               target.service = this._fixup_regex(target.service);
               target.perflabel = this._fixup_regex(target.perflabel);
@@ -95,7 +109,7 @@ System.register(['lodash'], function (_export, _context) {
             });
           }
         }, {
-          key: 'dataQueryMapper',
+          key: "dataQueryMapper",
           value: function dataQueryMapper(result, options) {
             var data = { data: [] };
             for (var x = 0; x < result.data.targets.length; x++) {
@@ -148,7 +162,7 @@ System.register(['lodash'], function (_export, _context) {
             return data;
           }
         }, {
-          key: '_fixup_regex',
+          key: "_fixup_regex",
           value: function _fixup_regex(value) {
             if (value == undefined || value == null) {
               return value;
@@ -161,7 +175,7 @@ System.register(['lodash'], function (_export, _context) {
             return '/^(' + values.join('|') + ')$/';
           }
         }, {
-          key: 'testDatasource',
+          key: "testDatasource",
           value: function testDatasource() {
             var requestOptions = this._requestOptions({
               url: this.url + '/index.php/api',
@@ -174,7 +188,7 @@ System.register(['lodash'], function (_export, _context) {
             });
           }
         }, {
-          key: 'metricFindQuery',
+          key: "metricFindQuery",
           value: function metricFindQuery(options, type, prependVariables) {
             var This = this;
             var mapper = this.mapToTextValueHost;
@@ -210,40 +224,40 @@ System.register(['lodash'], function (_export, _context) {
             });
           }
         }, {
-          key: 'mapToTextValueHost',
+          key: "mapToTextValueHost",
           value: function mapToTextValueHost(result) {
             return _.map(result.data.hosts, function (d, i) {
               return { text: d.name, value: d.name };
             });
           }
         }, {
-          key: 'mapToTextValueService',
+          key: "mapToTextValueService",
           value: function mapToTextValueService(result) {
             return _.map(result.data.services, function (d, i) {
               return { text: d.name, value: d.name };
             });
           }
         }, {
-          key: 'mapToTextValuePerflabel',
+          key: "mapToTextValuePerflabel",
           value: function mapToTextValuePerflabel(result) {
             return _.map(result.data.labels, function (d, i) {
               return { text: d.name, value: d.name };
             });
           }
         }, {
-          key: 'buildQueryParameters',
+          key: "buildQueryParameters",
           value: function buildQueryParameters(options) {
             var _this = this;
 
             //remove placeholder targets
             options.targets = _.filter(options.targets, function (target) {
-              return target.host !== 'select host';
+              return target.host !== _this.DEFAULT_HOST;
             });
             options.targets = _.filter(options.targets, function (target) {
-              return target.service !== 'select service';
+              return target.service !== _this.DEFAULT_SERVICE;
             });
             options.targets = _.filter(options.targets, function (target) {
-              return target.perflabel !== 'select performance label';
+              return target.perflabel !== _this.DEFAULT_PERFLABEL;
             });
 
             var targets = _.map(options.targets, function (target) {
@@ -264,7 +278,7 @@ System.register(['lodash'], function (_export, _context) {
             return options;
           }
         }, {
-          key: '_requestOptions',
+          key: "_requestOptions",
           value: function _requestOptions(options) {
             options = options || {};
             options.headers = options.headers || {};
@@ -281,7 +295,7 @@ System.register(['lodash'], function (_export, _context) {
         return PNPDatasource;
       }());
 
-      _export('PNPDatasource', PNPDatasource);
+      _export("PNPDatasource", PNPDatasource);
     }
   };
 });

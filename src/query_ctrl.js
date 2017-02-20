@@ -8,9 +8,9 @@ export class PNPDatasourceQueryCtrl extends QueryCtrl {
 
     this.scope = $scope;
     this.uiSegmentSrv = uiSegmentSrv;
-    this.target.host = this.target.host || 'select host';
-    this.target.service = this.target.service || 'select service';
-    this.target.perflabel = this.target.perflabel || 'select performance label';
+    this.target.host = this.target.host || this.datasource.DEFAULT_HOST;
+    this.target.service = this.target.service || this.datasource.DEFAULT_SERVICE;
+    this.target.perflabel = this.target.perflabel || this.datasource.DEFAULT_PERFLABEL;
     this.target.type = this.target.type || 'AVERAGE';
     this.target.fill = this.target.fill || 'fill';
   }
@@ -35,9 +35,9 @@ export class PNPDatasourceQueryCtrl extends QueryCtrl {
   }
 
   getCollapsedText() {
-    if(this.target.perflabel == 'select performance label' &&
-       this.target.host      == 'select host' &&
-       this.target.service   == 'select service') {
+    if(this.target.perflabel == this.datasource.DEFAULT_PERFLABEL &&
+       this.target.host      == this.datasource.DEFAULT_HOST &&
+       this.target.service   == this.datasource.DEFAULT_SERVICE) {
         return("click to edit query");
     }
     return(this.target.perflabel

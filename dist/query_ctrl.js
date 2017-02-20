@@ -68,9 +68,9 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
 
           _this.scope = $scope;
           _this.uiSegmentSrv = uiSegmentSrv;
-          _this.target.host = _this.target.host || 'select host';
-          _this.target.service = _this.target.service || 'select service';
-          _this.target.perflabel = _this.target.perflabel || 'select performance label';
+          _this.target.host = _this.target.host || _this.datasource.DEFAULT_HOST;
+          _this.target.service = _this.target.service || _this.datasource.DEFAULT_SERVICE;
+          _this.target.perflabel = _this.target.perflabel || _this.datasource.DEFAULT_PERFLABEL;
           _this.target.type = _this.target.type || 'AVERAGE';
           _this.target.fill = _this.target.fill || 'fill';
           return _this;
@@ -99,7 +99,7 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
         }, {
           key: 'getCollapsedText',
           value: function getCollapsedText() {
-            if (this.target.perflabel == 'select performance label' && this.target.host == 'select host' && this.target.service == 'select service') {
+            if (this.target.perflabel == this.datasource.DEFAULT_PERFLABEL && this.target.host == this.datasource.DEFAULT_HOST && this.target.service == this.datasource.DEFAULT_SERVICE) {
               return "click to edit query";
             }
             return this.target.perflabel + ': ' + this.target.host + ' - ' + this.target.service;
