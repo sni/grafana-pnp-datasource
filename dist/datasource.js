@@ -58,6 +58,15 @@ System.register(['lodash'], function (_export, _context) {
             query.targets = query.targets.filter(function (t) {
               return !t.hide;
             });
+            query.targets = query.targets.filter(function (t) {
+              return t.host;
+            }); /* hide querys without a host filter */
+            query.targets = query.targets.filter(function (t) {
+              return t.service;
+            }); /* hide querys without a service filter */
+            query.targets = query.targets.filter(function (t) {
+              return t.perflabel;
+            }); /* hide querys without a perflabel filter */
 
             if (query.targets.length <= 0) {
               return this.q.when({ data: [] });

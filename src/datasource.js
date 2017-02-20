@@ -17,8 +17,11 @@ export class PNPDatasource {
   query(options) {
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
+    query.targets = query.targets.filter(t => t.host);      /* hide querys without a host filter */
+    query.targets = query.targets.filter(t => t.service);   /* hide querys without a service filter */
+    query.targets = query.targets.filter(t => t.perflabel); /* hide querys without a perflabel filter */
 
-    if (query.targets.length <= 0) {
+    if(query.targets.length <= 0) {
       return this.q.when({data: []});
     }
 
