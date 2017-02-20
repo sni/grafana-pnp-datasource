@@ -35,6 +35,11 @@ export class PNPDatasourceQueryCtrl extends QueryCtrl {
   }
 
   getCollapsedText() {
+    if(this.target.perflabel == 'select performance label' &&
+       this.target.host      == 'select host' &&
+       this.target.service   == 'select service') {
+        return("click to edit query");
+    }
     return(this.target.perflabel
            +': '+this.target.host
            +' - '+this.target.service
