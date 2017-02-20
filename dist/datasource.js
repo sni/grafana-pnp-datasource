@@ -112,6 +112,9 @@ System.register(["lodash"], function (_export, _context) {
           key: "dataQueryMapper",
           value: function dataQueryMapper(result, options) {
             var data = { data: [] };
+            if (!result || !result.data || !result.data.targets) {
+              return data;
+            }
             for (var x = 0; x < result.data.targets.length; x++) {
               for (var k = 0; k < result.data.targets[x].length; k++) {
                 var target = options.targets[x];
