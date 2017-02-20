@@ -2,6 +2,11 @@
 
 ### Usage
 
+OMD-Labs comes with this datasource included, so if you use OMD-Labs, everything
+is setup already.
+
+Otherwise follow these steps:
+
     %> cd var/grafana/plugins
     %> git clone https://github.com/sni/grafana-pnp-datasource.git
     %> restart grafana
@@ -47,8 +52,16 @@ You may use the following variables in the alias field
     - $tag_service: will be replace with the service name
     - $tag_label: will be replace with the label
 
-### TODO
+### Development
+
+#### Setup
+
+The easiest way to setup a test environment is to install the latest omd-labs package and
+clone this repository to to `~/var/grafana/plugins`. Make sure there is only one pnp
+datasource, so you might have to remove the shiped one.
+Then run `grunt watch` and eventually restart grafana after doing changes.
+
+#### TODO
 
     - Templating variables support
     - use relative urls in datasource
-
