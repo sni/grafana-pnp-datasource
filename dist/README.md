@@ -11,6 +11,13 @@ Otherwise follow these steps:
     %> git clone https://github.com/sni/grafana-pnp-datasource.git
     %> restart grafana
 
+#### PNP Api
+
+In order to make this datasource work, you need the pnp api. This is a separate
+project and will be part of the official pnp in the future. You can fetch the
+`api.php` from https://github.com/lingej/pnp-metrics-api and place it in your
+controler folder.
+
 ### Create Datasource
 
 Right now only direct access is possible and the grafana proxy does not work
