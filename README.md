@@ -65,3 +65,8 @@ Then run `grunt watch` and eventually restart grafana after doing changes.
 
     - Templating variables support
     - use relative urls in datasource
+
+#### Changelog
+
+1.0.0  2017-03-02
+    - inital release
