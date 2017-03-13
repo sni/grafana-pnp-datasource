@@ -15,7 +15,7 @@
   "annotations": false,
 
   "info": {
-    "description": "pnp datasource",
+    "description": "pnp4nagios datasource",
     "author": {
       "name": "Sven Nierlein",
       "email": "sven.nierlein@consol.de",
@@ -29,8 +29,8 @@
       {"name": "GitHub", "url": "https://github.com/sni/grafana-pnp-datasource"},
       {"name": "MIT License", "url": "https://github.com/sni/grafana-pnp-datasource/blob/master/LICENSE"}
     ],
-    "version": "1.0.0",
-    "updated": "2016-12-01"
+    "version": "1.0.1",
+    "updated": "2017-03-13"
   },
 
   "dependencies": {

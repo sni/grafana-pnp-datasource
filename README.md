@@ -1,17 +1,19 @@
 ## PNP Grafana Datasource - a Grafana backend datasource using PNP4Nagios to access RRD files
 
-### Usage
+### Installation
 
-OMD-Labs comes with this datasource included, so if you use OMD-Labs, everything
-is setup already.
+Search for `pnp` in the Grafana plugins directory or simply use the grafana-cli command:
+
+    grafana-cli plugins install sni-pnp-datasource
+
+Also [OMD-Labs](https://labs.consol.de/omd/) comes with this datasource included, so if
+you use OMD-Labs, everything is setup already.
 
 Otherwise follow these steps:
 
     %> cd var/grafana/plugins
     %> git clone https://github.com/sni/grafana-pnp-datasource.git
     %> restart grafana
-
-Or search for `PNP` in the Grafana plugin repository.
 
 #### PNP API
 
@@ -31,9 +33,7 @@ Adjust the output path to your installation.
 
 ### Create Datasource
 
-Right now only direct access is possible and the Grafana proxy does not work
-well with Thruks cookie authentication.
-
+Direct access and proxy datasources are possible.
 Add a new datasource and select:
 
 Variant A:
@@ -64,16 +64,15 @@ internal PNP statistics.
 ### Queries
 
 Simply select host, service and label in the query editor. Regular expressions
-are supported in the host and service field by add slashes like `/.*/`.
-
+are supported in the host and service field by adding slashes like `/.*/`.
 
 ### Variables
 
 You may use the following variables in the alias field
 
-    - $tag_host: will be replace with the hostname
-    - $tag_service: will be replace with the service name
-    - $tag_label: will be replace with the label
+    - $tag_host: will be replaced with the hostname
+    - $tag_service: will be replaced with the service name
+    - $tag_label: will be replaced with the label
 
 ### Development
 
