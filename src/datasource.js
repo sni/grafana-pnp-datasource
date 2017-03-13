@@ -188,7 +188,7 @@ export class PNPDatasource {
 
   mapToTextValuePerflabel(result) {
     return _.map(result.data.labels, (d, i) => {
-      return { text: d.name, value: d.name };
+      return { text: (d.label || d.name), value: (d.label || d.name) };
     });
   }
 

@@ -244,7 +244,7 @@ System.register(["lodash"], function (_export, _context) {
           key: "mapToTextValuePerflabel",
           value: function mapToTextValuePerflabel(result) {
             return _.map(result.data.labels, function (d, i) {
-              return { text: d.name, value: d.name };
+              return { text: d.label || d.name, value: d.label || d.name };
             });
           }
         }, {
