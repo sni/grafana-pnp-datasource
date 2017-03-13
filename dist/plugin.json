@@ -1,6 +1,6 @@
 {
   "name": "PNP",
-  "id": "pnp",
+  "id": "sni-pnp-datasource",
   "type": "datasource",
 
   "partials": {
