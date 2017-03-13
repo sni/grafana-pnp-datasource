@@ -1,4 +1,4 @@
-## PNP Grafana Datasource - a grafana backend datasource using pnp to access rrd files
+## PNP Grafana Datasource - a Grafana backend datasource using PNP4Nagios to access RRD files
 
 ### Usage
 
@@ -11,23 +11,34 @@ Otherwise follow these steps:
     %> git clone https://github.com/sni/grafana-pnp-datasource.git
     %> restart grafana
 
-#### PNP Api
+Or search for `PNP` in the Grafana plugin repository.
+
+#### PNP API
 
 In order to make this datasource work, you need the pnp api. This is a separate
-project and will be part of the official pnp in the future. You can fetch the
-`api.php` from https://github.com/lingej/pnp-metrics-api and place it in your
-controler folder.
+project at the moment and will be part of the official pnp in the future. You 
+can fetch the `api.php` from https://github.com/lingej/pnp-metrics-api and place
+it in your controler folder.
+
+In a standard PNP setup, you could basically just download the api directly into
+the controller folder with a simple wget:
+
+    wget "https://github.com/lingej/pnp-metrics-api/raw/master/application/controller/api.php" \
+         -O /usr/share/pnp4nagios/html/application/controllers/api.php
+
+Adjust the output path to your installation.
+
 
 ### Create Datasource
 
-Right now only direct access is possible and the grafana proxy does not work
+Right now only direct access is possible and the Grafana proxy does not work
 well with Thruks cookie authentication.
 
 Add a new datasource and select:
 
 Variant A:
 
-Uses the grafana proxy. Must have a local user which is used for all queries.
+Uses the Grafana proxy. Must have a local user which is used for all queries.
 
     - Type 'PNP'
     - Url 'https://localhost/sitename/pnp4nagios'
@@ -44,6 +55,11 @@ Uses direct access. PNP must be accessible from the public.
     - Url 'https://yourhost/sitename/pnp4nagios' (Note: this has to be the absolute url)
     - Access 'direct'
     - Http Auth 'With Credentials'
+
+### Example Dashboard
+
+This datasource ships an example dashboard which gets you started and shows the
+internal PNP statistics.
 
 ### Queries
 
@@ -66,14 +82,18 @@ You may use the following variables in the alias field
 The easiest way to setup a test environment is to install the latest omd-labs package and
 clone this repository to to `~/var/grafana/plugins`. Make sure there is only one pnp
 datasource, so you might have to remove the shiped one.
-Then run `grunt watch` and eventually restart grafana after doing changes.
+Then run `grunt watch` and eventually restart Grafana after doing changes.
 
 #### TODO
 
     - Templating variables support
-    - use relative urls in datasource
+    - Use relative urls in datasource
 
 #### Changelog
+
+1.0.1  2017-03-13
+    - plugin id changed according to guidelines
+    - add fallback to pnp name if label does not exist
 
 1.0.0  2017-03-02
     - inital release
