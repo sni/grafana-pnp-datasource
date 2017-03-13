@@ -75,5 +75,9 @@ Then run `grunt watch` and eventually restart grafana after doing changes.
 
 #### Changelog
 
+1.0.1  2017-03-13
+    - plugin id changed according to guidelines
+    - add fallback to pnp name if label does not exist
+
 1.0.0  2017-03-02
     - inital release
