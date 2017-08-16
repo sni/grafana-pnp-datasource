@@ -90,6 +90,10 @@ Then run `grunt watch` and eventually restart Grafana after doing changes.
 
 #### Changelog
 
+1.0.2  2017-08-16
+    - add support for warning / critical thresholds
+    - fix accesing series containing spaces
+
 1.0.1  2017-03-13
     - plugin id changed according to guidelines
     - add fallback to pnp name if label does not exist
