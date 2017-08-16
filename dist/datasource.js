@@ -237,7 +237,7 @@ System.register(["lodash"], function (_export, _context) {
           key: "mapToTextValueService",
           value: function mapToTextValueService(result) {
             return _.map(result.data.services, function (d, i) {
-              return { text: d.name, value: d.name };
+              return { text: d.name || d.servicedesc, value: d.name };
             });
           }
         }, {
