@@ -182,7 +182,7 @@ export class PNPDatasource {
 
   mapToTextValueService(result) {
     return _.map(result.data.services, (d, i) => {
-      return { text: (d.name || d.servicedesc), value: d.name };
+      return { text: (d.servicedesc || d.name), value: d.name };
     });
   }
 
