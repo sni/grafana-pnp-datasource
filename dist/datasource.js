@@ -175,6 +175,9 @@ System.register(["lodash"], function (_export, _context) {
               return value;
             }
             var values = matches[1].split(/,/);
+            for (var x = 0; x < values.length; x++) {
+              values[x] = values[x].replace(/\//, '\\/');
+            }
             return '/^(' + values.join('|') + ')$/';
           }
         }, {
