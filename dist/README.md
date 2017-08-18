@@ -74,6 +74,14 @@ You may use the following variables in the alias field
     - $tag_service: will be replaced with the service name
     - $tag_label: will be replaced with the label
 
+### Templating
+
+There is basic templating variable support. There are 3 different querys available:
+
+    - $host:    hosts
+    - $service: services where host = /^$host$/
+    - $label:   labels where host = /^$host$/ and service = /^$service$/
+
 ### Development
 
 #### Setup
@@ -83,12 +91,10 @@ clone this repository to to `~/var/grafana/plugins`. Make sure there is only one
 datasource, so you might have to remove the shiped one.
 Then run `grunt watch` and eventually restart Grafana after doing changes.
 
-#### TODO
-
-    - Templating variables support
-    - Use relative urls in datasource
-
 #### Changelog
+
+1.0.3  2017-08-18
+    - add support for host / service / label templating variables
 
 1.0.2  2017-08-16
     - add support for warning / critical thresholds

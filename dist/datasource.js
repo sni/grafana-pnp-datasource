@@ -194,19 +194,74 @@ System.register(["lodash"], function (_export, _context) {
           key: "metricFindQuery",
           value: function metricFindQuery(options, type, prependVariables) {
             var This = this;
-            var mapper = this.mapToTextValueHost;
-            var url = this.url + '/index.php/api/hosts';
+            var mapper;
+            var url;
             var data = {};
-            if (type == "service") {
+
+            // expand template querys
+            if (options != undefined && type == undefined) {
+              var query = options.split(/\s+/);
+              if (query[0]) {
+                type = query.shift().replace(/s$/, "");
+              }
+              // parse simple where statements
+              if (query[0] != undefined) {
+                options = {};
+                if (query[0].toLowerCase() != "where") {
+                  throw new Error("query syntax error, expecting WHERE");
+                }
+                query.shift();
+
+                while (query.length >= 3) {
+                  var t = query.shift().toLowerCase();
+                  var op = query.shift().toLowerCase();
+                  var val = query.shift();
+                  if (op != "=") {
+                    throw new Error("query syntax error, operator must be '='");
+                  }
+                  options[t] = val;
+
+                  if (query[0] != undefined) {
+                    if (query[0].toLowerCase() == 'and') {
+                      query.shift();
+                    } else {
+                      throw new Error("query syntax error, expecting AND");
+                    }
+                  }
+                }
+
+                // still remaining filters?
+                if (query.length > 0) {
+                  throw new Error("query syntax error");
+                }
+              }
+            }
+
+            if (type == "host") {
+              url = this.url + '/index.php/api/hosts';
+              mapper = this.mapToTextValueHost;
+            } else if (type == "service") {
               url = this.url + '/index.php/api/services/';
               data.host = this._fixup_regex(this.templateSrv.replace(options.host));
               mapper = this.mapToTextValueService;
-            }
-            if (type == "perflabel") {
+              if (!data.host) {
+                data.host = '/.*/';
+              }
+            } else if (type == "perflabel" || type == "label") {
               url = this.url + '/index.php/api/labels/';
               data.host = this._fixup_regex(this.templateSrv.replace(options.host));
               data.service = this._fixup_regex(this.templateSrv.replace(options.service));
               mapper = this.mapToTextValuePerflabel;
+              if (!data.host) {
+                data.host = '/.*/';
+              }
+              if (!data.service) {
+                data.service = '/.*/';
+              }
+            }
+
+            if (url == undefined) {
+              throw new Error("query syntax error");
             }
 
             var requestOptions = this._requestOptions({
