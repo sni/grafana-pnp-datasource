@@ -140,21 +140,21 @@ export class PNPDatasource {
   }
 
   /* used from the query editor to get lists of objects of given type */
-  metricFindQuery(options, type, prependVariables) {
+  metricFindQuery(query_string, type, prependVariables) {
     var This = this;
     var mapper;
     var url;
-    var data   = {};
+    var data = {};
+    var options = {};
 
     // expand template querys
-    if(options != undefined && type == undefined) {
-      var query = options.split(/\s+/);
+    if(query_string != undefined && (type == undefined || typeof type === 'object')) {
+      var query = query_string.split(/\s+/);
       if(query[0]) {
         type = query.shift().replace(/s$/, "");
       }
       // parse simple where statements
       if(query[0] != undefined) {
-        options = {};
         if(query[0].toLowerCase() != "where") {
           throw new Error("query syntax error, expecting WHERE");
         }
@@ -205,7 +205,7 @@ export class PNPDatasource {
     }
 
     if(url == undefined) {
-      throw new Error("query syntax error");
+      throw new Error("query syntax error, got no url, unknown type: "+type);
     }
 
     var requestOptions = this._requestOptions({

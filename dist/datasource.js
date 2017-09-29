@@ -3,7 +3,7 @@
 System.register(["lodash"], function (_export, _context) {
   "use strict";
 
-  var _, _createClass, PNPDatasource;
+  var _, _typeof, _createClass, PNPDatasource;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -16,6 +16,12 @@ System.register(["lodash"], function (_export, _context) {
       _ = _lodash.default;
     }],
     execute: function () {
+      _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+
       _createClass = function () {
         function defineProperties(target, props) {
           for (var i = 0; i < props.length; i++) {
@@ -195,21 +201,21 @@ System.register(["lodash"], function (_export, _context) {
           }
         }, {
           key: "metricFindQuery",
-          value: function metricFindQuery(options, type, prependVariables) {
+          value: function metricFindQuery(query_string, type, prependVariables) {
             var This = this;
             var mapper;
             var url;
             var data = {};
+            var options = {};
 
             // expand template querys
-            if (options != undefined && type == undefined) {
-              var query = options.split(/\s+/);
+            if (query_string != undefined && (type == undefined || (typeof type === "undefined" ? "undefined" : _typeof(type)) === 'object')) {
+              var query = query_string.split(/\s+/);
               if (query[0]) {
                 type = query.shift().replace(/s$/, "");
               }
               // parse simple where statements
               if (query[0] != undefined) {
-                options = {};
                 if (query[0].toLowerCase() != "where") {
                   throw new Error("query syntax error, expecting WHERE");
                 }
@@ -264,7 +270,7 @@ System.register(["lodash"], function (_export, _context) {
             }
 
             if (url == undefined) {
-              throw new Error("query syntax error");
+              throw new Error("query syntax error, got no url, unknown type: " + type);
             }
 
             var requestOptions = this._requestOptions({
