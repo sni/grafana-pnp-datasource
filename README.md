@@ -93,6 +93,11 @@ Then run `grunt watch` and eventually restart Grafana after doing changes.
 
 #### Changelog
 
+1.0.4  2017-09-29
+    - add mathematical factor option
+    - fix template variables with latest grafana 4.5.2
+    - fix replacing template variables in repeated panels
+
 1.0.3  2017-08-18
     - add support for host / service / label templating variables
 
