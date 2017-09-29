@@ -336,16 +336,15 @@ System.register(["lodash"], function (_export, _context) {
             options.targets = _.filter(options.targets, function (target) {
               return target.perflabel !== _this.DEFAULT_PERFLABEL;
             });
-
             var targets = _.map(options.targets, function (target) {
               return {
-                host: _this.templateSrv.replace(target.host),
-                service: _this.templateSrv.replace(target.service),
-                perflabel: _this.templateSrv.replace(target.perflabel),
-                alias: _this.templateSrv.replace(target.alias),
-                type: _this.templateSrv.replace(target.type),
-                fill: _this.templateSrv.replace(target.fill),
-                factor: _this.templateSrv.replace(target.factor),
+                host: _this.templateSrv.replace(_this.templateSrv.replace(target.host, options.scopedVars)),
+                service: _this.templateSrv.replace(_this.templateSrv.replace(target.service, options.scopedVars)),
+                perflabel: _this.templateSrv.replace(_this.templateSrv.replace(target.perflabel, options.scopedVars)),
+                alias: _this.templateSrv.replace(_this.templateSrv.replace(target.alias, options.scopedVars)),
+                type: _this.templateSrv.replace(_this.templateSrv.replace(target.type, options.scopedVars)),
+                fill: _this.templateSrv.replace(_this.templateSrv.replace(target.fill, options.scopedVars)),
+                factor: _this.templateSrv.replace(_this.templateSrv.replace(target.factor, options.scopedVars)),
                 refId: target.refId,
                 hide: target.hide
               };

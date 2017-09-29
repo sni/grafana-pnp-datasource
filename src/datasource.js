@@ -267,16 +267,15 @@ export class PNPDatasource {
     options.targets = _.filter(options.targets, target => {
       return target.perflabel !== this.DEFAULT_PERFLABEL;
     });
-
     var targets = _.map(options.targets, target => {
       return {
-        host: this.templateSrv.replace(target.host),
-        service: this.templateSrv.replace(target.service),
-        perflabel: this.templateSrv.replace(target.perflabel),
-        alias: this.templateSrv.replace(target.alias),
-        type: this.templateSrv.replace(target.type),
-        fill: this.templateSrv.replace(target.fill),
-        factor: this.templateSrv.replace(target.factor),
+        host: this.templateSrv.replace(this.templateSrv.replace(target.host, options.scopedVars)),
+        service: this.templateSrv.replace(this.templateSrv.replace(target.service, options.scopedVars)),
+        perflabel: this.templateSrv.replace(this.templateSrv.replace(target.perflabel, options.scopedVars)),
+        alias: this.templateSrv.replace(this.templateSrv.replace(target.alias, options.scopedVars)),
+        type: this.templateSrv.replace(this.templateSrv.replace(target.type, options.scopedVars)),
+        fill: this.templateSrv.replace(this.templateSrv.replace(target.fill, options.scopedVars)),
+        factor: this.templateSrv.replace(this.templateSrv.replace(target.factor, options.scopedVars)),
         refId: target.refId,
         hide: target.hide
       };
