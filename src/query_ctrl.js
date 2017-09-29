@@ -13,6 +13,7 @@ export class PNPDatasourceQueryCtrl extends QueryCtrl {
     this.target.perflabel = this.target.perflabel || this.datasource.DEFAULT_PERFLABEL;
     this.target.type = this.target.type || 'AVERAGE';
     this.target.fill = this.target.fill || 'fill';
+    this.target.factor = this.target.factor || '';
   }
 
   getHost() {

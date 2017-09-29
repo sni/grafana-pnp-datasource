@@ -162,6 +162,16 @@ System.register(["lodash"], function (_export, _context) {
                     }
                   }
                 }
+                if (options.targets[x].factor && options.targets[x].factor != "") {
+                  var factor = eval(options.targets[x].factor);
+                  if (factor != NaN && factor != 1) {
+                    for (var y = 0; y < length; y++) {
+                      if (datapoints[y][0] !== null) {
+                        datapoints[y][0] *= factor;
+                      }
+                    }
+                  }
+                }
                 data.data.push({
                   "target": alias,
                   "datapoints": datapoints
@@ -335,6 +345,7 @@ System.register(["lodash"], function (_export, _context) {
                 alias: _this.templateSrv.replace(target.alias),
                 type: _this.templateSrv.replace(target.type),
                 fill: _this.templateSrv.replace(target.fill),
+                factor: _this.templateSrv.replace(target.factor),
                 refId: target.refId,
                 hide: target.hide
               };

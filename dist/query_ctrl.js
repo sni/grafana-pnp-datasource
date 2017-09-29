@@ -73,6 +73,7 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
           _this.target.perflabel = _this.target.perflabel || _this.datasource.DEFAULT_PERFLABEL;
           _this.target.type = _this.target.type || 'AVERAGE';
           _this.target.fill = _this.target.fill || 'fill';
+          _this.target.factor = _this.target.factor || '';
           return _this;
         }
 
