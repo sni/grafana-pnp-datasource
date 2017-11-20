@@ -93,6 +93,9 @@ Then run `grunt watch` and eventually restart Grafana after doing changes.
 
 #### Changelog
 
+1.0.5  2017-11-20
+    - fix template query parsing
+
 1.0.4  2017-09-29
     - add mathematical factor option
     - fix template variables with latest grafana 4.5.2
