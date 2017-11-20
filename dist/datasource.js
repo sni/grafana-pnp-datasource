@@ -3,7 +3,7 @@
 System.register(["lodash"], function (_export, _context) {
   "use strict";
 
-  var _, _typeof, _createClass, PNPDatasource;
+  var _, _createClass, PNPDatasource;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -16,12 +16,6 @@ System.register(["lodash"], function (_export, _context) {
       _ = _lodash.default;
     }],
     execute: function () {
-      _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-        return typeof obj;
-      } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-
       _createClass = function () {
         function defineProperties(target, props) {
           for (var i = 0; i < props.length; i++) {
@@ -186,7 +180,7 @@ System.register(["lodash"], function (_export, _context) {
             if (value == undefined || value == null) {
               return value;
             }
-            var matches = value.match(/^\/\^\{(.*)\}\$\/$/);
+            var matches = value.match(/^\/?\^?\{(.*)\}\$?\/?$/);
             if (!matches) {
               return value;
             }
@@ -211,66 +205,68 @@ System.register(["lodash"], function (_export, _context) {
           }
         }, {
           key: "metricFindQuery",
-          value: function metricFindQuery(query_string, type, prependVariables) {
+          value: function metricFindQuery(query_string) {
+            var This = this;
+            var type;
+            var options = {};
+            var query = query_string.split(/\s+/);
+            if (query[0]) {
+              type = query.shift().replace(/s$/, "");
+            }
+            // parse simple where statements
+            if (query[0] != undefined) {
+              if (query[0].toLowerCase() != "where") {
+                throw new Error("query syntax error, expecting WHERE");
+              }
+              query.shift();
+
+              while (query.length >= 3) {
+                var t = query.shift().toLowerCase();
+                var op = query.shift().toLowerCase();
+                var val = query.shift();
+                if (op != "=") {
+                  throw new Error("query syntax error, operator must be '='");
+                }
+                options[t] = val;
+
+                if (query[0] != undefined) {
+                  if (query[0].toLowerCase() == 'and') {
+                    query.shift();
+                  } else {
+                    throw new Error("query syntax error, expecting AND");
+                  }
+                }
+              }
+
+              // still remaining filters?
+              if (query.length > 0) {
+                throw new Error("query syntax error");
+              }
+            }
+            return This.metricFindData(type, options, false);
+          }
+        }, {
+          key: "metricFindData",
+          value: function metricFindData(type, options, prependVariables) {
             var This = this;
             var mapper;
             var url;
             var data = {};
-            var options = {};
-
-            // expand template querys
-            if (query_string != undefined && (type == undefined || (typeof type === "undefined" ? "undefined" : _typeof(type)) === 'object')) {
-              var query = query_string.split(/\s+/);
-              if (query[0]) {
-                type = query.shift().replace(/s$/, "");
-              }
-              // parse simple where statements
-              if (query[0] != undefined) {
-                if (query[0].toLowerCase() != "where") {
-                  throw new Error("query syntax error, expecting WHERE");
-                }
-                query.shift();
-
-                while (query.length >= 3) {
-                  var t = query.shift().toLowerCase();
-                  var op = query.shift().toLowerCase();
-                  var val = query.shift();
-                  if (op != "=") {
-                    throw new Error("query syntax error, operator must be '='");
-                  }
-                  options[t] = val;
-
-                  if (query[0] != undefined) {
-                    if (query[0].toLowerCase() == 'and') {
-                      query.shift();
-                    } else {
-                      throw new Error("query syntax error, expecting AND");
-                    }
-                  }
-                }
-
-                // still remaining filters?
-                if (query.length > 0) {
-                  throw new Error("query syntax error");
-                }
-              }
-            }
-
             if (type == "host") {
-              url = this.url + '/index.php/api/hosts';
-              mapper = this.mapToTextValueHost;
+              url = This.url + '/index.php/api/hosts';
+              mapper = This.mapToTextValueHost;
             } else if (type == "service") {
-              url = this.url + '/index.php/api/services/';
-              data.host = this._fixup_regex(this.templateSrv.replace(options.host));
-              mapper = this.mapToTextValueService;
+              url = This.url + '/index.php/api/services/';
+              data.host = This._fixup_regex(This.templateSrv.replace(options.host));
+              mapper = This.mapToTextValueService;
               if (!data.host) {
                 data.host = '/.*/';
               }
             } else if (type == "perflabel" || type == "label") {
-              url = this.url + '/index.php/api/labels/';
-              data.host = this._fixup_regex(this.templateSrv.replace(options.host));
-              data.service = this._fixup_regex(this.templateSrv.replace(options.service));
-              mapper = this.mapToTextValuePerflabel;
+              url = This.url + '/index.php/api/labels/';
+              data.host = This._fixup_regex(This.templateSrv.replace(options.host));
+              data.service = This._fixup_regex(This.templateSrv.replace(options.service));
+              mapper = This.mapToTextValuePerflabel;
               if (!data.host) {
                 data.host = '/.*/';
               }
@@ -283,13 +279,13 @@ System.register(["lodash"], function (_export, _context) {
               throw new Error("query syntax error, got no url, unknown type: " + type);
             }
 
-            var requestOptions = this._requestOptions({
+            var requestOptions = This._requestOptions({
               url: url,
               data: data,
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }
             });
-            return this.backendSrv.datasourceRequest(requestOptions).then(mapper).then(function (data) {
+            return This.backendSrv.datasourceRequest(requestOptions).then(mapper).then(function (data) {
               /* prepend templating variables */
               if (prependVariables) {
                 for (var x = 0; x < This.templateSrv.variables.length; x++) {

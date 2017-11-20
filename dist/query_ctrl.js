@@ -80,17 +80,17 @@ System.register(['app/plugins/sdk', './css/query-editor.css!'], function (_expor
         _createClass(PNPDatasourceQueryCtrl, [{
           key: 'getHost',
           value: function getHost() {
-            return this.datasource.metricFindQuery(this.target, "host", true).then(this.uiSegmentSrv.transformToSegments(false));
+            return this.datasource.metricFindData("host", this.target, true).then(this.uiSegmentSrv.transformToSegments(false));
           }
         }, {
           key: 'getService',
           value: function getService() {
-            return this.datasource.metricFindQuery(this.target, "service", true).then(this.uiSegmentSrv.transformToSegments(false));
+            return this.datasource.metricFindData("service", this.target, true).then(this.uiSegmentSrv.transformToSegments(false));
           }
         }, {
           key: 'getPerflabel',
           value: function getPerflabel() {
-            return this.datasource.metricFindQuery(this.target, "perflabel", true).then(this.uiSegmentSrv.transformToSegments(false));
+            return this.datasource.metricFindData("perflabel", this.target, true).then(this.uiSegmentSrv.transformToSegments(false));
           }
         }, {
           key: 'onChangeInternal',

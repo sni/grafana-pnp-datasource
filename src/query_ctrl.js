@@ -7,27 +7,27 @@ export class PNPDatasourceQueryCtrl extends QueryCtrl {
     super($scope, $injector);
 
     this.scope = $scope;
-    this.uiSegmentSrv = uiSegmentSrv;
-    this.target.host = this.target.host || this.datasource.DEFAULT_HOST;
-    this.target.service = this.target.service || this.datasource.DEFAULT_SERVICE;
+    this.uiSegmentSrv     = uiSegmentSrv;
+    this.target.host      = this.target.host      || this.datasource.DEFAULT_HOST;
+    this.target.service   = this.target.service   || this.datasource.DEFAULT_SERVICE;
     this.target.perflabel = this.target.perflabel || this.datasource.DEFAULT_PERFLABEL;
-    this.target.type = this.target.type || 'AVERAGE';
-    this.target.fill = this.target.fill || 'fill';
-    this.target.factor = this.target.factor || '';
+    this.target.type      = this.target.type      || 'AVERAGE';
+    this.target.fill      = this.target.fill      || 'fill';
+    this.target.factor    = this.target.factor    || '';
   }
 
   getHost() {
-    return this.datasource.metricFindQuery(this.target, "host", true)
+    return this.datasource.metricFindData("host", this.target, true)
       .then(this.uiSegmentSrv.transformToSegments(false));
   }
 
   getService() {
-    return this.datasource.metricFindQuery(this.target, "service", true)
+    return this.datasource.metricFindData("service", this.target, true)
       .then(this.uiSegmentSrv.transformToSegments(false));
   }
 
   getPerflabel() {
-    return this.datasource.metricFindQuery(this.target, "perflabel", true)
+    return this.datasource.metricFindData("perflabel", this.target, true)
       .then(this.uiSegmentSrv.transformToSegments(false));
   }
 
