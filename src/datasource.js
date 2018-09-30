@@ -146,6 +146,12 @@ export class PNPDatasource {
         if (response.status === 200) {
           return { status: "success", message: "Data source is working", title: "Success" };
         }
+      })
+      .catch(err => {
+        if(err.status && err.status >= 400) {
+          return { status: 'error', message: 'Data source not connected: '+err.status+' '+err.statusText };
+        }
+        return { status: 'error', message: err.message };
       });
   }
 

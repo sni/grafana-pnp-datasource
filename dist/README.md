@@ -93,6 +93,10 @@ Then run `grunt watch` and eventually restart Grafana after doing changes.
 
 #### Changelog
 
+next:
+    - improve datasource error details
+    - fix plugin beeing loaded twice (#17)
+
 1.0.5  2017-11-20
     - fix template query parsing
 
