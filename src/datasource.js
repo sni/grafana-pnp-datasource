@@ -15,6 +15,9 @@ export class PNPDatasource {
     this.DEFAULT_HOST = "select host";
     this.DEFAULT_SERVICE = "select service";
     this.DEFAULT_PERFLABEL = "select performance label";
+
+    this.name = instanceSettings.name;
+    this.id = instanceSettings.id;
   }
 
   /* fetch pnp rrd data */
