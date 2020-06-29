@@ -119,7 +119,7 @@ How to create a new release:
 
 #### Changelog
 
-next:
+1.0.6  2020-06-29
     - improve datasource error details
     - fix plugin beeing loaded twice (#17)
     - fix dashboard export
