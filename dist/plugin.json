@@ -1,0 +1,40 @@
+{
+  "name": "PNP",
+  "id": "sni-pnp-datasource",
+  "type": "datasource",
+
+  "partials": {
+    "config": "public/app/plugins/datasource/pnp/partials/config.html"
+  },
+
+  "includes": [
+      {"type": "dashboard", "name": "PNP Internals", "path": "dashboards/pnp_internals.json"}
+  ],
+
+  "metrics": true,
+  "annotations": false,
+
+  "info": {
+    "description": "pnp4nagios datasource",
+    "author": {
+      "name": "Sven Nierlein",
+      "email": "sven.nierlein@consol.de",
+      "url": "http://labs.consol.de"
+    },
+    "logos": {
+      "small": "src/img/logo.svg",
+      "large": "src/img/logo.svg"
+    },
+    "links": [
+      {"name": "GitHub", "url": "https://github.com/sni/grafana-pnp-datasource"},
+      {"name": "MIT License", "url": "https://github.com/sni/grafana-pnp-datasource/blob/master/LICENSE"}
+    ],
+    "version": "1.0.5",
+    "updated": "2017-11-20"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "4.5.x",
+    "plugins": [ ]
+  }
+}

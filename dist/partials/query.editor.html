@@ -1,0 +1,41 @@
+<query-editor-row query-ctrl="ctrl" can-collapse="true">
+  <div class="gf-form-inline">
+    <div class="gf-form">
+      <label class="gf-form-label query-keyword">Host:</label>
+      <metric-segment-model property="ctrl.target.host" get-options="ctrl.getHost()" on-change="ctrl.onChangeInternal()"></metric-segment-model>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label query-keyword">Service:</label>
+      <metric-segment-model property="ctrl.target.service" get-options="ctrl.getService()" on-change="ctrl.onChangeInternal()"></metric-segment-model>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label query-keyword">Label:</label>
+      <metric-segment-model property="ctrl.target.perflabel" get-options="ctrl.getPerflabel()" on-change="ctrl.onChangeInternal()"></metric-segment-model>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label query-keyword">Type:</label>
+      <select class="gf-form-input" ng-model="ctrl.target.type" ng-options="f as f for f in ['AVERAGE', 'MIN', 'MAX','WARNING', 'CRITICAL']" ng-change="ctrl.onChangeInternal()"></select>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label query-keyword">Fill:</label>
+      <select class="gf-form-input" ng-model="ctrl.target.fill" ng-options="f as f for f in ['fill', 'zero', 'gap']" ng-change="ctrl.onChangeInternal()"></select>
+    </div>
+    <div class="gf-form">
+      <label class="gf-form-label query-keyword">Factor:</label>
+      <input type="text" class="gf-form-input" ng-model="ctrl.target.factor" spellcheck='false' placeholder="Factor, ex.: 0.1, 1024, 1/1024" ng-blur="ctrl.onChangeInternal()">
+    </div>
+    <div class="gf-form gf-form--grow">
+      <div class="gf-form-label gf-form-label--grow"></div>
+    </div>
+  </div>
+
+  <div class="gf-form-inline">
+    <div class="gf-form max-width-30">
+      <label class="gf-form-label query-keyword">Alias</label>
+      <input type="text" class="gf-form-input" ng-model="ctrl.target.alias" spellcheck='false' placeholder="Naming pattern, ex.: $tag_host, $tag_service, $tag_label" ng-blur="ctrl.onChangeInternal()">
+    </div>
+    <div class="gf-form gf-form--grow">
+      <div class="gf-form-label gf-form-label--grow"></div>
+    </div>
+  </div>
+</query-editor-row>
