@@ -12,7 +12,7 @@ you use OMD-Labs, everything is setup already.
 Otherwise follow these steps:
 
     %> cd var/grafana/plugins
-    %> git clone https://github.com/sni/grafana-pnp-datasource.git
+    %> git clone -b release-1.0.6  https://github.com/sni/grafana-pnp-datasource.git
     %> restart grafana
 
 #### PNP API
