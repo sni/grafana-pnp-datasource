@@ -82,6 +82,8 @@ There is basic templating variable support. There are 3 different querys availab
     - $service: services where host = /^$host$/
     - $label:   labels where host = /^$host$/ and service = /^$service$/
 
+![host variables examples](host_template_variables.png)
+
 ### Development
 
 #### Setup
