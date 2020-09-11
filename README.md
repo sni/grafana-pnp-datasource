@@ -122,6 +122,9 @@ How to create a new release:
 
 #### Changelog
 
+1.0.7  2020-09-11
+    - improve packaging
+
 1.0.6  2020-06-29
     - improve datasource error details
     - fix plugin beeing loaded twice (#17)
