@@ -18,7 +18,7 @@ Otherwise follow these steps:
 #### PNP API
 
 In order to make this datasource work, you need the pnp api. This is a separate
-project at the moment and will be part of the official pnp in the future. You 
+project at the moment and will be part of the official pnp in the future. You
 can fetch the `api.php` from https://github.com/lingej/pnp-metrics-api and place
 it in your controler folder.
 
