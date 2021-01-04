@@ -1,0 +1,36 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "community",
+  "signedByOrg": "sni",
+  "signedByOrgName": "sni",
+  "plugin": "sni-pnp-datasource",
+  "version": "1.0.5",
+  "time": 1609759199727,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "module.js": "c20f7c39b01a9224fc4b61d360d859f37d44646f3996b687f0eda94e1ebacc7d",
+    "module.js.map": "c276518201adfedffb73d9e511054ec844706a4e6679b92c1887383c5e353b0e",
+    "README.md": "8bd978a6dc4487d9ec1460e476865852ac412a74d6c3b9512b356bff54b690e2",
+    "LICENSE": "b46400c1ab5630edeb4e43b240a027d203375ebe5a9efb7de88c604c5c5cace0",
+    "plugin.json": "b8e021234c9c7102a6252334454b6533320e8a806b1d42d815d8eacf2e9dee76",
+    "img/logo.svg": "5e8276e580483c0adca1a58fe22eb021f12b4639fc83d8184ea55097f63dda7e",
+    "partials/annotations.editor.html": "00a0735c83ace86a51d17cd3fb1a2b54d58c5284a22a36a6432da5cfa83b9808",
+    "partials/config.html": "4e5cb0942db3ad728d06169f7d8c3b6b0f6e6e1071a15a0cc42611be5d872000",
+    "partials/query.editor.html": "679b7dcb6b3d349899fc1d0dd979144860940660f1774cbade0e775b83b6ac04",
+    "partials/query.options.html": "01570a3c97a66d192bf4986355a52b92b3ff5b45fe528d9e5849464e8b4e213d"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.1
+Comment: https://openpgpjs.org
+
+wqEEARMKAAYFAl/y+d8ACgkQfk0ManCIZudC5AIJAUynAEaHfe3eH7eS/w4m
+ifisfutYeCLHzop46cs+dHGRMxZJdEf2dk4GQD56OC2YrnERRQAuxqK0D8Zv
+O7UpwoDOAgdbb+w/LvjsGUf4aXw2tfJjfWgYzKSgIjBN89Ys9GBr86MzrS4w
+DbZ5RlZqiuJGR7bgR0FXH4X0JjOIF3f8pvbWkA==
+=asps
+-----END PGP SIGNATURE-----
