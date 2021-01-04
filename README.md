@@ -4,7 +4,7 @@
 
 Search for `pnp` in the Grafana plugins directory or simply use the grafana-cli command:
 
-    grafana-cli plugins install sni-pnp-datasource
+    %> grafana-cli plugins install sni-pnp-datasource
 
 Also [OMD-Labs](https://labs.consol.de/omd/) comes with this datasource included, so if
 you use OMD-Labs, everything is setup already.
@@ -104,16 +104,13 @@ following command (in the source directory of this plugin):
            grafana/grafana
 
 This will expose local plugin from your machine to Grafana container. Now
-run `grunt` to compile dist directory and start changes watcher:
+run `make buildwatch` to compile dist directory and start changes watcher:
 
-  grunt watch
+  %> make buildwatch
 
 #### Create Release
 
 How to create a new release:
-
-requires:
-    - docker
 
     %> export RELVERSION=1.0.8
     %> export GRAFANA_API_KEY=...
@@ -122,6 +119,7 @@ requires:
     %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
     %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
     %> make releasepush
+
 
 ### Changelog
 
