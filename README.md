@@ -111,18 +111,23 @@ run `grunt` to compile dist directory and start changes watcher:
 #### Create Release
 
 How to create a new release:
-(from https://grafana.com/tutorials/build-a-data-source-plugin/#9)
 
-    %> vi src/plugin.json README.md
-    %> RELVERSION=0.0.1 && \
-          git checkout -b release-${RELVERSION} && \
-          grunt && \
-          git add -f dist && \
-          git commit -m "Release v${RELVERSION}" && \
-          git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}" && \
-          git push --set-upstream origin release-${RELVERSION} --follow-tags
+requires:
+    - docker
 
-#### Changelog
+    %> export RELVERSION=1.0.8
+    %> export GRAFANA_API_KEY=...
+    %> vi README.md # add changelog entry
+    %> git commit -am "Release v${RELVERSION}"
+    %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
+    %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
+    %> make releasepush
+
+### Changelog
+
+...
+    - sign plugin
+    - switch package builds to yarn
 
 1.0.7  2020-09-11
     - improve packaging

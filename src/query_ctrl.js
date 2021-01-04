@@ -1,5 +1,5 @@
-import {QueryCtrl} from 'app/plugins/sdk';
-import './css/query-editor.css!'
+import {QueryCtrl} from 'grafana/app/plugins/sdk';
+import './css/query-editor.css'
 
 export class PNPDatasourceQueryCtrl extends QueryCtrl {
 

@@ -29,8 +29,8 @@
       {"name": "GitHub", "url": "https://github.com/sni/grafana-pnp-datasource"},
       {"name": "MIT License", "url": "https://github.com/sni/grafana-pnp-datasource/blob/master/LICENSE"}
     ],
-    "version": "1.0.7",
-    "updated": "2020-09-11"
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
   },
 
   "dependencies": {
