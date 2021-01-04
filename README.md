@@ -125,7 +125,7 @@ requires:
 
 ### Changelog
 
-...
+1.0.8  2021-01-04
     - sign plugin
     - switch package builds to yarn
 
