@@ -18,6 +18,12 @@ buildsign:
 	$(DOCKER) \
 		npx @grafana/toolkit plugin:sign
 
+grafanadev:
+	docker run --rm -it -v $(shell pwd):/var/lib/grafana/plugins/sni-pnp-datasource \
+		-p 3000:3000 --name grafana.docker \
+		--env=GF_USERS_DEFAULT_THEME=light \
+		grafana/grafana
+
 clean:
 	rm -rf dist
 

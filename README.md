@@ -98,10 +98,7 @@ Then run `grunt watch` and eventually restart Grafana after doing changes.
 To test and improve the plugin you can run Grafana instance in Docker using
 following command (in the source directory of this plugin):
 
-  docker run --rm -it -v $PWD:/var/lib/grafana/plugins/sni-pnp-datasource \
-           -p 3000:3000 --name grafana.docker \
-           --env=GF_USERS_DEFAULT_THEME=light \
-           grafana/grafana
+  %> make grafanadev
 
 This will expose local plugin from your machine to Grafana container. Now
 run `make buildwatch` to compile dist directory and start changes watcher:
