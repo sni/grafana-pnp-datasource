@@ -1,3 +1,4 @@
+PLUGINNAME=sni-pnp-datasource
 TAGVERSION=$(shell git describe --tag --exact-match 2>/dev/null | sed -e 's/^v//')
 DOCKER=docker run \
 		-t \
@@ -25,9 +26,9 @@ buildsign:
 		npx --legacy-peer-deps @grafana/toolkit plugin:sign
 
 grafanadev:
-	docker run --rm -it -v $(shell pwd):/var/lib/grafana/plugins/sni-pnp-datasource \
+	docker run --rm -it -v $(shell pwd):/var/lib/grafana/plugins/$(PLUGINNAME) \
 		-p 3000:3000 --name grafana.docker \
-		-e "GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=sni-pnp-datasource" \
+		-e "GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=$(PLUGINNAME)" \
 		-e "GF_USERS_DEFAULT_THEME=light" \
 		grafana/grafana
 
@@ -35,15 +36,7 @@ clean:
 	rm -rf dist
 
 releasebuild:
-	git checkout -b release-$(TAGVERSION)
 	make GRAFANA_API_KEY=$(GRAFANA_API_KEY) build buildsign
-	git add -f dist
-	git commit -m "Release build v$(TAGVERSION)"
-	git log -1
-	git checkout master
-
-releasepush:
-	git push --set-upstream origin release-$(TAGVERSION)
-	git checkout master
-	git push
-	git push --tags
+	mv dist/ $(PLUGINNAME)
+	zip $(PLUGINNAME)-$(TAGVERSION).zip $(PLUGINNAME) -r
+	rm -rf $(PLUGINNAME)

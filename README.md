@@ -115,7 +115,8 @@ How to create a new release:
     %> git commit -am "Release v${RELVERSION}"
     %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
     %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
-    %> make releasepush
+    # publish zip file on https://github.com/sni/grafana-pnp-datasource/releases/new
+    # and validate zip on https://plugin-validator.grafana.net/
 
 
 ### Changelog
