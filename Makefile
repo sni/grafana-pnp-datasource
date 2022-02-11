@@ -5,23 +5,30 @@ DOCKER=docker run \
 		-v $(shell pwd):/src \
 		-w "/src" \
 		-u $(shell id -u) \
-		-e GRAFANA_API_KEY="$(GRAFANA_API_KEY)" \
-		node:latest
+		-e NODE_OPTIONS"=--openssl-legacy-provider" \
+		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
 
 build:
-	$(DOCKER) bash -c "yarn install && yarn run build"
+	$(DOCKER)    node:latest bash -c "yarn install && yarn run build"
 
 buildwatch:
-	$(DOCKER) bash -c "yarn install && yarn run watch"
+	$(DOCKER)    node:latest bash -c "yarn install && yarn run watch"
+
+buildupgrade:
+	$(DOCKER)    node:latest bash -c "yarn upgrade"
+
+buildshell:
+	$(DOCKER) -i node:latest bash
 
 buildsign:
-	$(DOCKER) \
-		npx @grafana/toolkit plugin:sign
+	$(DOCKER)    node:latest \
+		npx --legacy-peer-deps @grafana/toolkit plugin:sign
 
 grafanadev:
 	docker run --rm -it -v $(shell pwd):/var/lib/grafana/plugins/sni-pnp-datasource \
 		-p 3000:3000 --name grafana.docker \
-		--env=GF_USERS_DEFAULT_THEME=light \
+		-e "GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=sni-pnp-datasource" \
+		-e "GF_USERS_DEFAULT_THEME=light" \
 		grafana/grafana
 
 clean:
