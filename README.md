@@ -88,13 +88,6 @@ There is basic templating variable support. There are 3 different querys availab
 
 ### Development
 
-#### Setup
-
-The easiest way to setup a test environment is to install the latest omd-labs package and
-clone this repository to to `~/var/grafana/plugins`. Make sure there is only one pnp
-datasource, so you might have to remove the shiped one.
-Then run `grunt watch` and eventually restart Grafana after doing changes.
-
 To test and improve the plugin you can run Grafana instance in Docker using
 following command (in the source directory of this plugin):
 
@@ -116,7 +109,7 @@ How to create a new release:
     %> git commit -am "Release v${RELVERSION}"
     %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
     %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
-    # upload zip somehwere and validate on https://plugin-validator.grafana.net/
+    # upload zip somewhere and validate on https://plugin-validator.grafana.net/
     # create release here https://github.com/sni/grafana-pnp-datasource/releases/new
     # submit plugin update here https://grafana.com/orgs/sni/plugins
 
