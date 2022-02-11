@@ -109,15 +109,16 @@ run `make buildwatch` to compile dist directory and start changes watcher:
 
 How to create a new release:
 
-    %> export RELVERSION=1.0.8
+    %> export RELVERSION=1.0.9
     %> export GRAFANA_API_KEY=...
     %> vi package.json # replace version
     %> vi CHANGELOG.md # add changelog entry
     %> git commit -am "Release v${RELVERSION}"
     %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
     %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
-    # update zip somehwere and validate zip on https://plugin-validator.grafana.net/
+    # upload zip somehwere and validate on https://plugin-validator.grafana.net/
     # create release here https://github.com/sni/grafana-pnp-datasource/releases/new
+    # submit plugin update here https://grafana.com/orgs/sni/plugins
 
 
 ### Changelog
