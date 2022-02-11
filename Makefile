@@ -16,7 +16,7 @@ buildwatch:
 	$(DOCKER)    node:latest bash -c "yarn install && yarn run watch"
 
 buildupgrade:
-	$(DOCKER)    node:latest bash -c "yarn upgrade"
+	$(DOCKER)    node:latest bash -c "yarn install && yarn upgrade"
 
 buildsign:
 	$(DOCKER)    node:latest \

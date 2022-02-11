@@ -21,14 +21,14 @@
     "url": "https://github.com/sni/grafana-pnp-datasource/issues"
   },
   "devDependencies": {
-    "@grafana/data": "^7.1.5",
-    "@grafana/runtime": "^7.1.5",
-    "@grafana/toolkit": "^7.1.5",
-    "@grafana/ui": "^7.1.5",
-    "@types/lodash": "^4.14.160"
+    "@grafana/data": ">=8.0.0",
+    "@grafana/runtime": ">=8.0.0",
+    "@grafana/toolkit": ">=8.0.0",
+    "@grafana/ui": ">=8.0.0",
+    "@types/lodash": ">=4.0.0"
   },
   "dependencies": {
-    "lodash": ">=4.17.20"
+    "lodash": ">=4.0.0"
   },
   "homepage": "https://github.com/sni/grafana-pnp-datasource#readme"
 }
