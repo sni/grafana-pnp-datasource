@@ -18,12 +18,12 @@ buildwatch:
 buildupgrade:
 	$(DOCKER)    node:latest bash -c "yarn upgrade"
 
-buildshell:
-	$(DOCKER) -i node:latest bash
-
 buildsign:
 	$(DOCKER)    node:latest \
 		npx --legacy-peer-deps @grafana/toolkit plugin:sign
+
+buildshell:
+	$(DOCKER) -i node:latest bash
 
 grafanadev:
 	docker run --rm -it -v $(shell pwd):/var/lib/grafana/plugins/$(PLUGINNAME) \
@@ -36,6 +36,8 @@ clean:
 	rm -rf dist
 
 releasebuild:
+	@if [ "x$(TAGVERSION)" = "x" ]; then echo "ERROR: must be on a git tag, got: $(shell git describe --tag --dirty)"; exit 1; fi
+	make clean
 	make GRAFANA_API_KEY=$(GRAFANA_API_KEY) build buildsign
 	mv dist/ $(PLUGINNAME)
 	zip $(PLUGINNAME)-$(TAGVERSION).zip $(PLUGINNAME) -r

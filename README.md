@@ -84,7 +84,7 @@ There is basic templating variable support. There are 3 different querys availab
     - $service: services where host = /^$host$/
     - $label:   labels where host = /^$host$/ and service = /^$service$/
 
-![host variables examples](host_template_variables.png)
+![host variables examples](https://github.com/sni/grafana-pnp-datasource/blob/master/host_template_variables.png)
 
 ### Development
 
@@ -111,12 +111,13 @@ How to create a new release:
 
     %> export RELVERSION=1.0.8
     %> export GRAFANA_API_KEY=...
+    %> vi package.json # replace version
     %> vi CHANGELOG.md # add changelog entry
     %> git commit -am "Release v${RELVERSION}"
     %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
     %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
-    # publish zip file on https://github.com/sni/grafana-pnp-datasource/releases/new
-    # and validate zip on https://plugin-validator.grafana.net/
+    # update zip somehwere and validate zip on https://plugin-validator.grafana.net/
+    # create release here https://github.com/sni/grafana-pnp-datasource/releases/new
 
 
 ### Changelog
