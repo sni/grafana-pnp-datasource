@@ -10,24 +10,23 @@ DOCKER=docker run \
 		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
 
 build:
-	$(DOCKER)    node:latest bash -c "yarn install && yarn run build"
+	$(DOCKER)    --name $(PLUGINNAME)-build        node:latest bash -c "yarn install && yarn run build"
 
 buildwatch:
-	$(DOCKER)    node:latest bash -c "yarn install && yarn run watch"
+	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:latest bash -c "yarn install && yarn run watch"
 
 buildupgrade:
-	$(DOCKER)    node:latest bash -c "yarn install && yarn upgrade"
+	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:latest bash -c "yarn install && yarn upgrade"
 
 buildsign:
-	$(DOCKER)    node:latest \
-		npx --legacy-peer-deps @grafana/toolkit plugin:sign
+	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:latest npx --legacy-peer-deps @grafana/toolkit plugin:sign
 
 buildshell:
-	$(DOCKER) -i node:latest bash
+	$(DOCKER) -i --name $(PLUGINNAME)-buildshell   node:latest bash
 
 grafanadev:
-	docker run --rm -it -v $(shell pwd):/var/lib/grafana/plugins/$(PLUGINNAME) \
-		-p 3000:3000 --name grafana.docker \
+	docker run --rm -it -v $(shell pwd)/dist:/var/lib/grafana/plugins/$(PLUGINNAME) \
+		-p 3000:3000 --name $(PLUGINNAME)-grafana \
 		-e "GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=$(PLUGINNAME)" \
 		-e "GF_USERS_DEFAULT_THEME=light" \
 		grafana/grafana
