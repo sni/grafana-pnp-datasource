@@ -10,7 +10,7 @@ interface State {}
 export class ConfigEditor extends PureComponent<Props, State> {
   render() {
     const { onOptionsChange, options } = this.props;
-    if(!options.jsonData.keepCookies) {
+    if (!options.jsonData.keepCookies) {
       options.jsonData.keepCookies = ['thruk_auth', 'pnp4nagios'];
     }
     return (

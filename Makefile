@@ -20,6 +20,9 @@ buildupgrade:
 buildsign:
 	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:latest npx --legacy-peer-deps @grafana/toolkit plugin:sign
 
+prettier:
+	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx prettier --write --ignore-unknown src/
+
 buildshell:
 	$(DOCKER) -i --name $(PLUGINNAME)-buildshell   node:latest bash
 

@@ -4,9 +4,7 @@
   "id": "sni-pnp-datasource",
   "type": "datasource",
 
-  "includes": [
-      {"type": "dashboard", "name": "PNP Internals", "path": "dashboards/pnp_internals.json"}
-  ],
+  "includes": [{ "type": "dashboard", "name": "PNP Internals", "path": "dashboards/pnp_internals.json" }],
 
   "metrics": true,
   "annotations": false,
@@ -23,15 +21,11 @@
       "large": "img/logo.svg"
     },
     "links": [
-      {"name": "GitHub", "url": "https://github.com/sni/grafana-pnp-datasource"},
-      {"name": "MIT License", "url": "https://github.com/sni/grafana-pnp-datasource/blob/master/LICENSE"}
+      { "name": "GitHub", "url": "https://github.com/sni/grafana-pnp-datasource" },
+      { "name": "MIT License", "url": "https://github.com/sni/grafana-pnp-datasource/blob/master/LICENSE" }
     ],
-    "keywords": [
-      "naemon", "pnp4nagios", "nagios", "thruk"
-    ],
-    "screenshots": [
-      {"name": "pnp-datasource query editor", "path": "img/screenshot.png"}
-    ],
+    "keywords": ["naemon", "pnp4nagios", "nagios", "thruk"],
+    "screenshots": [{ "name": "pnp-datasource query editor", "path": "img/screenshot.png" }],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
