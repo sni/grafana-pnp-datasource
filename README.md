@@ -35,28 +35,10 @@ Adjust the output path to your installation.
 
 ### Create Datasource
 
-Direct access and proxy datasources are possible.
 Add a new datasource and select:
 
-Variant A:
-
-Uses the Grafana proxy. Must have a local user which is used for all queries.
-
     - Type 'PNP'
-    - Url 'https://localhost/sitename/pnp4nagios'
-    - Access 'proxy'
-    - Basic Auth 'True'
-    - User + Password for local pnp user
-
-
-Variant B:
-
-Uses direct access. PNP must be accessible from the public.
-
-    - Type 'PNP'
-    - Url 'https://yourhost/sitename/pnp4nagios' (Note: this has to be the absolute url)
-    - Access 'direct'
-    - Http Auth 'With Credentials'
+    - Url to pnp, ex.: 'https://localhost/sitename/pnp4nagios'
 
 ### Example Dashboard
 
@@ -117,4 +99,3 @@ How to create a new release:
 ### Changelog
 
 see CHANGELOG.md
-

@@ -6,14 +6,13 @@ DOCKER=docker run \
 		-v $(shell pwd):/src \
 		-w "/src" \
 		-u $(shell id -u) \
-		-e NODE_OPTIONS"=--openssl-legacy-provider" \
 		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
 
 build:
 	$(DOCKER)    --name $(PLUGINNAME)-build        node:latest bash -c "yarn install && yarn run build"
 
 buildwatch:
-	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:latest bash -c "yarn install && yarn run watch"
+	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:16 bash -c "yarn install && yarn run watch"
 
 buildupgrade:
 	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:latest bash -c "yarn install && yarn upgrade"

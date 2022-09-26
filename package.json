@@ -1,34 +1,34 @@
 {
   "name": "grafana-pnp-datasource",
-  "version": "1.0.9",
-  "description": "grafana pnp datasource",
-  "main": "index.js",
-  "scripts": {
-    "build": "grafana-toolkit plugin:build",
-    "test": "grafana-toolkit plugin:test",
-    "dev": "grafana-toolkit plugin:dev",
-    "watch": "grafana-toolkit plugin:dev --watch",
-    "prettier:check": "prettier --list-different \"**/*.{ts,tsx,scss}\"",
-    "prettier:write": "prettier --list-different \"**/*.{ts,tsx,scss}\" --write"
+  "version": "1.1.0",
+  "description": "grafana datasource for pnp4nagios",
+  "author": "Sven Nierlein",
+  "license": "MIT",
+  "homepage": "https://github.com/sni/grafana-pnp-datasource#readme",
+  "bugs": {
+    "url": "https://github.com/sni/grafana-pnp-datasource/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sni/grafana-pnp-datasource.git"
   },
-  "author": "Sven Nierlein",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sni/grafana-pnp-datasource/issues"
+  "scripts": {
+    "build": "grafana-toolkit plugin:build",
+    "test": "grafana-toolkit plugin:test",
+    "dev": "grafana-toolkit plugin:dev",
+    "watch": "grafana-toolkit plugin:dev --watch",
+    "sign": "grafana-toolkit plugin:sign",
+    "start": "yarn watch",
+    "prettier:check": "prettier --list-different \"**/*.{ts,tsx,scss}\"",
+    "prettier:write": "prettier --list-different \"**/*.{ts,tsx,scss}\" --write"
   },
   "devDependencies": {
-    "@grafana/data": ">=8.0.0",
-    "@grafana/runtime": ">=8.0.0",
-    "@grafana/toolkit": ">=8.0.0",
-    "@grafana/ui": ">=8.0.0",
-    "@types/lodash": ">=4.0.0"
+    "@grafana/data": "latest",
+    "@grafana/toolkit": "latest",
+    "@grafana/runtime": "latest",
+    "@grafana/ui": "latest",
+    "@types/lodash": "latest"
   },
   "dependencies": {
-    "lodash": ">=4.0.0"
-  },
-  "homepage": "https://github.com/sni/grafana-pnp-datasource#readme"
+  }
 }

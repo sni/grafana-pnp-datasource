@@ -1104,7 +1104,7 @@
   resolved "https://registry.yarnpkg.com/@grafana/aws-sdk/-/aws-sdk-0.0.3.tgz#bc632c6c77971a5474acbe45847420503679fc75"
   integrity sha512-V0PJLk+oU1C33knurXp8BkT5N2ctDu9b21zpK16vkJAs5aOiH/OaOhQ/IP9ipxYhB+b9PFjr8RXagV/8XJ8xwg==
 
-"@grafana/data@8.3.6", "@grafana/data@>=8.0.0":
+"@grafana/data@8.3.6", "@grafana/data@latest":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@grafana/data/-/data-8.3.6.tgz#7c49a788cc4c3a10413ec76125cfc63a44c3ec01"
   integrity sha512-tlw0qnOvPpkN635KvUfTZYiqgYbinvS9x010wbcu6YVJJVIZFBI0z2zN9WNNe0pxUgKZ497vqS964uuT/knQgQ==
@@ -1152,7 +1152,7 @@
     prettier "2.2.1"
     typescript "4.3.4"
 
-"@grafana/runtime@>=8.0.0":
+"@grafana/runtime@latest":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@grafana/runtime/-/runtime-8.3.6.tgz#504ffd5f48eba236c5742a960ee3809e01c93bc7"
   integrity sha512-Hj2Z4h+CfIc44bFkiOpPMlL9i8Me2HdoNlpm9Ky6Fj2I9FVMQFnrE7W/kZDiTMVwTXnwgWrRtx9SoDJcSI47bg==
@@ -1197,7 +1197,7 @@
     tiny-invariant "^1.0.1"
     tiny-warning "^0.0.3"
 
-"@grafana/toolkit@>=8.0.0":
+"@grafana/toolkit@latest":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@grafana/toolkit/-/toolkit-8.3.6.tgz#99931b42f0d5eba15215d86e9162d0479b67f748"
   integrity sha512-1+nGYtpn879O76mZ6QH/iEyOtzNn/i6h0kM3oybxd0Nd6N6kzRDs1+3jXaORCgnpDV/oxfY84bnG+6F7I9bB9g==
@@ -1285,7 +1285,7 @@
   resolved "https://registry.yarnpkg.com/@grafana/tsconfig/-/tsconfig-1.0.0-rc1.tgz#d07ea16755a50cae21000113f30546b61647a200"
   integrity sha512-nucKPGyzlSKYSiJk5RA8GzMdVWhdYNdF+Hh65AXxjD9PlY69JKr5wANj8bVdQboag6dgg0BFKqgKPyY+YtV4Iw==
 
-"@grafana/ui@8.3.6", "@grafana/ui@>=8.0.0":
+"@grafana/ui@8.3.6", "@grafana/ui@latest":
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-8.3.6.tgz#783f6b0b1b282f3277ec58b8384ea47ec7e513b0"
   integrity sha512-heUFfJb2wgui0IO4T2YCbcv4QuYBXdQKfGABeAuGnps3RI7L1H1n2RjJxRrUGUYBWHxtnsOrhq/zrfRv51lMMQ==
@@ -2201,7 +2201,7 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
   integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
 
-"@types/lodash@>=4.0.0":
+"@types/lodash@latest":
   version "4.14.178"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.178.tgz#341f6d2247db528d4a13ddbb374bcdc80406f4f8"
   integrity sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==
@@ -7806,7 +7806,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.21, lodash@>=4.0.0, lodash@^4.1.1, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.7.0:
+lodash@4.17.21, lodash@^4.1.1, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
