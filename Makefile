@@ -7,24 +7,25 @@ DOCKER=docker run \
 		-w "/src" \
 		-u $(shell id -u) \
 		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
+NODEVERSION=16
 
 build:
-	$(DOCKER)    --name $(PLUGINNAME)-build        node:latest bash -c "yarn install && yarn run build"
+	$(DOCKER)    --name $(PLUGINNAME)-build        node:$(NODEVERSION) bash -c "yarn install && yarn run build"
 
 buildwatch:
-	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:16 bash -c "yarn install && yarn run watch"
+	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "yarn install && yarn run watch"
 
 buildupgrade:
-	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:latest bash -c "yarn install && yarn upgrade"
+	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "yarn install && yarn upgrade"
 
 buildsign:
-	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:latest npx --legacy-peer-deps @grafana/toolkit plugin:sign
+	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx --legacy-peer-deps @grafana/toolkit plugin:sign
 
 prettier:
 	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx prettier --write --ignore-unknown src/
 
 buildshell:
-	$(DOCKER) -i --name $(PLUGINNAME)-buildshell   node:latest bash
+	$(DOCKER) -i --name $(PLUGINNAME)-buildshell   node:$(NODEVERSION) bash
 
 grafanadev:
 	docker run --rm -it -v $(shell pwd)/dist:/var/lib/grafana/plugins/$(PLUGINNAME) \
