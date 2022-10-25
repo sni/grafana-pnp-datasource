@@ -36,6 +36,7 @@ grafanadev:
 
 clean:
 	rm -rf dist
+	rm -rf node_modules
 
 releasebuild:
 	@if [ "x$(TAGVERSION)" = "x" ]; then echo "ERROR: must be on a git tag, got: $(shell git describe --tag --dirty)"; exit 1; fi
