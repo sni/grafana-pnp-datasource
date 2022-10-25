@@ -5,7 +5,8 @@ DOCKER=docker run \
 		--rm \
 		-v $(shell pwd):/src \
 		-w "/src" \
-		-u $(shell id -u) \
+		-u $(shell id -u):$(shell id -g) \
+		-e "HOME=/src" \
 		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
 NODEVERSION=16
 export NODE_PATH=$(shell pwd)/node_modules
@@ -44,6 +45,8 @@ test: build prettiercheck
 clean:
 	rm -rf dist
 	rm -rf node_modules
+	rm -rf .yarnrc
+	rm -rf .npm
 
 releasebuild:
 	@if [ "x$(TAGVERSION)" = "x" ]; then echo "ERROR: must be on a git tag, got: $(shell git describe --tag --dirty)"; exit 1; fi
