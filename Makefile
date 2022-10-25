@@ -9,7 +9,7 @@ DOCKER=docker run \
 		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
 NODEVERSION=16
 export NODE_PATH=$(shell pwd)/node_modules
-YARN=yarn --no-default-rc --global-folder=/src/.
+YARN=yarn
 
 build:
 	$(DOCKER)    --name $(PLUGINNAME)-build        node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run build"
