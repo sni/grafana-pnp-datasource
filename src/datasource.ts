@@ -240,7 +240,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
             message: 'Successfully connected to PNP v' + response.data.pnp_version,
           };
         }
-        return { status: 'error', message: '' };
+        return { status: 'error', message: 'invalid url, did not find pnp version in response.' };
       })
       .catch((err) => {
         if (err.status && err.status >= 400) {
