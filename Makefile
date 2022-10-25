@@ -22,7 +22,10 @@ buildsign:
 	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx --legacy-peer-deps @grafana/toolkit plugin:sign
 
 prettier:
-	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx prettier --write --ignore-unknown src/
+	$(DOCKER)    --name $(PLUGINNAME)-buildpret    node:$(NODEVERSION) npx prettier --write --ignore-unknown src/
+
+prettiercheck:
+	$(DOCKER)    --name $(PLUGINNAME)-buildprtchck node:$(NODEVERSION) npx prettier --check --ignore-unknown src/
 
 buildshell:
 	$(DOCKER) -i --name $(PLUGINNAME)-buildshell   node:$(NODEVERSION) bash
@@ -33,6 +36,8 @@ grafanadev:
 		-e "GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=$(PLUGINNAME)" \
 		-e "GF_USERS_DEFAULT_THEME=light" \
 		grafana/grafana
+
+test: build prettiercheck
 
 clean:
 	rm -rf dist
