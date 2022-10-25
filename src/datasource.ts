@@ -78,12 +78,12 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
 
     const data = [] as DataQueryResponseData[];
 
-    for (var x = 0; x < result.data.targets.length; x++) {
+    for (let x = 0; x < result.data.targets.length; x++) {
       const target = options.targets[x];
       const query = defaults(target, defaultQuery);
-      for (var k = 0; k < result.data.targets[x].length; k++) {
+      for (let k = 0; k < result.data.targets[x].length; k++) {
         const res = result.data.targets[x][k];
-        var alias = res.perflabel;
+        let alias = res.perflabel;
         if (target.alias) {
           alias = target.alias;
           const scopedVars: ScopedVars = {
@@ -102,12 +102,12 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
           ],
         });
 
-        var datapoints = res.datapoints;
-        var length = datapoints.length;
+        let datapoints = res.datapoints;
+        let length = datapoints.length;
 
         // remove the last few "null" values from the series because the last value is quite often null
         // and would break current value in legend tables
-        for (var y = 1; y < 5; y++) {
+        for (let y = 1; y < 5; y++) {
           if (length > y && datapoints[length - y][0] === null) {
             datapoints.pop();
           } else {
@@ -116,16 +116,16 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
         }
 
         length = datapoints.length;
-        var fill = options.targets[x].fill;
+        let fill = options.targets[x].fill;
         if (fill !== 'fill') {
-          var fillWith = 0 as any;
+          let fillWith = 0 as any;
           if (fill === 'zero') {
             fillWith = 0;
           }
           if (fill === 'gap') {
             fillWith = undefined;
           }
-          for (y = 0; y < length; y++) {
+          for (let y = 0; y < length; y++) {
             if (datapoints[y][0] === null) {
               datapoints[y][0] = fillWith;
             }
@@ -133,9 +133,9 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
         }
 
         if (options.targets[x].factor && options.targets[x].factor !== '') {
-          var factor = Function(String(options.targets[x].factor))();
+          let factor = Function(String(options.targets[x].factor))();
           if (factor !== 1 && !isNaN(factor)) {
-            for (y = 0; y < length; y++) {
+            for (let y = 0; y < length; y++) {
               if (datapoints[y][0] !== null) {
                 datapoints[y][0] *= factor;
               }
@@ -165,17 +165,17 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
       return [];
     }
 
-    var query = query_string.split(/\s+/);
+    let query = query_string.split(/\s+/);
 
     if (query.length === 0) {
       return [];
     }
 
-    var type = query[0].replace(/s$/, '');
+    let type = query[0].replace(/s$/, '');
     query.shift();
 
     // parse simple where statements
-    var query_params: Record<string, any> = {};
+    let query_params: Record<string, any> = {};
     if (query[0] !== undefined) {
       if (query[0].toLowerCase() !== 'where') {
         throw new Error('query syntax error, expecting WHERE');
@@ -183,7 +183,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
       query.shift();
 
       while (query.length >= 3) {
-        var op = query[1];
+        let op = query[1];
         if (op !== '=') {
           throw new Error("query syntax error, operator must be '='");
         }
@@ -281,12 +281,12 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     if (value === undefined || value == null) {
       return value;
     }
-    var matches = value.match(/^\/?\^?\{(.*)\}\$?\/?$/);
+    let matches = value.match(/^\/?\^?\{(.*)\}\$?\/?$/);
     if (!matches) {
       return value;
     }
-    var values = matches[1].split(/,/);
-    for (var x = 0; x < values.length; x++) {
+    let values = matches[1].split(/,/);
+    for (let x = 0; x < values.length; x++) {
       values[x] = values[x].replace(/\//, '\\/');
     }
     return '/^(' + values.join('|') + ')$/';
