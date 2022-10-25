@@ -29,6 +29,5 @@
     "@grafana/ui": "latest",
     "@types/lodash": "latest"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

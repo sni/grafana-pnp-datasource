@@ -9,15 +9,16 @@ DOCKER=docker run \
 		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
 NODEVERSION=16
 export NODE_PATH=$(shell pwd)/node_modules
+YARN=yarn --no-default-rc
 
 build:
-	$(DOCKER)    --name $(PLUGINNAME)-build        node:$(NODEVERSION) bash -c "yarn install && yarn run build"
+	$(DOCKER)    --name $(PLUGINNAME)-build        node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run build"
 
 buildwatch:
-	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "yarn install && yarn run watch"
+	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run watch"
 
 buildupgrade:
-	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "yarn install && yarn upgrade"
+	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) upgrade"
 
 buildsign:
 	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx --legacy-peer-deps @grafana/toolkit plugin:sign
