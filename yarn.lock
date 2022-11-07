@@ -1796,7 +1796,7 @@
   resolved "https://registry.yarnpkg.com/@grafana/tsconfig/-/tsconfig-1.2.0-rc1.tgz#10973c978ec95b0ea637511254b5f478bce04de7"
   integrity sha512-+SgQeBQ1pT6D/E3/dEdADqTrlgdIGuexUZ8EU+8KxQFKUeFeU7/3z/ayI2q/wpJ/Kr6WxBBNlrST6aOKia19Ag==
 
-"@grafana/ui@9.2.2", "@grafana/ui@latest":
+"@grafana/ui@9.2.2":
   version "9.2.2"
   resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-9.2.2.tgz#f1e7d36ec262b3792e4dc8c70b3476db95718611"
   integrity sha512-82x6Vor9KOKMlmnFTF8esrT8c8wQmQzT8dFwA2ZMxAz9p3O9K/Xy3kRbhkKbkhzw+J8Swq0t6hXQtMqzIY06JQ==
@@ -1862,7 +1862,7 @@
     uplot "1.6.22"
     uuid "8.3.2"
 
-"@grafana/ui@9.2.3":
+"@grafana/ui@9.2.3", "@grafana/ui@latest":
   version "9.2.3"
   resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-9.2.3.tgz#b7b957a118fa8a1382cab4ec5f5dcc3b7b64d9d1"
   integrity sha512-0XmjDqV4wieD17EsJE8n+EGEsMKo2NxPqcib8AfqC7o5xtWMdYnWwDPcs1h9y5K5pA9ulBcCfrHlUYo4LbhSZQ==
@@ -4110,12 +4110,12 @@ cjs-module-lexer@^1.0.0:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.2.tgz#9f84ba3244a512f3a54e5277e8eef4c489864e40"
   integrity sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==
 
-classnames@2.3.1, classnames@2.x, classnames@^2.2.1, classnames@^2.2.5, classnames@^2.2.6:
+classnames@2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
 
-classnames@^2.3.1:
+classnames@2.x, classnames@^2.2.1, classnames@^2.2.5, classnames@^2.2.6, classnames@^2.3.1:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
@@ -7440,15 +7440,10 @@ moment-timezone@0.5.35:
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.29.4:
+moment@2.29.4, moment@2.x, "moment@>= 2.9.0":
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
-
-moment@2.x, "moment@>= 2.9.0":
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 monaco-editor@0.34.0:
   version "0.34.0"
