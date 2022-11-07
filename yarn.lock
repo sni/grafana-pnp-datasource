@@ -1585,7 +1585,7 @@
     ua-parser-js "^1.0.2"
     web-vitals "^2.1.4"
 
-"@grafana/data@9.2.2", "@grafana/data@latest":
+"@grafana/data@9.2.2":
   version "9.2.2"
   resolved "https://registry.yarnpkg.com/@grafana/data/-/data-9.2.2.tgz#e85e80359654102a2125a3659025bd93943b86e3"
   integrity sha512-RYnTu8e6d+NbkAfftjyl/SuDiFQ2zMX+CfE9Qf7nmSWyUrUUov0elvzOS14dudnQaMQEzEubTGKIKJYZDiemDw==
@@ -1611,7 +1611,7 @@
     uplot "1.6.22"
     xss "1.0.13"
 
-"@grafana/data@9.2.3":
+"@grafana/data@9.2.3", "@grafana/data@latest":
   version "9.2.3"
   resolved "https://registry.yarnpkg.com/@grafana/data/-/data-9.2.3.tgz#ef8fcbb3de75a3e24dc65419beceae2125b2d052"
   integrity sha512-2gTStevikAAlOIlFE00fTf/6qQxtqpDjIIUDAhv1u0TqM9+R8wJX0vQSGUdW3LQ/EgtoW5uMGAK4ehiOnDhpOg==
