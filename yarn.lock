@@ -1560,9 +1560,9 @@
     tslib "2.4.0"
 
 "@grafana/toolkit@latest":
-  version "9.2.3"
-  resolved "https://registry.yarnpkg.com/@grafana/toolkit/-/toolkit-9.2.3.tgz#54b2f8214145898b370da2292e6723325911207b"
-  integrity sha512-IMhRA+J9pOWpdJrjNOXYG9E4UkKZoSdy9csZG7WXTS6dh8hMzimKRAdEJQwqHphzq4Uawik9elwCdHMyEOBSlA==
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@grafana/toolkit/-/toolkit-9.2.4.tgz#91ab3c391297a4b1ee5d4a8a0deb9118739b6295"
+  integrity sha512-EHaXvJAVlN9lf0iQoBh9V6XZxWmgPPRrJazJS551jG1nWnk6ycvz7yqxKhXB4Jk0MnLZGBtPFPh/CczcYoVnrw==
   dependencies:
     "@babel/core" "7.18.9"
     "@babel/plugin-proposal-class-properties" "7.18.6"
@@ -1576,10 +1576,10 @@
     "@babel/preset-env" "7.18.9"
     "@babel/preset-react" "7.18.6"
     "@babel/preset-typescript" "7.18.6"
-    "@grafana/data" "9.2.3"
+    "@grafana/data" "9.2.4"
     "@grafana/eslint-config" "5.0.0"
     "@grafana/tsconfig" "^1.2.0-rc1"
-    "@grafana/ui" "9.2.3"
+    "@grafana/ui" "9.2.4"
     "@jest/core" "27.5.1"
     "@types/command-exists" "^1.2.0"
     "@types/eslint" "8.4.1"
