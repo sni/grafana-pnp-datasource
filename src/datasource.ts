@@ -221,7 +221,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
       });
     }
     if (type === 'label') {
-      return lastValueFrom(this.request('POST', '/index.php/api/label', query_params)).then((response) => {
+      return lastValueFrom(this.request('POST', '/index.php/api/labels', query_params)).then((response) => {
         return response.data.labels.map((row: { name?: string; label?: string }) => {
           return { text: row.label || row.name, value: row.label || row.name };
         });
