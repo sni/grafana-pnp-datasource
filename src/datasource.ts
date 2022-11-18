@@ -208,6 +208,12 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
 
     if (type === 'host') {
       return lastValueFrom(this.request('POST', '/index.php/api/hosts', query_params)).then((response) => {
+        if (response && response.data && response.data.error) {
+          throw new Error(response.data.error);
+        }
+        if (!response || !response.data || !response.data.hosts) {
+          return;
+        }
         return response.data.hosts.map((row: { name?: string }) => {
           return { text: row.name, value: row.name };
         });
@@ -215,6 +221,13 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     }
     if (type === 'service') {
       return lastValueFrom(this.request('POST', '/index.php/api/services', query_params)).then((response) => {
+        console.log(response);
+        if (response && response.data && response.data.error) {
+          throw new Error(response.data.error);
+        }
+        if (!response || !response.data || !response.data.services) {
+          return;
+        }
         return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
           return { text: row.servicedesc || row.name, value: row.servicedesc || row.name };
         });
@@ -222,13 +235,19 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     }
     if (type === 'label') {
       return lastValueFrom(this.request('POST', '/index.php/api/labels', query_params)).then((response) => {
+        if (response && response.data && response.data.error) {
+          throw new Error(response.data.error);
+        }
+        if (!response || !response.data || !response.data.labels) {
+          return;
+        }
         return response.data.labels.map((row: { name?: string; label?: string }) => {
           return { text: row.label || row.name, value: row.label || row.name };
         });
       });
     }
 
-    return [];
+    throw new Error('unknown query type, select one of host, service or label');
   }
 
   async testDatasource() {
