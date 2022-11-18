@@ -1,5 +1,9 @@
 ### Changelog
 
+2.0.1  2022-11-18
+    - fix label query
+    - improve error reporting when editing template queries
+
 2.0.0  2022-09-26
     - rebuild with react for grafana 9
 
