@@ -38,15 +38,14 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
 
     const templateSrv = getTemplateSrv();
 
-    // set defaults
     options.targets.map((target) => {
       target = defaults(target, defaultQuery);
-      target.alias = templateSrv.replace(target.alias);
-      target.host = this._replaceRegexWithAll(target.host);
-      target.service = this._replaceRegexWithAll(target.service);
-      target.perflabel = this._replaceRegexWithAll(target.perflabel);
-      target.fill = templateSrv.replace(target.fill);
-      target.factor = templateSrv.replace(String(target.factor || ''));
+      target.alias = templateSrv.replace(target.alias, options.scopedVars);
+      target.host = this._replaceRegexWithAll(target.host, options.scopedVars);
+      target.service = this._replaceRegexWithAll(target.service, options.scopedVars);
+      target.perflabel = this._replaceRegexWithAll(target.perflabel, options.scopedVars);
+      target.fill = templateSrv.replace(target.fill, options.scopedVars);
+      target.factor = templateSrv.replace(String(target.factor || ''), options.scopedVars);
     });
 
     options.targets = options.targets.filter((t) => !t.hide);
@@ -287,7 +286,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     return getBackendSrv().fetch<any>(options);
   }
 
-  _replaceRegexWithAll(value: string | undefined): string {
+  _replaceRegexWithAll(value: string | undefined, scopedVars?: ScopedVars): string {
     if(value == undefined) {
       return ""
     }
@@ -313,7 +312,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     }
 
     const templateSrv = getTemplateSrv();
-    const scopedAllVars: ScopedVars = {}
+    const scopedAllVars: ScopedVars = scopedVars || {}
     templateSrv.getVariables().forEach((tplVal: any) => {
       if(tplVal.multi && tplVal.includeAll && tplVal.current.text.length == 1 && tplVal.current.text[0] == "All") {
         scopedAllVars[tplVal.name] = {text: tplVal.name, value: ".*"}

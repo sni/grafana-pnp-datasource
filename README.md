@@ -52,11 +52,14 @@ are supported in the host and service field by adding slashes like `/.*/`.
 
 ### Variables
 
-You may use the following variables in the alias field
+You may use the following variables in the alias field:
 
     - $tag_host: will be replaced with the hostname
     - $tag_service: will be replaced with the service name
     - $tag_label: will be replaced with the label
+    - $tag_perflabel: same as label
+
+All standard variables will also do.
 
 ### Templating
 

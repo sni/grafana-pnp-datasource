@@ -3,6 +3,7 @@
 2.0.2  2023-05-30
     - fix using factor
     - fix using variables in query editor suggestions
+    - fix using variables to repeat rows
     - replace All with .* in multi-option dropdowns
     - make query editor input fields clearable
 
