@@ -1,5 +1,9 @@
 ### Changelog
 
+2.0.2  2023-05-30
+    - fix using factor
+    - make query editor input fields clearable
+
 2.0.1  2022-11-18
     - fix label query
     - improve error reporting when editing template queries
