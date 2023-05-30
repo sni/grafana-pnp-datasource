@@ -106,6 +106,7 @@ export const QueryEditor = (props: Props) => {
                 value={toSelectableValue(props.query.host || '')}
                 loadOptions={loadHosts}
                 onChange={(v) => {
+                  if(v === null) { v = {value: ""} }
                   onValueChange('host', v.value);
                 }}
                 noOptionsMessage="No hosts found"
@@ -113,6 +114,7 @@ export const QueryEditor = (props: Props) => {
                 openMenuOnFocus={true}
                 filterOption={filterOptions}
                 width={28}
+                isClearable={true}
               />
             </div>
           </InlineSegmentGroup>
@@ -127,6 +129,7 @@ export const QueryEditor = (props: Props) => {
                 value={toSelectableValue(props.query.service || '')}
                 loadOptions={loadServices}
                 onChange={(v) => {
+                  if(v === null) { v = {value: ""} }
                   onValueChange('service', v.value);
                 }}
                 noOptionsMessage="No services found"
@@ -135,6 +138,7 @@ export const QueryEditor = (props: Props) => {
                 cacheOptions={false}
                 filterOption={filterOptions}
                 width={28}
+                isClearable={true}
               />
             </div>
           </InlineSegmentGroup>
@@ -149,6 +153,7 @@ export const QueryEditor = (props: Props) => {
                 value={toSelectableValue(props.query.perflabel || '')}
                 loadOptions={loadLabel}
                 onChange={(v) => {
+                  if(v === null) { v = {value: ""} }
                   onValueChange('perflabel', v.value);
                 }}
                 noOptionsMessage="No performance label found"
@@ -156,6 +161,7 @@ export const QueryEditor = (props: Props) => {
                 openMenuOnFocus={true}
                 filterOption={filterOptions}
                 width={28}
+                isClearable={true}
               />
             </div>
           </InlineSegmentGroup>
