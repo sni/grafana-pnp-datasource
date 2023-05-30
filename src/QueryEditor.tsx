@@ -65,8 +65,8 @@ export const QueryEditor = (props: Props) => {
 
   const loadServices = (filter: string): Promise<SelectableValue[]> => {
     return lastValueFrom(
-      props.datasource.request('POST', '/index.php/api/services', { host: props.query.host || '/.*/' })
-    )
+        props.datasource.request('POST', '/index.php/api/services', { host: props.query.host || '/.*/' })
+      )
       .then((response) => {
         // empty response is an array instead of a hashmap
         if(Array.isArray(response.data)) {
@@ -81,11 +81,11 @@ export const QueryEditor = (props: Props) => {
 
   const loadLabel = (filter: string): Promise<SelectableValue[]> => {
     return lastValueFrom(
-      props.datasource.request('POST', '/index.php/api/labels', {
-        host: props.query.host || '/.*/',
-        service: props.query.service || '/.*/',
-      })
-    )
+        props.datasource.request('POST', '/index.php/api/labels', {
+          host: props.query.host || '/.*/',
+          service: props.query.service || '/.*/',
+        })
+      )
       .then((response) => {
         // empty response is an array instead of a hashmap
         if(Array.isArray(response.data)) {
