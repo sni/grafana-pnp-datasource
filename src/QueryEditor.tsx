@@ -52,6 +52,10 @@ export const QueryEditor = (props: Props) => {
     // hosts api is not able to filter on server side
     return lastValueFrom(props.datasource.request('GET', '/index.php/api/hosts'))
       .then((response) => {
+        // empty response is an array instead of a hashmap
+        if(Array.isArray(response.data)) {
+          return([]);
+        }
         return response.data.hosts.map((row: { name?: string }) => {
           return { label: row.name, value: row.name };
         });
@@ -64,6 +68,10 @@ export const QueryEditor = (props: Props) => {
       props.datasource.request('POST', '/index.php/api/services', { host: props.query.host || '/.*/' })
     )
       .then((response) => {
+        // empty response is an array instead of a hashmap
+        if(Array.isArray(response.data)) {
+          return([]);
+        }
         return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
           return { label: row.servicedesc || row.name, value: row.name };
         });
@@ -79,6 +87,10 @@ export const QueryEditor = (props: Props) => {
       })
     )
       .then((response) => {
+        // empty response is an array instead of a hashmap
+        if(Array.isArray(response.data)) {
+          return([]);
+        }
         return response.data.labels.map((row: { name?: string; label?: string }) => {
           return { label: row.label || row.name, value: row.label || row.name };
         });
