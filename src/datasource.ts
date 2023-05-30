@@ -124,7 +124,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
         }
 
         if (options.targets[x].factor && options.targets[x].factor !== '') {
-          const factor = Number(Function("return("+String(options.targets[x].factor)+")"));
+          const factor = Number(Function('return(' + String(options.targets[x].factor) + ')'));
           if (factor !== 1 && !isNaN(factor)) {
             for (let y = 0; y < length; y++) {
               if (datapoints[y][0] !== null) {
@@ -179,7 +179,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
           throw new Error("query syntax error, operator must be '='");
         }
 
-        query_params[query[0].toLocaleLowerCase()] = getTemplateSrv().replace(query[2], undefined, "regex");
+        query_params[query[0].toLocaleLowerCase()] = getTemplateSrv().replace(query[2], undefined, 'regex');
         query.splice(0, 3); // shift 3 elements
 
         if (query[0] !== undefined) {
@@ -287,38 +287,38 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
   }
 
   _replaceRegexWithAll(value: string | undefined, scopedVars?: ScopedVars): string {
-    if(value === undefined) {
-      return ""
+    if (value === undefined) {
+      return '';
     }
 
     const replacer = (value: string | string[]): string => {
-      if(typeof value === 'string') {
-        if(value === ".*") {
-          return(value);
+      if (typeof value === 'string') {
+        if (value === '.*') {
+          return value;
         }
         return escapeRegExp(value);
       }
-      if(value.length === 0) {
-        return("");
+      if (value.length === 0) {
+        return '';
       }
-      if(value.length === 1) {
-        return(escapeRegExp(value[0]));
+      if (value.length === 1) {
+        return escapeRegExp(value[0]);
       }
       let parts: string[] = [];
       value.forEach((v) => {
         parts.push(escapeRegExp(v));
-      })
-      return("("+parts.join("|")+")");
-    }
+      });
+      return '(' + parts.join('|') + ')';
+    };
 
     const templateSrv = getTemplateSrv();
-    const scopedAllVars: ScopedVars = scopedVars || {}
+    const scopedAllVars: ScopedVars = scopedVars || {};
     templateSrv.getVariables().forEach((tplVal: any) => {
-      if(tplVal.multi && tplVal.includeAll && tplVal.current.text.length === 1 && tplVal.current.text[0] === "All") {
-        scopedAllVars[tplVal.name] = {text: tplVal.name, value: ".*"}
+      if (tplVal.multi && tplVal.includeAll && tplVal.current.text.length === 1 && tplVal.current.text[0] === 'All') {
+        scopedAllVars[tplVal.name] = { text: tplVal.name, value: '.*' };
       }
-    })
+    });
 
-    return(templateSrv.replace(value, scopedAllVars, replacer));
+    return templateSrv.replace(value, scopedAllVars, replacer);
   }
 }

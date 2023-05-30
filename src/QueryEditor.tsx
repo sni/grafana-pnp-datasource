@@ -53,8 +53,8 @@ export const QueryEditor = (props: Props) => {
     return lastValueFrom(props.datasource.request('GET', '/index.php/api/hosts'))
       .then((response) => {
         // empty response is an array instead of a hashmap
-        if(Array.isArray(response.data)) {
-          return([]);
+        if (Array.isArray(response.data)) {
+          return [];
         }
         return response.data.hosts.map((row: { name?: string }) => {
           return { label: row.name, value: row.name };
@@ -65,12 +65,14 @@ export const QueryEditor = (props: Props) => {
 
   const loadServices = (filter: string): Promise<SelectableValue[]> => {
     return lastValueFrom(
-        props.datasource.request('POST', '/index.php/api/services', { host: props.datasource._replaceRegexWithAll(props.query.host) || '/.*/' })
-      )
+      props.datasource.request('POST', '/index.php/api/services', {
+        host: props.datasource._replaceRegexWithAll(props.query.host) || '/.*/',
+      })
+    )
       .then((response) => {
         // empty response is an array instead of a hashmap
-        if(Array.isArray(response.data)) {
-          return([]);
+        if (Array.isArray(response.data)) {
+          return [];
         }
         return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
           return { label: row.servicedesc || row.name, value: row.name };
@@ -81,15 +83,15 @@ export const QueryEditor = (props: Props) => {
 
   const loadLabel = (filter: string): Promise<SelectableValue[]> => {
     return lastValueFrom(
-        props.datasource.request('POST', '/index.php/api/labels', {
-          host: props.datasource._replaceRegexWithAll(props.query.host) || '/.*/',
-          service: props.datasource._replaceRegexWithAll(props.query.service) || '/.*/',
-        })
-      )
+      props.datasource.request('POST', '/index.php/api/labels', {
+        host: props.datasource._replaceRegexWithAll(props.query.host) || '/.*/',
+        service: props.datasource._replaceRegexWithAll(props.query.service) || '/.*/',
+      })
+    )
       .then((response) => {
         // empty response is an array instead of a hashmap
-        if(Array.isArray(response.data)) {
-          return([]);
+        if (Array.isArray(response.data)) {
+          return [];
         }
         return response.data.labels.map((row: { name?: string; label?: string }) => {
           return { label: row.label || row.name, value: row.label || row.name };
@@ -118,7 +120,9 @@ export const QueryEditor = (props: Props) => {
                 value={toSelectableValue(props.query.host || '')}
                 loadOptions={loadHosts}
                 onChange={(v) => {
-                  if(v === null) { v = {value: ""} }
+                  if (v === null) {
+                    v = { value: '' };
+                  }
                   onValueChange('host', v.value);
                 }}
                 noOptionsMessage="No hosts found"
@@ -141,7 +145,9 @@ export const QueryEditor = (props: Props) => {
                 value={toSelectableValue(props.query.service || '')}
                 loadOptions={loadServices}
                 onChange={(v) => {
-                  if(v === null) { v = {value: ""} }
+                  if (v === null) {
+                    v = { value: '' };
+                  }
                   onValueChange('service', v.value);
                 }}
                 noOptionsMessage="No services found"
@@ -165,7 +171,9 @@ export const QueryEditor = (props: Props) => {
                 value={toSelectableValue(props.query.perflabel || '')}
                 loadOptions={loadLabel}
                 onChange={(v) => {
-                  if(v === null) { v = {value: ""} }
+                  if (v === null) {
+                    v = { value: '' };
+                  }
                   onValueChange('perflabel', v.value);
                 }}
                 noOptionsMessage="No performance label found"
