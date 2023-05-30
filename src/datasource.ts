@@ -133,7 +133,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
         }
 
         if (options.targets[x].factor && options.targets[x].factor !== '') {
-          let factor = Function(String(options.targets[x].factor))();
+          const factor = Number(eval(String(options.targets[x].factor)));
           if (factor !== 1 && !isNaN(factor)) {
             for (let y = 0; y < length; y++) {
               if (datapoints[y][0] !== null) {
