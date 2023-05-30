@@ -124,7 +124,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
         }
 
         if (options.targets[x].factor && options.targets[x].factor !== '') {
-          const factor = Number(eval(String(options.targets[x].factor)));
+          const factor = Number(Function("return("+String(options.targets[x].factor)+")"));
           if (factor !== 1 && !isNaN(factor)) {
             for (let y = 0; y < length; y++) {
               if (datapoints[y][0] !== null) {
@@ -287,24 +287,24 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
   }
 
   _replaceRegexWithAll(value: string | undefined, scopedVars?: ScopedVars): string {
-    if(value == undefined) {
+    if(value === undefined) {
       return ""
     }
 
     const replacer = (value: string | string[]): string => {
-      if(typeof value == 'string') {
-        if(value == ".*") {
+      if(typeof value === 'string') {
+        if(value === ".*") {
           return(value);
         }
         return escapeRegExp(value);
       }
-      if(value.length == 0) {
+      if(value.length === 0) {
         return("");
       }
-      if(value.length == 1) {
+      if(value.length === 1) {
         return(escapeRegExp(value[0]));
       }
-      var parts : string[] = [];
+      let parts: string[] = [];
       value.forEach((v) => {
         parts.push(escapeRegExp(v));
       })
@@ -314,7 +314,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     const templateSrv = getTemplateSrv();
     const scopedAllVars: ScopedVars = scopedVars || {}
     templateSrv.getVariables().forEach((tplVal: any) => {
-      if(tplVal.multi && tplVal.includeAll && tplVal.current.text.length == 1 && tplVal.current.text[0] == "All") {
+      if(tplVal.multi && tplVal.includeAll && tplVal.current.text.length === 1 && tplVal.current.text[0] === "All") {
         scopedAllVars[tplVal.name] = {text: tplVal.name, value: ".*"}
       }
     })
