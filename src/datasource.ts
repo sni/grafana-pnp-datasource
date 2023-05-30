@@ -14,6 +14,7 @@ import { BackendSrvRequest, getBackendSrv, toDataQueryResponse, getTemplateSrv }
 import { lastValueFrom, Observable, throwError } from 'rxjs';
 
 import { PNPQuery, PNPDataSourceOptions, defaultQuery } from './types';
+import { escapeRegExp } from 'lodash';
 
 export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
   url?: string;
@@ -41,20 +42,11 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     options.targets.map((target) => {
       target = defaults(target, defaultQuery);
       target.alias = templateSrv.replace(target.alias);
-      target.host = this._fixup_regex(templateSrv.replace(target.host));
-      target.service = this._fixup_regex(templateSrv.replace(target.service));
-      target.perflabel = templateSrv.replace(target.perflabel);
+      target.host = this._replaceRegexWithAll(target.host);
+      target.service = this._replaceRegexWithAll(target.service);
+      target.perflabel = this._replaceRegexWithAll(target.perflabel);
       target.fill = templateSrv.replace(target.fill);
       target.factor = templateSrv.replace(String(target.factor || ''));
-
-      if (target.perflabel) {
-        if (!target.host) {
-          target.host = '/.*/';
-        }
-        if (!target.service) {
-          target.service = '/.*/';
-        }
-      }
     });
 
     options.targets = options.targets.filter((t) => !t.hide);
@@ -188,7 +180,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
           throw new Error("query syntax error, operator must be '='");
         }
 
-        query_params[query[0].toLocaleLowerCase()] = query[2];
+        query_params[query[0].toLocaleLowerCase()] = getTemplateSrv().replace(query[2], undefined, "regex");
         query.splice(0, 3); // shift 3 elements
 
         if (query[0] !== undefined) {
@@ -221,7 +213,6 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     }
     if (type === 'service') {
       return lastValueFrom(this.request('POST', '/index.php/api/services', query_params)).then((response) => {
-        console.log(response);
         if (response && response.data && response.data.error) {
           throw new Error(response.data.error);
         }
@@ -296,18 +287,39 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     return getBackendSrv().fetch<any>(options);
   }
 
-  _fixup_regex(value: any) {
-    if (value === undefined || value == null) {
-      return value;
+  _replaceRegexWithAll(value: string | undefined): string {
+    if(value == undefined) {
+      return ""
     }
-    let matches = value.match(/^\/?\^?\{(.*)\}\$?\/?$/);
-    if (!matches) {
-      return value;
+
+    const replacer = (value: string | string[]): string => {
+      if(typeof value == 'string') {
+        if(value == ".*") {
+          return(value);
+        }
+        return escapeRegExp(value);
+      }
+      if(value.length == 0) {
+        return("");
+      }
+      if(value.length == 1) {
+        return(escapeRegExp(value[0]));
+      }
+      var parts : string[] = [];
+      value.forEach((v) => {
+        parts.push(escapeRegExp(v));
+      })
+      return("("+parts.join("|")+")");
     }
-    let values = matches[1].split(/,/);
-    for (let x = 0; x < values.length; x++) {
-      values[x] = values[x].replace(/\//, '\\/');
-    }
-    return '/^(' + values.join('|') + ')$/';
+
+    const templateSrv = getTemplateSrv();
+    const scopedAllVars: ScopedVars = {}
+    templateSrv.getVariables().forEach((tplVal: any) => {
+      if(tplVal.multi && tplVal.includeAll && tplVal.current.text.length == 1 && tplVal.current.text[0] == "All") {
+        scopedAllVars[tplVal.name] = {text: tplVal.name, value: ".*"}
+      }
+    })
+
+    return(templateSrv.replace(value, scopedAllVars, replacer));
   }
 }

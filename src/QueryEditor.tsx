@@ -65,7 +65,7 @@ export const QueryEditor = (props: Props) => {
 
   const loadServices = (filter: string): Promise<SelectableValue[]> => {
     return lastValueFrom(
-        props.datasource.request('POST', '/index.php/api/services', { host: getTemplateSrv().replace(props.query.host) || '/.*/' })
+        props.datasource.request('POST', '/index.php/api/services', { host: props.datasource._replaceRegexWithAll(props.query.host) || '/.*/' })
       )
       .then((response) => {
         // empty response is an array instead of a hashmap
@@ -82,8 +82,8 @@ export const QueryEditor = (props: Props) => {
   const loadLabel = (filter: string): Promise<SelectableValue[]> => {
     return lastValueFrom(
         props.datasource.request('POST', '/index.php/api/labels', {
-          host: getTemplateSrv().replace(props.query.host) || '/.*/',
-          service: getTemplateSrv().replace(props.query.service) || '/.*/',
+          host: props.datasource._replaceRegexWithAll(props.query.host) || '/.*/',
+          service: props.datasource._replaceRegexWithAll(props.query.service) || '/.*/',
         })
       )
       .then((response) => {
