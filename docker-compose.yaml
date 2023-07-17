@@ -1,0 +1,23 @@
+version: '3.0'
+
+services:
+  grafana:
+    container_name: 'sni-pnp-datasource'
+    build:
+      context: ./.config
+      args:
+        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
+        grafana_version: ${GRAFANA_VERSION:-9.5.3}
+    ports:
+      - 3000:3000/tcp
+    volumes:
+      - ./dist:/var/lib/grafana/plugins/sni-pnp-datasource
+      - ./provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_USERS_DEFAULT_THEME=light
+  buildwatch:
+    image: node:16
+    command: bash -c "yarn install && yarn run dev"
+    working_dir: /src
+    volumes:
+      - .:/src

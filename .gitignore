@@ -6,3 +6,4 @@ dist/
 .yarnrc
 .npm/
 .bash_history
+.cache/

@@ -16,7 +16,7 @@ build:
 	$(DOCKER)    --name $(PLUGINNAME)-build        node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run build"
 
 buildwatch:
-	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run watch"
+	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run dev"
 
 buildupgrade:
 	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) upgrade"
@@ -36,16 +36,13 @@ prettiercheck:
 buildshell:
 	$(DOCKER) -i --name $(PLUGINNAME)-buildshell   node:$(NODEVERSION) bash
 
-grafanadev:
-	docker run --rm -it -v $(shell pwd)/dist:/var/lib/grafana/plugins/$(PLUGINNAME) \
-		-p 3000:3000 --name $(PLUGINNAME)-grafana \
-		-e "GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=$(PLUGINNAME)" \
-		-e "GF_USERS_DEFAULT_THEME=light" \
-		grafana/grafana
-
 test: build prettiercheck
 
+dev:
+	docker compose up
+
 clean:
+	-docker compose rm -f
 	rm -rf dist
 	rm -rf node_modules
 	rm -rf .yarnrc
