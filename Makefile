@@ -7,8 +7,8 @@ DOCKER=docker run \
 		-w "/src" \
 		-u $(shell id -u):$(shell id -g) \
 		-e "HOME=/src" \
-		-e "GRAFANA_API_KEY=$(GRAFANA_API_KEY)"
-NODEVERSION=16
+		-e "GRAFANA_ACCESS_POLICY_TOKEN=$(GRAFANA_API_KEY)"
+NODEVERSION=20
 export NODE_PATH=$(shell pwd)/node_modules
 YARN=yarn
 
@@ -25,7 +25,7 @@ buildaudit:
 	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) audit"
 
 buildsign:
-	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) npx --legacy-peer-deps @grafana/toolkit plugin:sign
+	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) bash -c "$(YARN) install && npx @grafana/sign-plugin"
 
 prettier:
 	$(DOCKER)    --name $(PLUGINNAME)-buildpret    node:$(NODEVERSION) npx prettier --write --ignore-unknown src/
@@ -39,10 +39,12 @@ buildshell:
 test: build prettiercheck
 
 dev:
+	@mkdir -p dist
 	docker compose up
 
 clean:
 	-docker compose rm -f
+	-sudo chown $(shell id -u):$(shell id -g) -R dist node_modules
 	rm -rf dist
 	rm -rf node_modules
 	rm -rf .yarnrc
@@ -50,8 +52,12 @@ clean:
 
 releasebuild:
 	@if [ "x$(TAGVERSION)" = "x" ]; then echo "ERROR: must be on a git tag, got: $(shell git describe --tag --dirty)"; exit 1; fi
-	make clean
-	make GRAFANA_API_KEY=$(GRAFANA_API_KEY) build buildsign
+	$(MAKE) clean
+	$(MAKE) build
+	$(MAKE) GRAFANA_ACCESS_POLICY_TOKEN=$(GRAFANA_API_KEY) buildsign
 	mv dist/ $(PLUGINNAME)
+	rm -f $(PLUGINNAME)-$(TAGVERSION).zip
 	zip $(PLUGINNAME)-$(TAGVERSION).zip $(PLUGINNAME) -r
 	rm -rf $(PLUGINNAME)
+	@echo "release build successful: $(TAGVERSION)"
+	ls -la $(PLUGINNAME)-$(TAGVERSION).zip

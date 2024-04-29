@@ -1,13 +1,10 @@
-version: '3.0'
-
 services:
   grafana:
-    container_name: 'sni-pnp-datasource'
     build:
       context: ./.config
       args:
-        grafana_image: ${GRAFANA_IMAGE:-grafana-enterprise}
-        grafana_version: ${GRAFANA_VERSION:-9.5.3}
+        grafana_image: ${GRAFANA_IMAGE:-grafana-oss}
+        grafana_version: ${GRAFANA_VERSION:-latest}
     ports:
       - 3000:3000/tcp
     volumes:
@@ -15,9 +12,16 @@ services:
       - ./provisioning:/etc/grafana/provisioning
     environment:
       - GF_USERS_DEFAULT_THEME=light
+    depends_on:
+      buildwatch:
+        condition: service_healthy # start as soon as the first build is ready
   buildwatch:
-    image: node:16
+    image: node:20
     command: bash -c "yarn install && yarn run dev"
     working_dir: /src
+    healthcheck:
+      test: test -f /src/dist/module.js
+      interval:       3s
+      start_period: 200s
     volumes:
       - .:/src
