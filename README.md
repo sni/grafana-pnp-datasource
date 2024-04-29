@@ -1,6 +1,8 @@
-## PNP Grafana Datasource - a Grafana backend datasource using PNP4Nagios to access RRD files
+# PNP Grafana Datasource
 
-### Installation
+A Grafana backend datasource using PNP4Nagios to access RRD files.
+
+## Installation
 
 Search for `pnp` in the Grafana plugins directory or simply use the grafana-cli command:
 
@@ -17,7 +19,7 @@ Otherwise follow these steps:
 
 Replace `release-1.0.7` with the last available release branch.
 
-#### PNP API
+### PNP API
 
 In order to make this datasource work, you need the pnp api. This is a separate
 project at the moment and will be part of the official pnp in the future. You
@@ -32,6 +34,8 @@ the controller folder with a simple wget:
 
 Adjust the output path to your installation.
 
+Or simply use the PNP fork from https://github.com/ConSol-Monitoring/pnp which has
+added the api already.
 
 ### Create Datasource
 
@@ -40,17 +44,17 @@ Add a new datasource and select:
     - Type 'PNP'
     - Url to pnp, ex.: 'https://localhost/sitename/pnp4nagios'
 
-### Example Dashboard
+## Example Dashboard
 
 This datasource ships an example dashboard which gets you started and shows the
 internal PNP statistics.
 
-### Queries
+## Queries
 
 Simply select host, service and label in the query editor. Regular expressions
 are supported in the host and service field by adding slashes like `/.*/`.
 
-### Variables
+## Variables
 
 You may use the following variables in the alias field:
 
@@ -61,7 +65,7 @@ You may use the following variables in the alias field:
 
 All standard variables will also do.
 
-### Templating
+## Templating
 
 There is basic templating variable support. There are 3 different querys available:
 
@@ -71,8 +75,7 @@ There is basic templating variable support. There are 3 different querys availab
 
 ![host variables examples](https://github.com/sni/grafana-pnp-datasource/blob/master/host_template_variables.png)
 
-
-### Development
+## Development
 
 To test and improve the plugin you can run Grafana instance in Docker using
 following command (in the source directory of this plugin):
@@ -86,8 +89,14 @@ The dev instance can be accessed at http://localhost:3000
 
 You need to add the datasource manually.
 
+### Testing
 
-#### Create Release
+For testing you can use the demo pnp instance at:
+
+- URL: https://demo.thruk.org/demo4/pnp4nagios
+- No authentication required
+
+### Create Release
 
 How to create a new release:
 
@@ -97,12 +106,10 @@ How to create a new release:
     %> vi CHANGELOG.md # add changelog entry
     %> git commit -am "Release v${RELVERSION}"
     %> git tag -a v${RELVERSION} -m "Create release tag v${RELVERSION}"
-    %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} clean releasebuild
-    # upload zip somewhere and validate on https://plugin-validator.grafana.net/
+    %> make GRAFANA_API_KEY=${GRAFANA_API_KEY} releasebuild
     # create release here https://github.com/sni/grafana-pnp-datasource/releases/new
     # submit plugin update here https://grafana.com/orgs/sni/plugins
 
-
-### Changelog
+## Changelog
 
 see CHANGELOG.md
