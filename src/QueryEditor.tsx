@@ -36,7 +36,7 @@ export const QueryEditor = (props: Props) => {
   const { onRunQuery } = props;
   const debouncedRunQuery = useMemo(() => debounce(onRunQuery, 500), [onRunQuery]);
 
-  const prependDasboardVariables = (data: SelectableValue[]) => {
+  const prependDashboardVariables = (data: SelectableValue[]) => {
     getTemplateSrv()
       .getVariables()
       .forEach((v, i) => {
@@ -60,7 +60,7 @@ export const QueryEditor = (props: Props) => {
           return { label: row.name, value: row.name };
         });
       })
-      .then(prependDasboardVariables);
+      .then(prependDashboardVariables);
   };
 
   const loadServices = (filter: string): Promise<SelectableValue[]> => {
@@ -78,7 +78,7 @@ export const QueryEditor = (props: Props) => {
           return { label: row.servicedesc || row.name, value: row.name };
         });
       })
-      .then(prependDasboardVariables);
+      .then(prependDashboardVariables);
   };
 
   const loadLabel = (filter: string): Promise<SelectableValue[]> => {
@@ -97,7 +97,7 @@ export const QueryEditor = (props: Props) => {
           return { label: row.label || row.name, value: row.label || row.name };
         });
       })
-      .then(prependDasboardVariables);
+      .then(prependDashboardVariables);
   };
 
   const onValueChange = (key: keyof PNPQuery, value: any) => {
