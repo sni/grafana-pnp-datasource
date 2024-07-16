@@ -11,6 +11,7 @@ DOCKER=docker run \
 NODEVERSION=20
 export NODE_PATH=$(shell pwd)/node_modules
 YARN=yarn
+SHELL=bash
 
 build:
 	$(DOCKER)    --name $(PLUGINNAME)-build        node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run build"
@@ -19,13 +20,19 @@ buildwatch:
 	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run dev"
 
 buildupgrade:
-	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) upgrade"
+	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) upgrade $(filter-out $@,$(MAKECMDGOALS))"
+
+buildyarn:
+	$(DOCKER)    --name $(PLUGINNAME)-buildyarn    node:$(NODEVERSION) bash -c "$(YARN) $(filter-out $@,$(MAKECMDGOALS))"
 
 buildaudit:
-	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) audit"
+	$(DOCKER)    --name $(PLUGINNAME)-buildaudit   node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) audit"
 
 buildsign:
 	$(DOCKER)    --name $(PLUGINNAME)-buildsign    node:$(NODEVERSION) bash -c "$(YARN) install && npx @grafana/sign-plugin"
+
+buildnpm:
+	$(DOCKER)    --name $(PLUGINNAME)-buildnpm     node:$(NODEVERSION) bash -c "npm $(filter-out $@,$(MAKECMDGOALS))"
 
 prettier:
 	$(DOCKER)    --name $(PLUGINNAME)-buildpret    node:$(NODEVERSION) npx prettier --write --ignore-unknown src/
@@ -61,3 +68,13 @@ releasebuild:
 	rm -rf $(PLUGINNAME)
 	@echo "release build successful: $(TAGVERSION)"
 	ls -la $(PLUGINNAME)-$(TAGVERSION).zip
+
+# just skip unknown make targets
+.DEFAULT:
+	@if [[ "$(MAKECMDGOALS)" =~ ^buildupgrade ]] || [[  "$(MAKECMDGOALS)" =~ ^buildyarn ]] || [[  "$(MAKECMDGOALS)" =~ ^buildnpm ]] ; then \
+		: ; \
+	else \
+		echo "unknown make target(s): $(MAKECMDGOALS)"; \
+		exit 1; \
+	fi
+
