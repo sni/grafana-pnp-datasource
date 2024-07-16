@@ -20,6 +20,7 @@ buildwatch:
 	$(DOCKER) -i --name $(PLUGINNAME)-buildwatch   node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) run dev"
 
 buildupgrade:
+	rm -f package-lock.json
 	$(DOCKER)    --name $(PLUGINNAME)-buildupgrade node:$(NODEVERSION) bash -c "$(YARN) install && $(YARN) upgrade $(filter-out $@,$(MAKECMDGOALS))"
 
 buildyarn:
