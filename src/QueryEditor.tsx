@@ -48,7 +48,7 @@ export const QueryEditor = (props: Props) => {
     return data;
   };
 
-  const loadHosts = (filter: string): Promise<SelectableValue[]> => {
+  const loadHosts = (filter?: string): Promise<SelectableValue[]> => {
     // hosts api is not able to filter on server side
     return lastValueFrom(props.datasource.request('GET', '/index.php/api/hosts'))
       .then((response) => {
@@ -111,7 +111,7 @@ export const QueryEditor = (props: Props) => {
       <div className="gf-form">
         <SegmentSection label="Select" fill={false}>
           <InlineSegmentGroup grow={true}>
-            <InlineLabel htmlFor="" width={6} className="">
+            <InlineLabel width={6} className="">
               Host:
             </InlineLabel>
             <div className={selectClass}>
@@ -131,11 +131,13 @@ export const QueryEditor = (props: Props) => {
                 filterOption={filterOptions}
                 width={28}
                 isClearable={true}
+                createOptionPosition="first"
+                allowCreateWhileLoading
               />
             </div>
           </InlineSegmentGroup>
           <InlineSegmentGroup grow={true}>
-            <InlineLabel htmlFor="" width="auto" className="">
+            <InlineLabel width="auto" className="">
               Service:
             </InlineLabel>
             <div className={selectClass}>
@@ -157,11 +159,13 @@ export const QueryEditor = (props: Props) => {
                 filterOption={filterOptions}
                 width={28}
                 isClearable={true}
+                createOptionPosition="first"
+                allowCreateWhileLoading
               />
             </div>
           </InlineSegmentGroup>
           <InlineSegmentGroup grow={true}>
-            <InlineLabel htmlFor="" width="auto" className="">
+            <InlineLabel width="auto" className="">
               Label:
             </InlineLabel>
             <div className={selectClass}>
@@ -182,11 +186,13 @@ export const QueryEditor = (props: Props) => {
                 filterOption={filterOptions}
                 width={28}
                 isClearable={true}
+                createOptionPosition="first"
+                allowCreateWhileLoading
               />
             </div>
           </InlineSegmentGroup>
           <InlineSegmentGroup grow={true}>
-            <InlineLabel htmlFor="" width="auto" className="">
+            <InlineLabel width="auto" className="">
               Type:
             </InlineLabel>
             <div className="">
@@ -204,7 +210,7 @@ export const QueryEditor = (props: Props) => {
       <div className="gf-form">
         <SegmentSection label="Options" fill={false}>
           <InlineSegmentGroup grow={true}>
-            <InlineLabel htmlFor="" width={6} className="">
+            <InlineLabel width={6} className="">
               Fill:
             </InlineLabel>
             <div className="">
@@ -219,17 +225,17 @@ export const QueryEditor = (props: Props) => {
             </div>
           </InlineSegmentGroup>
           <InlineSegmentGroup grow={true}>
-            <InlineLabel htmlFor="" width={8} className="">
+            <InlineLabel width={8} className="">
               Factor:
             </InlineLabel>
             <div className="">
               <Input
+                id="123"
                 defaultValue={''}
                 width={36}
                 onChange={(v) => {
                   onValueChange('factor', v.currentTarget.value);
                 }}
-                label="Factor:"
                 value={props.query.factor}
                 placeholder="Factor, ex.: 0.1, 1024, 1/1024"
               />
@@ -242,6 +248,7 @@ export const QueryEditor = (props: Props) => {
           <InlineSegmentGroup grow={true}>
             <div className="">
               <Input
+                id="456"
                 defaultValue={''}
                 width={60}
                 onChange={(v) => {
