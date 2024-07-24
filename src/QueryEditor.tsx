@@ -213,6 +213,7 @@ export const QueryEditor = (props: Props) => {
                   if (v === null) {
                     v = { value: '' };
                   }
+                  onValueChange('service', v.value);
                   blurAll();
                 }}
                 noOptionsMessage="No services found"
@@ -242,6 +243,7 @@ export const QueryEditor = (props: Props) => {
                   if (v === null) {
                     v = { value: '' };
                   }
+                  onValueChange('perflabel', v.value);
                   blurAll();
                 }}
                 noOptionsMessage="No performance label found"
