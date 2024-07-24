@@ -108,7 +108,6 @@ export const QueryEditor = (props: Props) => {
 
   // set input field value and emit changed event
   const inputTypeValue = (inp: HTMLInputElement, value: string) => {
-    // special cases for select * and "+" button
     if (!value) {
       value = '';
     }
@@ -187,7 +186,6 @@ export const QueryEditor = (props: Props) => {
                   if (v === null) {
                     v = { value: '' };
                   }
-                  console.log('Changed value to: ' + v);
                   onValueChange('host', v.value);
                   blurAll();
                 }}
@@ -215,7 +213,6 @@ export const QueryEditor = (props: Props) => {
                   if (v === null) {
                     v = { value: '' };
                   }
-                  onValueChange('service', v.value);
                   blurAll();
                 }}
                 noOptionsMessage="No services found"
@@ -245,7 +242,6 @@ export const QueryEditor = (props: Props) => {
                   if (v === null) {
                     v = { value: '' };
                   }
-                  onValueChange('perflabel', v.value);
                   blurAll();
                 }}
                 noOptionsMessage="No performance label found"
