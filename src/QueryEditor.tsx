@@ -106,6 +106,70 @@ export const QueryEditor = (props: Props) => {
     debouncedRunQuery();
   };
 
+  // set input field value and emit changed event
+  const inputTypeValue = (inp: HTMLInputElement, value: string) => {
+    // special cases for select * and "+" button
+    if (!value) {
+      value = '';
+    }
+    let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+    if (!nativeInputValueSetter) {
+      inp.value = value;
+      return;
+    }
+    nativeInputValueSetter.call(inp, value);
+
+    const event = new Event('input', { bubbles: true });
+    inp.dispatchEvent(event);
+  };
+
+  let lastInput: HTMLInputElement;
+  // set current value so it can be changed instead of typing it again
+  const makeInputEditable = (value: string, inp?: HTMLInputElement) => {
+    if (inp) {
+      lastInput = inp;
+    } else {
+      inp = lastInput;
+    }
+    if (!inp) {
+      return;
+    }
+    inputTypeValue(inp, value);
+    setTimeout(() => {
+      if (!inp) {
+        return;
+      }
+      inputTypeValue(inp, value);
+    }, 200);
+  };
+
+  const handleHostFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (props.query.host) {
+      makeInputEditable(props.query.host, e.target as HTMLInputElement);
+    }
+  };
+
+  const handleServiceFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (props.query.service) {
+      makeInputEditable(props.query.service, e.target as HTMLInputElement);
+    }
+  };
+
+  const handlePerflabelFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (props.query.perflabel) {
+      makeInputEditable(props.query.perflabel, e.target as HTMLInputElement);
+    }
+  };
+
+  /*Implicitly blurs all elements so that onFoucs function can be
+    called again for input fields which therefore keep the value inside when being clicked*/
+  function blurAll() {
+    let tmp = document.createElement('input');
+    document.body.appendChild(tmp);
+    tmp.focus();
+    document.body.removeChild(tmp);
+  }
+
   return (
     <>
       <div className="gf-form">
@@ -123,16 +187,17 @@ export const QueryEditor = (props: Props) => {
                   if (v === null) {
                     v = { value: '' };
                   }
+                  console.log('Changed value to: ' + v);
                   onValueChange('host', v.value);
+                  blurAll();
                 }}
                 noOptionsMessage="No hosts found"
                 allowCustomValue={true}
-                openMenuOnFocus={true}
                 filterOption={filterOptions}
                 width={28}
                 isClearable={true}
                 createOptionPosition="first"
-                allowCreateWhileLoading
+                onFocus={handleHostFocus as () => void}
               />
             </div>
           </InlineSegmentGroup>
@@ -151,6 +216,7 @@ export const QueryEditor = (props: Props) => {
                     v = { value: '' };
                   }
                   onValueChange('service', v.value);
+                  blurAll();
                 }}
                 noOptionsMessage="No services found"
                 allowCustomValue={true}
@@ -161,6 +227,7 @@ export const QueryEditor = (props: Props) => {
                 isClearable={true}
                 createOptionPosition="first"
                 allowCreateWhileLoading
+                onFocus={handleServiceFocus as unknown as () => void}
               />
             </div>
           </InlineSegmentGroup>
@@ -179,6 +246,7 @@ export const QueryEditor = (props: Props) => {
                     v = { value: '' };
                   }
                   onValueChange('perflabel', v.value);
+                  blurAll();
                 }}
                 noOptionsMessage="No performance label found"
                 allowCustomValue={true}
@@ -188,6 +256,7 @@ export const QueryEditor = (props: Props) => {
                 isClearable={true}
                 createOptionPosition="first"
                 allowCreateWhileLoading
+                onFocus={handlePerflabelFocus as unknown as () => void}
               />
             </div>
           </InlineSegmentGroup>
