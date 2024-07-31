@@ -7,7 +7,7 @@ DOCKER=docker run \
 		-w "/src" \
 		-u $(shell id -u):$(shell id -g) \
 		-e "HOME=/src" \
-		-e "GRAFANA_ACCESS_POLICY_TOKEN=$(GRAFANA_API_KEY)"
+		-e "GRAFANA_ACCESS_POLICY_TOKEN=$(GRAFANA_ACCESS_POLICY_TOKEN)"
 NODEVERSION=20
 export NODE_PATH=$(shell pwd)/node_modules
 YARN=yarn
@@ -62,7 +62,7 @@ releasebuild:
 	@if [ "x$(TAGVERSION)" = "x" ]; then echo "ERROR: must be on a git tag, got: $(shell git describe --tag --dirty)"; exit 1; fi
 	$(MAKE) clean
 	$(MAKE) build
-	$(MAKE) GRAFANA_ACCESS_POLICY_TOKEN=$(GRAFANA_API_KEY) buildsign
+	$(MAKE) GRAFANA_ACCESS_POLICY_TOKEN=$(GRAFANA_ACCESS_POLICY_TOKEN) buildsign
 	mv dist/ $(PLUGINNAME)
 	rm -f $(PLUGINNAME)-$(TAGVERSION).zip
 	zip $(PLUGINNAME)-$(TAGVERSION).zip $(PLUGINNAME) -r
