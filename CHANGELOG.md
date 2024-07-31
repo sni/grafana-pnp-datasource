@@ -1,5 +1,8 @@
 ### Changelog
 
+2.1.0  2024-07-31
+    - improve query editor
+
 2.0.2  2023-05-30
     - fix using factor
     - fix using variables in query editor suggestions
