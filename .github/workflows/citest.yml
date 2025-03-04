@@ -3,8 +3,13 @@ name: citest
 on:
   push:
   pull_request:
-  schedule:
-    - cron: '30 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 jobs:
   citest:
@@ -12,7 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses:  abbbi/github-actions-tune@v1
-      #- name: Setup tmate session, see https://github.com/marketplace/actions/debugging-with-tmate
-      #  uses: mxschmitt/action-tmate@v3
+      - name: Setup tmate session, see https://github.com/marketplace/actions/debugging-with-tmate
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       - name: make test
         run: make test
