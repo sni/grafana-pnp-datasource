@@ -89,6 +89,8 @@ The dev instance can be accessed at http://localhost:3000
 
 You need to add the datasource manually.
 
+The grafana widget documentation is available here: https://developers.grafana.com/ui/latest/
+
 ### Testing
 
 For testing you can use the demo pnp instance at:
