@@ -1,5 +1,8 @@
 ### Changelog
 
+2.2.0  2025-04-10
+    - change query editor to standard grafana components
+
 2.1.0  2024-07-31
     - improve query editor
 
