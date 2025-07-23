@@ -23,8 +23,5 @@ jobs:
 
       - uses: grafana/plugin-actions/build-plugin@main
         with:
-          # see https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin#generate-an-access-policy-token to generate it
-          # save the value in your repository secrets
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
-          # creates a signed build provenance attestation to verify the authenticity of the plugin build
-          attestation: true
+          use_changelog_generator: false
