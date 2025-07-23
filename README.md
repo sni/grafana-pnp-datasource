@@ -111,6 +111,7 @@ How to create a new release:
     %> make GRAFANA_ACCESS_POLICY_TOKEN=${GRAFANA_ACCESS_POLICY_TOKEN} releasebuild
     # create release here https://github.com/sni/grafana-pnp-datasource/releases/new
     # submit plugin update here https://grafana.com/orgs/sni/plugins
+    %> git push origin master --follow-tags
 
 ## Changelog
 
