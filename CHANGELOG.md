@@ -2,9 +2,10 @@
 
 next:
     - add provisioning to dev container
+    - require grafana 11.6
 
 2.2.1  2025-07-23
-    - minimum required grafana to 11
+    - require grafana 11.0
 
 2.2.0  2025-04-10
     - change query editor to standard grafana components
