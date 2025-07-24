@@ -1,6 +1,6 @@
 ### Changelog
 
-next:
+2.2.2  2025-07-24
     - add provisioning to dev container
     - require grafana 11.6
 
