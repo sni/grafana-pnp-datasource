@@ -1,5 +1,8 @@
 ### Changelog
 
+next:
+    - add provisioning to dev container
+
 2.2.1  2025-07-23
     - minimum required grafana to 11
 
