@@ -46,8 +46,11 @@ buildshell:
 
 test: build prettiercheck
 
+# start a specific grafana version like:
+# GRAFANA_VERSION=11.0.0 make dev
 dev:
 	@mkdir -p dist
+	docker compose build
 	docker compose up
 
 clean:
