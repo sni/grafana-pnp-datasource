@@ -10,15 +10,15 @@ export function ConfigEditor({ onOptionsChange, options }: Props) {
     ...options,
     jsonData: {
       ...options.jsonData,
-      keepCookies: options.jsonData.keepCookies || ['thruk_auth', 'pnp4nagios']
-    }
+      keepCookies: options.jsonData.keepCookies || ['thruk_auth', 'pnp4nagios'],
+    },
   };
 
   return (
     <div className="gf-form-group">
       <DataSourceHttpSettings
         dataSourceConfig={optionsCopy}
-        defaultUrl='http://127.0.0.1/pnp4nagios'
+        defaultUrl="http://127.0.0.1/pnp4nagios"
         onChange={onOptionsChange}
         showAccessOptions={false}
       />

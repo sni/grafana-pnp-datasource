@@ -17,9 +17,9 @@ export function QueryEditor(props: Props) {
   const { onRunQuery } = props;
   const debouncedRunQuery = React.useMemo(() => debounce(onRunQuery, 500), [onRunQuery]);
 
-  const { datasource , query, onChange } = props
+  const { datasource, query, onChange } = props;
 
-  const prependDashboardVariables = (data: ComboboxOption[]) => {
+  const prependDashboardVariables = React.useCallback((data: ComboboxOption[]) => {
     getTemplateSrv()
       .getVariables()
       .forEach((v, i) => {
@@ -29,189 +29,233 @@ export function QueryEditor(props: Props) {
         });
       });
     return data;
-  };
+  }, []);
 
-  const loadHosts = (filter?: string): Promise<ComboboxOption[]> => {
-    // hosts api is not able to filter on server side
-    return lastValueFrom(datasource.request('GET', '/index.php/api/hosts'))
-      .then((response) => {
-        // empty response is an array instead of a hashmap
-        if (Array.isArray(response.data)) {
-          return [];
-        }
-        return response.data.hosts.map((row: { name?: string }) => {
-          return { label: row.name, value: row.name };
-        });
-      })
-      .then(prependDashboardVariables)
-      .then((data) =>
-        data.filter((item) => {
-          return (
-            !filter ||
-            (item &&
-              (item.value.toLowerCase().includes(filter.toLowerCase()) ||
-                item.label?.toLowerCase().includes(filter.toLowerCase())))
-          );
+  const loadHosts = React.useCallback(
+    (filter?: string): Promise<ComboboxOption[]> => {
+      // hosts api is not able to filter on server side
+      return lastValueFrom(datasource.request('GET', '/index.php/api/hosts'))
+        .then((response) => {
+          // empty response is an array instead of a hashmap
+          if (Array.isArray(response.data)) {
+            return [];
+          }
+          return response.data.hosts.map((row: { name?: string }) => {
+            return { label: row.name, value: row.name };
+          });
         })
-      );
-  };
+        .then(prependDashboardVariables)
+        .then((data) =>
+          data.filter((item) => {
+            return (
+              !filter ||
+              (item &&
+                (item.value.toLowerCase().includes(filter.toLowerCase()) ||
+                  item.label?.toLowerCase().includes(filter.toLowerCase())))
+            );
+          })
+        );
+    },
+    [datasource, prependDashboardVariables]
+  );
 
-  const loadServices = (filter: string): Promise<ComboboxOption[]> => {
-    return lastValueFrom(
-      datasource.request('POST', '/index.php/api/services', {
-        host: datasource._replaceRegexWithAll(query.host) || '/.*/',
-      })
-    )
-      .then((response) => {
-        // empty response is an array instead of a hashmap
-        if (Array.isArray(response.data)) {
-          return [];
-        }
-        return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
-          return { label: row.servicedesc || row.name, value: row.name };
-        });
-      })
-      .then(prependDashboardVariables)
-      .then((data) =>
-        data.filter((item) => {
-          return (
-            !filter ||
-            (item &&
-              (item.value.toLowerCase().includes(filter.toLowerCase()) ||
-                item.label?.toLowerCase().includes(filter.toLowerCase())))
-          );
+  const loadServices = React.useCallback(
+    (filter: string): Promise<ComboboxOption[]> => {
+      return lastValueFrom(
+        datasource.request('POST', '/index.php/api/services', {
+          host: datasource._replaceRegexWithAll(query.host) || '/.*/',
         })
-      );
-  };
-
-  const loadLabel = (filter: string): Promise<ComboboxOption[]> => {
-    return lastValueFrom(
-      datasource.request('POST', '/index.php/api/labels', {
-        host: datasource._replaceRegexWithAll(query.host) || '/.*/',
-        service: datasource._replaceRegexWithAll(query.service) || '/.*/',
-      })
-    )
-      .then((response) => {
-        // empty response is an array instead of a hashmap
-        if (Array.isArray(response.data)) {
-          return [];
-        }
-        return response.data.labels.map((row: { name?: string; label?: string }) => {
-          return { label: row.label || row.name, value: row.label || row.name };
-        });
-      })
-      .then(prependDashboardVariables)
-      .then((data) =>
-        data.filter((item) => {
-          return (
-            !filter ||
-            (item &&
-              (item.value.toLowerCase().includes(filter.toLowerCase()) ||
-                item.label?.toLowerCase().includes(filter.toLowerCase())))
-          );
+      )
+        .then((response) => {
+          // empty response is an array instead of a hashmap
+          if (Array.isArray(response.data)) {
+            return [];
+          }
+          return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
+            return { label: row.servicedesc || row.name, value: row.name };
+          });
         })
-      );
-  };
+        .then(prependDashboardVariables)
+        .then((data) =>
+          data.filter((item) => {
+            return (
+              !filter ||
+              (item &&
+                (item.value.toLowerCase().includes(filter.toLowerCase()) ||
+                  item.label?.toLowerCase().includes(filter.toLowerCase())))
+            );
+          })
+        );
+    },
+    [datasource, prependDashboardVariables, query.host]
+  );
 
-  const onValueChange = (key: keyof PNPQuery, value: any) => {
-    const newQuery = {
-      ...query,
-      [key] : value as never
-    }
-    onChange(newQuery);
-    debouncedRunQuery();
-  };
+  const loadLabel = React.useCallback(
+    (filter: string): Promise<ComboboxOption[]> => {
+      return lastValueFrom(
+        datasource.request('POST', '/index.php/api/labels', {
+          host: datasource._replaceRegexWithAll(query.host) || '/.*/',
+          service: datasource._replaceRegexWithAll(query.service) || '/.*/',
+        })
+      )
+        .then((response) => {
+          // empty response is an array instead of a hashmap
+          if (Array.isArray(response.data)) {
+            return [];
+          }
+          return response.data.labels.map((row: { name?: string; label?: string }) => {
+            return { label: row.label || row.name, value: row.label || row.name };
+          });
+        })
+        .then(prependDashboardVariables)
+        .then((data) =>
+          data.filter((item) => {
+            return (
+              !filter ||
+              (item &&
+                (item.value.toLowerCase().includes(filter.toLowerCase()) ||
+                  item.label?.toLowerCase().includes(filter.toLowerCase())))
+            );
+          })
+        );
+    },
+    [datasource, query.host, query.service, prependDashboardVariables]
+  );
+
+  const onValueChange = React.useCallback(
+    (key: keyof PNPQuery, value: any) => {
+      const newQuery = {
+        ...query,
+        [key]: value as never,
+      };
+      onChange(newQuery);
+      debouncedRunQuery();
+    },
+    [debouncedRunQuery, onChange, query]
+  );
+
+  const onHostChange = React.useCallback(
+    (v: ComboboxOption<string> | null) => {
+      if (v === null) {
+        v = { value: '' };
+      }
+      onValueChange('host' as keyof PNPQuery, v.value);
+    },
+    [onValueChange]
+  );
+
+  const onServiceChange = React.useCallback(
+    (v: ComboboxOption<string> | null) => {
+      if (v === null) {
+        v = { value: '' };
+      }
+      onValueChange('service', v.value);
+    },
+    [onValueChange]
+  );
+
+  const onPerflabelChange = React.useCallback(
+    (v: ComboboxOption<string> | null) => {
+      if (v === null) {
+        v = { value: '' };
+      }
+      onValueChange('perflabel', v.value);
+    },
+    [onValueChange]
+  );
+
+  const onTypeChange = React.useCallback(
+    (v: ComboboxOption<string> | null) => {
+      if (v === null) {
+        v = { value: '' };
+      }
+      onValueChange('type', v.value);
+    },
+    [onValueChange]
+  );
+
+  const onFillChange = React.useCallback(
+    (v: ComboboxOption<string> | null) => {
+      if (v === null) {
+        v = { value: '' };
+      }
+      onValueChange('fill', v.value);
+    },
+    [onValueChange]
+  );
+
+  const onFactorChange = React.useCallback(
+    (v: React.ChangeEvent<HTMLInputElement, Element>) => {
+      onValueChange('fill', v.currentTarget.value);
+    },
+    [onValueChange]
+  );
+
+  const onAliasChange = React.useCallback(
+    (v: React.ChangeEvent<HTMLInputElement, Element>) => {
+      onValueChange('alias', v.currentTarget.value);
+    },
+    [onValueChange]
+  );
 
   return (
     <>
       <div className="gf-form">
-
-        <SegmentSection
-          fill={false}
-          label="Select"
-        >
-          <InlineSegmentGroup
-            grow={true}
-          >
-
-            <InlineLabel
-              className=""
-              width={6}
-            >
-              "Host:"
+        <SegmentSection fill={false} label="Select">
+          <InlineSegmentGroup grow={true}>
+            <InlineLabel className="" width={6}>
+              {'Host:'}
             </InlineLabel>
 
             <Combobox
               createCustomValue={true}
               isClearable={true}
-              onChange={(v) => {
-                if (v === null) {
-                  v = { value: '' };
-                }
-                onValueChange('host', v.value);
-              }}
+              onChange={onHostChange}
               options={loadHosts}
-              value={props.query.host || ''}
+              value={query.host || ''}
               width={28}
             />
-
           </InlineSegmentGroup>
 
           <InlineSegmentGroup grow={true}>
             <InlineLabel className="" width="auto">
-              Service:
+              {'Service:'}
             </InlineLabel>
             <Combobox
               createCustomValue={true}
               isClearable={true}
-              key={props.query.host}
-              onChange={(v) => {
-                if (v === null) {
-                  v = { value: '' };
-                }
-                onValueChange('service', v.value);
-              }}
+              key={query.host}
+              onChange={onServiceChange}
               options={loadServices}
-              value={props.query.service || ''}
+              value={query.service || ''}
               width={28}
             />
           </InlineSegmentGroup>
 
-          <InlineSegmentGroup
-            grow={true}
-          >
+          <InlineSegmentGroup grow={true}>
             <InlineLabel className="" width="auto">
-              Label:
+              {'Label:'}
             </InlineLabel>
 
             <Combobox
               createCustomValue={true}
               isClearable={true}
-              key={props.query.host + ';' + props.query.service}
-              onChange={(v) => {
-                if (v === null) {
-                  v = { value: '' };
-                }
-                onValueChange('perflabel', v.value);
-              }}
+              key={query.host + ';' + query.service}
+              onChange={onPerflabelChange}
               options={loadLabel}
-              value={props.query.perflabel || ''}
+              value={query.perflabel || ''}
               width={28}
             />
           </InlineSegmentGroup>
 
-          <InlineSegmentGroup
-            grow={true}
-          >
+          <InlineSegmentGroup grow={true}>
             <InlineLabel className="" width="auto">
-              Type:
+              {'Type:'}
             </InlineLabel>
 
             <div className="">
               <Combobox
-                onChange={(v) => {
-                  onValueChange('type', v.value);
-                }}
+                onChange={onTypeChange}
                 options={[
                   { value: 'AVERAGE' },
                   { value: 'MIN' },
@@ -219,64 +263,42 @@ export function QueryEditor(props: Props) {
                   { value: 'WARNING' },
                   { value: 'CRITICAL' },
                 ]}
-                value={props.query.type || 'AVERAGE'}
+                value={query.type || 'AVERAGE'}
               />
             </div>
-
           </InlineSegmentGroup>
         </SegmentSection>
       </div>
 
-      <div
-        className="gf-form"
-      >
-
-        <SegmentSection
-          fill={false}
-          label="Options"
-        >
-
-          <InlineSegmentGroup
-            grow={true}
-          >
-            <InlineLabel
-              className=""
-              width={6}
-            >
-              Fill:
+      <div className="gf-form">
+        <SegmentSection fill={false} label="Options">
+          <InlineSegmentGroup grow={true}>
+            <InlineLabel className="" width={6}>
+              {'Fill:'}
             </InlineLabel>
 
             <div className="">
               <Combobox
-                onChange={(v) => {
-                  onValueChange('fill', v.value);
-                }}
+                onChange={onFillChange}
                 options={[{ value: 'fill' }, { value: 'zero' }, { value: 'gap' }]}
-                value={props.query.fill || 'fill'}
+                value={query.fill || 'fill'}
                 width={9}
               />
             </div>
           </InlineSegmentGroup>
 
-          <InlineSegmentGroup
-            grow={true}
-          >
-            <InlineLabel
-              className=""
-              width={8}
-            >
-              Factor:
+          <InlineSegmentGroup grow={true}>
+            <InlineLabel className="" width={8}>
+              {'Factor:'}
             </InlineLabel>
 
             <div className="">
               <Input
                 defaultValue={''}
                 id="123"
-                onChange={(v) => {
-                  onValueChange('factor', v.currentTarget.value);
-                }}
+                onChange={onFactorChange}
                 placeholder="Factor, ex.: 0.1, 1024, 1/1024"
-                value={props.query.factor}
+                value={query.factor}
                 width={36}
               />
             </div>
@@ -284,26 +306,16 @@ export function QueryEditor(props: Props) {
         </SegmentSection>
       </div>
 
-      <div
-        className="gf-form"
-      >
-        <SegmentSection
-          fill={false}
-          label="Alias"
-        >
-          <InlineSegmentGroup
-            grow={true}
-          >
+      <div className="gf-form">
+        <SegmentSection fill={false} label="Alias">
+          <InlineSegmentGroup grow={true}>
             <div className="">
-
               <Input
                 defaultValue={''}
                 id="456"
-                onChange={(v) => {
-                  onValueChange('alias', v.currentTarget.value);
-                }}
+                onChange={onAliasChange}
                 placeholder="Naming pattern, ex.: $tag_host, $tag_service, $tag_label"
-                value={props.query.alias}
+                value={query.alias}
                 width={60}
               />
             </div>
