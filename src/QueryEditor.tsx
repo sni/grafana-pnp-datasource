@@ -136,50 +136,55 @@ export function QueryEditor(props: Props) {
 
   const onHostChange = React.useCallback(
     (v: ComboboxOption<string> | null) => {
-      if (v === null) {
-        v = { value: '' };
+      let value = '';
+      if (v !== null) {
+        value = v.value;
       }
-      onValueChange('host' as keyof PNPQuery, v.value);
+      onValueChange('host' as keyof PNPQuery, value);
     },
     [onValueChange]
   );
 
   const onServiceChange = React.useCallback(
     (v: ComboboxOption<string> | null) => {
-      if (v === null) {
-        v = { value: '' };
+      let value = '';
+      if (v !== null) {
+        value = v.value;
       }
-      onValueChange('service', v.value);
+      onValueChange('service', value);
     },
     [onValueChange]
   );
 
   const onPerflabelChange = React.useCallback(
     (v: ComboboxOption<string> | null) => {
-      if (v === null) {
-        v = { value: '' };
+      let value = '';
+      if (v !== null) {
+        value = v.value;
       }
-      onValueChange('perflabel', v.value);
+      onValueChange('perflabel', value);
     },
     [onValueChange]
   );
 
   const onTypeChange = React.useCallback(
     (v: ComboboxOption<string> | null) => {
-      if (v === null) {
-        v = { value: '' };
+      let value = '';
+      if (v !== null) {
+        value = v.value;
       }
-      onValueChange('type', v.value);
+      onValueChange('type', value);
     },
     [onValueChange]
   );
 
   const onFillChange = React.useCallback(
     (v: ComboboxOption<string> | null) => {
-      if (v === null) {
-        v = { value: '' };
+      let value = '';
+      if (v !== null) {
+        value = v.value;
       }
-      onValueChange('fill', v.value);
+      onValueChange('fill', value);
     },
     [onValueChange]
   );
