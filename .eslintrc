@@ -1,14 +1,13 @@
 {
   "extends": [
     "./.config/.eslintrc",
-    "plugin:react/all"
+    "plugin:react/all",
+    "prettier"
   ],
   "rules": {
     "no-param-reassign": "warn",
     "prefer-const": "warn",
     "no-var": "warn",
-    "react/jsx-indent": [2,2],
-    "react/jsx-indent-props": [2,2],
     "react/jsx-filename-extension": "off",
     "react/jsx-boolean-value": "warn"
   }
