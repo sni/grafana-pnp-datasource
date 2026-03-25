@@ -9,6 +9,16 @@
     "prefer-const": "warn",
     "no-var": "warn",
     "react/jsx-filename-extension": "off",
-    "react/jsx-boolean-value": "warn"
+    "react/jsx-boolean-value": "off",
+    "react/jsx-max-depth": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/forbid-component-props": [
+      "error",
+      {
+        "forbid": [
+          {"propName": "className", "allowedFor": ["InlineLabel"], "message": "These come from Grafana, and use className to override their styles"}
+        ]
+      }
+    ]
   }
 }
