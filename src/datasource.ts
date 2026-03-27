@@ -49,9 +49,9 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     });
 
     options.targets = options.targets.filter((t) => !t.hide);
-    options.targets = options.targets.filter((t) => t.host); /* hide querys without a host filter */
-    options.targets = options.targets.filter((t) => t.service); /* hide querys without a service filter */
-    options.targets = options.targets.filter((t) => t.perflabel); /* hide querys without a perflabel filter */
+    options.targets = options.targets.filter((t) => t.host); /* hide queries without a host filter */
+    options.targets = options.targets.filter((t) => t.service); /* hide queries without a service filter */
+    options.targets = options.targets.filter((t) => t.perflabel); /* hide queries without a perflabel filter */
 
     if (options.targets.length <= 0) {
       return toDataQueryResponse({});
