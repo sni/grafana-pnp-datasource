@@ -208,7 +208,7 @@ export function QueryEditor(props: Props) {
       <div className="gf-form">
         <SegmentSection fill={false} label="Select">
           <InlineSegmentGroup grow={true}>
-            <InlineLabel className="" width={6}>
+            <InlineLabel className="" width={7}>
               {'Host:'}
             </InlineLabel>
 
@@ -223,7 +223,7 @@ export function QueryEditor(props: Props) {
           </InlineSegmentGroup>
 
           <InlineSegmentGroup grow={true}>
-            <InlineLabel className="" width="auto">
+            <InlineLabel className="" width={7}>
               {'Service:'}
             </InlineLabel>
             <Combobox
@@ -236,9 +236,13 @@ export function QueryEditor(props: Props) {
               width={28}
             />
           </InlineSegmentGroup>
+        </SegmentSection>
+      </div>
 
+      <div className="gf-form">
+        <SegmentSection fill={false} label=" ">
           <InlineSegmentGroup grow={true}>
-            <InlineLabel className="" width="auto">
+            <InlineLabel className="" width={7}>
               {'Label:'}
             </InlineLabel>
 
@@ -254,7 +258,7 @@ export function QueryEditor(props: Props) {
           </InlineSegmentGroup>
 
           <InlineSegmentGroup grow={true}>
-            <InlineLabel className="" width="auto">
+            <InlineLabel className="" width={7}>
               {'Type:'}
             </InlineLabel>
 
@@ -269,6 +273,7 @@ export function QueryEditor(props: Props) {
                   { value: 'CRITICAL' },
                 ]}
                 value={query.type || 'AVERAGE'}
+                width={28}
               />
             </div>
           </InlineSegmentGroup>
