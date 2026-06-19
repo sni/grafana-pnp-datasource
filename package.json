@@ -27,7 +27,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
+    "@babel/core": "^7.29.6",
     "@grafana/eslint-config": "^7.0.0",
     "@grafana/sign-plugin": "^3.0.3",
     "@grafana/tsconfig": "^1.2.0-rc1",
