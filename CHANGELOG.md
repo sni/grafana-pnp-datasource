@@ -1,5 +1,12 @@
 ### Changelog
 
+next:
+    - align build tooling with node 24 and yarn v4
+    - improve error reporting of datasource requests
+    - improve query editor layout
+    - fix factor input overwriting the fill option
+    - add unit tests
+
 2.2.2  2025-07-24
     - add provisioning to dev container
     - require grafana 11.6

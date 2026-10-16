@@ -38,39 +38,43 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
 
     const templateSrv = getTemplateSrv();
 
-    options.targets.map((target) => {
-      target = defaults(target, defaultQuery);
-      target.alias = templateSrv.replace(target.alias, options.scopedVars);
-      target.host = this._replaceRegexWithAll(target.host, options.scopedVars);
-      target.service = this._replaceRegexWithAll(target.service, options.scopedVars);
-      target.perflabel = this._replaceRegexWithAll(target.perflabel, options.scopedVars);
-      target.fill = templateSrv.replace(target.fill, options.scopedVars);
-      target.factor = templateSrv.replace(String(target.factor || ''), options.scopedVars);
+    // apply defaults on a copy so the shared targets are not mutated
+    let targets = options.targets.map((target) => {
+      const t = defaults({}, target, defaultQuery);
+      t.alias = templateSrv.replace(t.alias, options.scopedVars);
+      t.host = this._replaceRegexWithAll(t.host, options.scopedVars);
+      t.service = this._replaceRegexWithAll(t.service, options.scopedVars);
+      t.perflabel = this._replaceRegexWithAll(t.perflabel, options.scopedVars);
+      t.fill = templateSrv.replace(t.fill, options.scopedVars);
+      t.factor = templateSrv.replace(String(t.factor || ''), options.scopedVars);
+      return t;
     });
 
-    options.targets = options.targets.filter((t) => !t.hide);
-    options.targets = options.targets.filter((t) => t.host); /* hide queries without a host filter */
-    options.targets = options.targets.filter((t) => t.service); /* hide queries without a service filter */
-    options.targets = options.targets.filter((t) => t.perflabel); /* hide queries without a perflabel filter */
+    targets = targets.filter((t) => !t.hide);
+    targets = targets.filter((t) => t.host); /* hide queries without a host filter */
+    targets = targets.filter((t) => t.service); /* hide queries without a service filter */
+    targets = targets.filter((t) => t.perflabel); /* hide queries without a perflabel filter */
 
-    if (options.targets.length <= 0) {
+    if (targets.length <= 0) {
       return toDataQueryResponse({});
     }
 
+    // the pnp api reads the query parameters from the targets in the request body
     const queryOptions = {
       ...options,
+      targets,
       start: Number(from / 1000).toFixed(),
       end: Number(to / 1000).toFixed(),
     };
 
-    const result = await lastValueFrom(
-      this.request('POST', '/index.php/api/metrics', queryOptions, { 'Content-Type': 'application/json' })
-    );
+    const result = await this.request('POST', '/index.php/api/metrics', queryOptions, {
+      'Content-Type': 'application/json',
+    });
 
     const data = [] as DataQueryResponseData[];
 
     for (let x = 0; x < result.data.targets.length; x++) {
-      const target = options.targets[x];
+      const target = targets[x];
       const query = defaults(target, defaultQuery);
       for (let k = 0; k < result.data.targets[x].length; k++) {
         const res = result.data.targets[x][k];
@@ -107,7 +111,7 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
         }
 
         length = datapoints.length;
-        let fill = options.targets[x].fill;
+        let fill = targets[x].fill;
         if (fill !== 'fill') {
           let fillWith = 0 as any;
           if (fill === 'zero') {
@@ -123,8 +127,8 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
           }
         }
 
-        if (options.targets[x].factor && options.targets[x].factor !== '') {
-          const factor = Number(Function('return(' + String(options.targets[x].factor) + ')')());
+        if (targets[x].factor && targets[x].factor !== '') {
+          const factor = Number(Function('return(' + String(targets[x].factor) + ')')());
           if (factor !== 1 && !isNaN(factor)) {
             for (let y = 0; y < length; y++) {
               if (datapoints[y][0] !== null) {
@@ -198,42 +202,30 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
     }
 
     if (type === 'host') {
-      return lastValueFrom(this.request('POST', '/index.php/api/hosts', query_params)).then((response) => {
-        if (response && response.data && response.data.error) {
-          throw new Error(response.data.error);
-        }
-        if (!response || !response.data || !response.data.hosts) {
-          return;
-        }
-        return response.data.hosts.map((row: { name?: string }) => {
-          return { text: row.name, value: row.name };
-        });
+      const response = await this.request('POST', '/index.php/api/hosts', query_params);
+      if (!response || !response.data || !response.data.hosts) {
+        return [];
+      }
+      return response.data.hosts.map((row: { name?: string }) => {
+        return { text: row.name, value: row.name };
       });
     }
     if (type === 'service') {
-      return lastValueFrom(this.request('POST', '/index.php/api/services', query_params)).then((response) => {
-        if (response && response.data && response.data.error) {
-          throw new Error(response.data.error);
-        }
-        if (!response || !response.data || !response.data.services) {
-          return;
-        }
-        return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
-          return { text: row.servicedesc || row.name, value: row.servicedesc || row.name };
-        });
+      const response = await this.request('POST', '/index.php/api/services', query_params);
+      if (!response || !response.data || !response.data.services) {
+        return [];
+      }
+      return response.data.services.map((row: { name?: string; servicedesc?: string }) => {
+        return { text: row.servicedesc || row.name, value: row.servicedesc || row.name };
       });
     }
     if (type === 'label') {
-      return lastValueFrom(this.request('POST', '/index.php/api/labels', query_params)).then((response) => {
-        if (response && response.data && response.data.error) {
-          throw new Error(response.data.error);
-        }
-        if (!response || !response.data || !response.data.labels) {
-          return;
-        }
-        return response.data.labels.map((row: { name?: string; label?: string }) => {
-          return { text: row.label || row.name, value: row.label || row.name };
-        });
+      const response = await this.request('POST', '/index.php/api/labels', query_params);
+      if (!response || !response.data || !response.data.labels) {
+        return [];
+      }
+      return response.data.labels.map((row: { name?: string; label?: string }) => {
+        return { text: row.label || row.name, value: row.label || row.name };
       });
     }
 
@@ -241,25 +233,69 @@ export class DataSource extends DataSourceApi<PNPQuery, PNPDataSourceOptions> {
   }
 
   async testDatasource() {
-    return lastValueFrom(this.request('GET', '/index.php/api'))
-      .then((response) => {
-        if (response.status === 200 && response.data.pnp_version) {
-          return {
-            status: 'success',
-            message: 'Successfully connected to PNP v' + response.data.pnp_version,
-          };
-        }
-        return { status: 'error', message: 'invalid url, did not find pnp version in response.' };
-      })
-      .catch((err) => {
-        if (err.status && err.status >= 400) {
-          return { status: 'error', message: 'Datasource not connected: ' + err.status + ' ' + err.statusText };
-        }
-        return { status: 'error', message: err.message };
-      });
+    const response = await this.request('GET', '/index.php/api').catch((err) => {
+      return { status: 'error', message: 'Datasource error: ' + err.message };
+    });
+    if (response.status === 'error') {
+      return response;
+    }
+    if (response.status === 200 && response.data.pnp_version) {
+      return {
+        status: 'success',
+        message: 'Successfully connected to PNP v' + response.data.pnp_version,
+      };
+    }
+    return { status: 'error', message: 'invalid url, did not find pnp version in response.' };
   }
 
-  request(method: string, url: string, data?: any, headers?: BackendSrvRequest['headers']): Observable<any> {
+  async request(method: string, url: string, data?: any, headers?: BackendSrvRequest['headers']): Promise<any> {
+    try {
+      const result = await lastValueFrom(this._request(method, url, data, headers));
+
+      // pass through pnp errors
+      if (result.data && result.data.error) {
+        throw new Error(result.data.error);
+      }
+      return result;
+    } catch (error: unknown) {
+      console.warn('failed to fetch ' + url);
+      console.warn(error);
+      if (typeof error === 'string') {
+        throw new Error(error);
+      }
+      if (error instanceof Error) {
+        throw error;
+      }
+
+      const httpError = error as { status: number; statusText: string; data?: any };
+      if (httpError.status) {
+        let extra = '';
+        if (httpError.data) {
+          if (httpError.data.response) {
+            const matches = httpError.data.response.match(/<h1>(.*?)<\/h1>/);
+            if (matches && matches[1] && matches[1] !== httpError.statusText) {
+              extra = ' (' + matches[1] + ')';
+            }
+          }
+          if (
+            httpError.data.message &&
+            httpError.data.message !== httpError.data.response &&
+            httpError.data.message !== httpError.statusText
+          ) {
+            extra += ' ' + httpError.data.message;
+          }
+          if (httpError.data.description) {
+            extra += ' (' + httpError.data.description + ')';
+          }
+        }
+        throw new Error(httpError.status + ' ' + httpError.statusText + extra);
+      }
+
+      throw new Error('failed to fetch data, unknown error');
+    }
+  }
+
+  _request(method: string, url: string, data?: any, headers?: BackendSrvRequest['headers']): Observable<any> {
     if (!this.isProxyAccess) {
       return throwError(
         () =>

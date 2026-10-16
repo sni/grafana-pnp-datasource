@@ -2,8 +2,13 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*' # Run workflow on version tags, e.g. v1.0.0.
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 jobs:
   release:
@@ -15,8 +20,40 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: grafana/plugin-actions/build-plugin@main
+      - name: Setup tmate session, see https://github.com/marketplace/actions/debugging-with-tmate
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+
+      # same node version as Makefile/docker-compose/.nvmrc (native @swc/core rebuilds must match)
+      - uses: actions/setup-node@v7
         with:
+          node-version: 24
+
+      - name: Enable corepack (yarn 4)
+        run: corepack enable
+
+      # grafana.com rejects the check unless the version is newer than the latest published one;
+      # on non-tag pushes the repo still carries the just-released version, so use the next
+      # patch with a prerelease suffix (strictly greater in semver, e.g. 2.3.1 -> 2.3.2-dev)
+      - name: Use -dev version for non-release builds
+        if: ${{ github.event_name != 'push' || github.ref_type != 'tag' }}
+        run: |
+          v=$(jq -r '.version' package.json)
+          IFS=. read -r a b c _ <<< "$v"
+          jq --arg v "$a.$b.$((c + 1))-dev" '.version=$v' package.json > package.json.tmp && mv package.json.tmp package.json
+
+      - name: Run pre-release checks
+        if: ${{ github.event_name != 'push' || github.ref_type != 'tag' }}
+        uses: grafana/plugin-actions/package-plugin@main
+        with:
+          node-version: 24
+          policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}
+
+      - name: Build release
+        if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+        uses: grafana/plugin-actions/build-plugin@main
+        with:
+          node-version: 24
           # see https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin#generate-an-access-policy-token to generate it
           # save the value in your repository secrets
           policy_token: ${{ secrets.GRAFANA_ACCESS_POLICY_TOKEN }}

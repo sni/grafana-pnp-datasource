@@ -20,8 +20,11 @@ services:
       buildwatch:
         condition: service_healthy # start as soon as the first build is ready
   buildwatch:
-    image: node:20
-    command: bash -c "yarn install && yarn run dev"
+    image: node:24
+    environment:
+      # dev loop stays mutable; CI/release enforce the immutable lockfile
+      - YARN_ENABLE_IMMUTABLE_INSTALLS=false
+    command: bash -c "corepack yarn install && corepack yarn run dev"
     working_dir: /src
     healthcheck:
       test: test -f /src/dist/module.js

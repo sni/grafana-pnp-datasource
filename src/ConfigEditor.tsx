@@ -1,5 +1,3 @@
-// @ts-ignore // React import is required make JSX linting work: 'React' must be in scope when using JSXeslintreact/react-in-jsx-scope
-import React from 'react';
 import { DataSourceHttpSettings } from '@grafana/ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
 import { PNPDataSourceOptions } from './types';
@@ -16,7 +14,7 @@ export function ConfigEditor({ onOptionsChange, options }: Props) {
   };
 
   return (
-    <div className="gf-form-group">
+    <div>
       <DataSourceHttpSettings
         dataSourceConfig={optionsCopy}
         defaultUrl="http://127.0.0.1/pnp4nagios"

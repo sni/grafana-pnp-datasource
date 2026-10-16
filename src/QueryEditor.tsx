@@ -1,11 +1,11 @@
 import { debounce } from 'lodash';
 import React from 'react';
-import { lastValueFrom } from 'rxjs';
 import { InlineSegmentGroup, SegmentSection, InlineLabel, Combobox, Input, ComboboxOption } from '@grafana/ui';
 import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
 import { DataSource } from './datasource';
 import { PNPDataSourceOptions, PNPQuery } from './types';
+import styles from './QueryEditor.module.css';
 
 type Props = QueryEditorProps<DataSource, PNPQuery, PNPDataSourceOptions>;
 
@@ -34,7 +34,8 @@ export function QueryEditor(props: Props) {
   const loadHosts = React.useCallback(
     (filter?: string): Promise<ComboboxOption[]> => {
       // hosts api is not able to filter on server side
-      return lastValueFrom(datasource.request('GET', '/index.php/api/hosts'))
+      return datasource
+        .request('GET', '/index.php/api/hosts')
         .then((response) => {
           // empty response is an array instead of a hashmap
           if (Array.isArray(response.data)) {
@@ -61,11 +62,10 @@ export function QueryEditor(props: Props) {
 
   const loadServices = React.useCallback(
     (filter: string): Promise<ComboboxOption[]> => {
-      return lastValueFrom(
-        datasource.request('POST', '/index.php/api/services', {
+      return datasource
+        .request('POST', '/index.php/api/services', {
           host: datasource._replaceRegexWithAll(query.host) || '/.*/',
         })
-      )
         .then((response) => {
           // empty response is an array instead of a hashmap
           if (Array.isArray(response.data)) {
@@ -92,12 +92,11 @@ export function QueryEditor(props: Props) {
 
   const loadLabel = React.useCallback(
     (filter: string): Promise<ComboboxOption[]> => {
-      return lastValueFrom(
-        datasource.request('POST', '/index.php/api/labels', {
+      return datasource
+        .request('POST', '/index.php/api/labels', {
           host: datasource._replaceRegexWithAll(query.host) || '/.*/',
           service: datasource._replaceRegexWithAll(query.service) || '/.*/',
         })
-      )
         .then((response) => {
           // empty response is an array instead of a hashmap
           if (Array.isArray(response.data)) {
@@ -190,14 +189,14 @@ export function QueryEditor(props: Props) {
   );
 
   const onFactorChange = React.useCallback(
-    (v: React.ChangeEvent<HTMLInputElement, Element>) => {
-      onValueChange('fill', v.currentTarget.value);
+    (v: React.ChangeEvent<HTMLInputElement>) => {
+      onValueChange('factor', v.currentTarget.value);
     },
     [onValueChange]
   );
 
   const onAliasChange = React.useCallback(
-    (v: React.ChangeEvent<HTMLInputElement, Element>) => {
+    (v: React.ChangeEvent<HTMLInputElement>) => {
       onValueChange('alias', v.currentTarget.value);
     },
     [onValueChange]
@@ -205,7 +204,7 @@ export function QueryEditor(props: Props) {
 
   return (
     <>
-      <div className="gf-form">
+      <div className={styles.row}>
         <SegmentSection fill={false} label="Select">
           <InlineSegmentGroup grow={true}>
             <InlineLabel className="" width={7}>
@@ -239,7 +238,7 @@ export function QueryEditor(props: Props) {
         </SegmentSection>
       </div>
 
-      <div className="gf-form">
+      <div className={styles.row}>
         <SegmentSection fill={false} label=" ">
           <InlineSegmentGroup grow={true}>
             <InlineLabel className="" width={7}>
@@ -280,7 +279,7 @@ export function QueryEditor(props: Props) {
         </SegmentSection>
       </div>
 
-      <div className="gf-form">
+      <div className={styles.row}>
         <SegmentSection fill={false} label="Options">
           <InlineSegmentGroup grow={true}>
             <InlineLabel className="" width={6}>
@@ -316,7 +315,7 @@ export function QueryEditor(props: Props) {
         </SegmentSection>
       </div>
 
-      <div className="gf-form">
+      <div className={styles.row}>
         <SegmentSection fill={false} label="Alias">
           <InlineSegmentGroup grow={true}>
             <div className="">

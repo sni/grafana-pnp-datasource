@@ -5,8 +5,6 @@
  * https://grafana.github.io/plugin-tools/docs/advanced-configuration#extending-the-jest-config
  */
 
-import '@testing-library/jest-dom';
-
 // https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
 Object.defineProperty(global, 'matchMedia', {
   writable: true,
