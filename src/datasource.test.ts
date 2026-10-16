@@ -102,7 +102,7 @@ describe('query', () => {
       '/index.php/api/metrics',
       expect.objectContaining({
         start: '1700000000',
-        end: '1700000300',
+        end: '1700003600',
         targets: [expect.objectContaining({ type: 'AVERAGE' })],
       }),
       { 'Content-Type': 'application/json' }
