@@ -1,6 +1,6 @@
 ### Changelog
 
-next:
+2.3.1  2026-10-19
     - fix datasource config editor not loading
 
 2.3.0  2026-10-17
