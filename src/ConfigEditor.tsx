@@ -11,25 +11,25 @@ export class ConfigEditor extends React.PureComponent<Props, State> {
   render() {
     const { onOptionsChange, options } = this.props;
 
-  const optionsCopy = {
-    ...options,
-    jsonData: {
-      ...options.jsonData,
-      keepCookies: options.jsonData.keepCookies || ['thruk_auth', 'pnp4nagios'],
-    },
-  };
+    const optionsCopy = {
+      ...options,
+      jsonData: {
+        ...options.jsonData,
+        keepCookies: options.jsonData.keepCookies || ['thruk_auth', 'pnp4nagios'],
+      },
+    };
 
-  return (
-    <div>
+    return (
+      <div>
         <>
-      <DataSourceHttpSettings
-        defaultUrl="http://127.0.0.1/pnp4nagios"
-        dataSourceConfig={optionsCopy}
-        showAccessOptions={false}
-        onChange={onOptionsChange}
-      />
+          <DataSourceHttpSettings
+            defaultUrl="http://127.0.0.1/pnp4nagios"
+            dataSourceConfig={optionsCopy}
+            showAccessOptions={false}
+            onChange={onOptionsChange}
+          />
         </>
-    </div>
-  );
+      </div>
+    );
   }
 }
