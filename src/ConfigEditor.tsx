@@ -1,10 +1,16 @@
+import React from 'react';
 import { DataSourceHttpSettings } from '@grafana/ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
 import { PNPDataSourceOptions } from './types';
 
 interface Props extends DataSourcePluginOptionsEditorProps<PNPDataSourceOptions> {}
 
-export function ConfigEditor({ onOptionsChange, options }: Props) {
+interface State {}
+
+export class ConfigEditor extends React.PureComponent<Props, State> {
+  render() {
+    const { onOptionsChange, options } = this.props;
+
   const optionsCopy = {
     ...options,
     jsonData: {
@@ -15,12 +21,15 @@ export function ConfigEditor({ onOptionsChange, options }: Props) {
 
   return (
     <div>
+        <>
       <DataSourceHttpSettings
-        dataSourceConfig={optionsCopy}
         defaultUrl="http://127.0.0.1/pnp4nagios"
-        onChange={onOptionsChange}
+        dataSourceConfig={optionsCopy}
         showAccessOptions={false}
+        onChange={onOptionsChange}
       />
+        </>
     </div>
   );
+  }
 }

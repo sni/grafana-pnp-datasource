@@ -1,5 +1,8 @@
 ### Changelog
 
+next:
+    - fix datasource config editor not loading
+
 2.3.0  2026-10-17
     - align build tooling with node 24 and yarn v4
     - improve error reporting of datasource requests
